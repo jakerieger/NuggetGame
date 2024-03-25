@@ -1,3 +1,6 @@
 Lib/* linguist-vendored
 CMakeLists.txt linguist-vendored
 Assets/* linguist-vendored
+*.rc linguist-vendored
+*.inl linguist-language=C++
+*.h linguist-language=C++
