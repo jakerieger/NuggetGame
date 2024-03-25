@@ -10,7 +10,7 @@ out vec2 TexCoords;
 void main() {
     TexCoords = aVertex.zw;
     vec4 pos = vec4(aVertex.xy, 0.0, 1.0);
-    gl_Position = u_ProjModel * pos;
+    gl_Position = pos;
 }
 
 #undef VERTEX
@@ -18,7 +18,6 @@ void main() {
 #define FRAGMENT
 #version 460 core
 in vec2 TexCoords;
-in vec2 FragCoords;
 
 out vec4 FragColor;
 

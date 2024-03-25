@@ -115,7 +115,6 @@ namespace Graphics {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_SAMPLES, 4);
 
 #ifndef NDEBUG
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
@@ -132,7 +131,7 @@ namespace Graphics {
             return false;
         }
 
-        glViewport(0, 0, width, width);
+        GL::FramebufferCallback(g_Window.get(), width, height);
         glfwSetFramebufferSizeCallback(GetWindow(), GL::FramebufferCallback);
         glfwSwapInterval(0);
         // glfwSetInputMode(g_Window.get(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
