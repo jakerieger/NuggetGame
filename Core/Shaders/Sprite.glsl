@@ -1,23 +1,26 @@
 R""(
 #define VERTEX
 #version 460 core
-layout (location = 0) in vec2 aPos;
-layout (location = 1) in vec2 aTexCoords;
+layout (location = 0) in vec4 aVertex;
+
+in mat4 u_ProjModel;
 
 out vec2 TexCoords;
 
 void main() {
-    gl_Position = vec4(aPos.x, aPos.y, 0.0, 1.0);
-    TexCoords = aTexCoords;
+    TexCoords = aVertex.zw;
+    vec4 pos = vec4(aVertex.xy, 0.0, 1.0);
+    gl_Position = u_ProjModel * pos;
 }
 
 #undef VERTEX
 
 #define FRAGMENT
 #version 460 core
-out vec4 FragColor;
-
 in vec2 TexCoords;
+in vec2 FragCoords;
+
+out vec4 FragColor;
 
 uniform sampler2D u_Texture;
 

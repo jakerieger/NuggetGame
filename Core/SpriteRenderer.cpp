@@ -8,7 +8,6 @@
 #include <memory>
 
 ASpriteRenderer::ASpriteRenderer(const char* resource) {
-    // Do some shit here
     m_Quad     = std::make_unique<AQuad>();
     m_SpriteId = Utilities::LoadTexture(resource);
 }
@@ -23,7 +22,13 @@ void ASpriteRenderer::Update(float deltaTime, FSceneContext& sceneContext) {
 }
 
 void ASpriteRenderer::Draw(FSceneContext& sceneContext, const ATransform* transform) const {
-    m_Quad->Draw(m_SpriteId);
+    const auto projection = glm::ortho(0.f,
+                                       static_cast<float>(Graphics::GetWindowSize().at(0)),
+                                       static_cast<float>(Graphics::GetWindowSize().at(1)),
+                                       0.f,
+                                       -1.f,
+                                       1.f);
+    m_Quad->Draw(m_SpriteId, projection, transform->GetModelMatrix());
 }
 
 void ASpriteRenderer::Destroyed(FSceneContext& sceneContext) {

@@ -30,6 +30,8 @@ void NuggetGame::OnKeyDown(FKeyEvent& event) {
 
     if (event.KeyCode == KeyCode::Escape) {
         Graphics::MarkWindowForClose();
+    } else if (event.KeyCode == KeyCode::Tab) {
+        Graphics::ToggleWireframe();
     }
 }
 

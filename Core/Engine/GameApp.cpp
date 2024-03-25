@@ -31,7 +31,6 @@ namespace Application {
     }
 
     bool UpdateApp(IGameApp& app) {
-        Graphics::ResetDrawCalls();
         Graphics::UpdateFrameTime();
 
         // FixedUpdate time step is a constant 1000 FPS
@@ -70,13 +69,13 @@ namespace Application {
 
         // Swap buffers and poll events
         glfwSwapBuffers(Graphics::GetWindow());
+        glfwPollEvents();
 
         // Execute user late update logic
         if (activeScene) {
             activeScene->LateUpdate();
         }
 
-        glfwPollEvents();
         return !glfwWindowShouldClose(Graphics::GetWindow());
     }
 
