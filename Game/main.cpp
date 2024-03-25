@@ -17,7 +17,7 @@ void NuggetGame::Startup() {
     auto testScene = AScene::Create("Test");
     auto nugget    = IGameObject::Create<Nugget>("nugget");
 
-    testScene->AddGameObject(nugget);
+    testScene->AddGameObject<Nugget>(nugget);
 
     AddScene(testScene);
     LoadScene("Test");

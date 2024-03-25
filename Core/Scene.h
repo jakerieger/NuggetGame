@@ -62,7 +62,7 @@ public:
     template<typename T>
     void AddGameObject(std::unique_ptr<T>& gameObject) {
         static_assert(std::is_base_of_v<IGameObject, T>, "T must be a subclass of IGameObject");
-        m_SceneContext.GameObjects.push_back(move(gameObject));
+        m_SceneContext.GameObjects.push_back(std::move(gameObject));
     }
 
 private:

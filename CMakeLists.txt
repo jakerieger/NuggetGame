@@ -54,6 +54,8 @@ add_library(Core STATIC
         Core/Sprite.h
         Core/SpriteRenderer.cpp
         Core/SpriteRenderer.h
+        Core/Color.cpp
+        Core/Color.h
 )
 
 find_package(glfw3 CONFIG REQUIRED)

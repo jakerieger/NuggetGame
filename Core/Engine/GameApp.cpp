@@ -3,12 +3,13 @@
 //
 
 #include "GameApp.h"
+
+#include "Color.h"
 #include "GraphicsContext.h"
-#include "DebugUI.h"
 #include "GraphicsError.h"
-#include "Profiler.h"
 
 namespace Application {
+    AColor g_ClearColor(0xFF77B5FE);
     // =========================================================
 
     void InitializeApp(IGameApp& app,
@@ -57,7 +58,7 @@ namespace Application {
         }
 
         // Clear buffers
-        glClearColor(119.f / 255.f, 181.f / 255.f, 254.f / 255.f, 1.0);
+        glClearColor(g_ClearColor.Red, g_ClearColor.Green, g_ClearColor.Blue, g_ClearColor.Alpha);
         // Enable transparency in rendering
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -87,7 +88,7 @@ namespace Application {
     }
 }  // namespace Application
 
-void IGameApp::AddScene(std::unique_ptr<AScene>& scene) { m_Scenes.push_back(move(scene)); }
+void IGameApp::AddScene(std::unique_ptr<AScene>& scene) { m_Scenes.push_back(std::move(scene)); }
 
 void IGameApp::LoadScene(const std::string& name) {
     const auto scene = GetScene(name);
