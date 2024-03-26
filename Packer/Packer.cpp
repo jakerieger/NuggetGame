@@ -11,8 +11,6 @@
 #include <fstream>
 
 namespace Packer {
-    static constexpr int MAX_STR_LEN = 64;
-
     namespace fs = std::filesystem;
 
     namespace Schemes {
@@ -94,11 +92,11 @@ namespace Packer {
             const size_t srcSize = sizeof(char) * rawBytes.size();
 
             // Write original for debugging
-            {
-                std::ofstream origFile(dataDir / "sprites_orig.nugpak", std::ios::binary);
-                origFile.write(rawBytes.data(), srcSize);
-                origFile.close();
-            }
+            // {
+            //     std::ofstream origFile(dataDir / "sprites_orig.nugpak", std::ios::binary);
+            //     origFile.write(rawBytes.data(), srcSize);
+            //     origFile.close();
+            // }
 
             const size_t maxDstSize = LZ4_compressBound(static_cast<int>(srcSize));
             compressedData          = static_cast<char*>(malloc(maxDstSize));

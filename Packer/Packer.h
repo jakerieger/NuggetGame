@@ -10,6 +10,8 @@
 #include <filesystem>
 
 namespace Packer {
+    static constexpr int MAX_STR_LEN = 64;
+
     namespace Schemes {
         struct Sprite {
             unsigned int nameLen;

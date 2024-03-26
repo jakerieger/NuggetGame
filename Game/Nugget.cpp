@@ -6,8 +6,13 @@
 #include "Engine/Resources.h"
 
 Nugget::Nugget(const std::string& name) : IGameObject(name) {
-    m_SpriteRenderer =
-      new ASpriteRenderer(Resources::GetResource(RES_SPRITE, "nugget.png").c_str());
+    const auto nuggetSprite =
+      Resources::GetResource<Packer::Schemes::Sprite>(Resources::ResourceType::Sprite,
+                                                      "nugget.png");
+    m_SpriteRenderer = new ASpriteRenderer(nuggetSprite->data,
+                                           nuggetSprite->width,
+                                           nuggetSprite->height,
+                                           nuggetSprite->channels);
     m_SpriteRenderer->SetParent(this);
     RegisterComponent(m_SpriteRenderer);
 }

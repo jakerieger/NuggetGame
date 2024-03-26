@@ -26,9 +26,9 @@ namespace Resources {
         if (type == ResourceType::Sprite) {
             static_assert(std::is_same_v<T, Packer::Schemes::Sprite>, "T is not Sprite type");
 
-            for (const auto& sprite : GetSprites()) {
+            for (auto& sprite : GetSprites()) {
                 if (strcmp(sprite.name, name) == 0) {
-                    return static_cast<T*>(sprite);
+                    return &sprite;
                 }
             }
         }

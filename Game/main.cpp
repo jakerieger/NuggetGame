@@ -47,7 +47,6 @@ int main(int argc, char* argv[]) {
         using namespace Packer::Schemes;
 
         const auto dataRoot = Resources::GetRoot() / "Data";
-        // const auto piss     = 0;
         Unpacker::UnpackSprites(dataRoot, &Resources::GetSprites());
     }
 

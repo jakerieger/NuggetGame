@@ -119,14 +119,16 @@ void Unpacker::UnpackSprites(const std::filesystem::path& dataDir,
             strncpy(name, spriteBytes + sizeof(unsigned int) * 5, nameLen);
             name[nameLen - 1] = '\0';
 
-            std::cout << nameLen << "\n";
-            std::cout << dataLen << "\n";
-            std::cout << width << "\n";
-            std::cout << height << "\n";
-            std::cout << channels << "\n";
-            std::cout << name << "\n";
-            std::cout << '\n';
+            data = new unsigned char[dataLen];
+            memcpy_s(data,
+                     dataLen,
+                     spriteBytes + sizeof(unsigned int) * 5 + Packer::MAX_STR_LEN,
+                     dataLen);
 
+            Packer::Schemes::Sprite sprite(name, width, height, channels, data);
+            sprites->push_back(sprite);
+
+            delete[] data;
             delete[] name;
             delete[] spriteBytes;
             totalBlockSize += blockSize;

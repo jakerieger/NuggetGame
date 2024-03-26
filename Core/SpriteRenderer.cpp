@@ -9,7 +9,12 @@
 
 ASpriteRenderer::ASpriteRenderer(const char* resource) {
     m_Quad     = std::make_unique<AQuad>();
-    m_SpriteId = Utilities::LoadTexture(resource);
+    m_SpriteId = Utilities::LoadTextureFromFile(resource);
+}
+
+ASpriteRenderer::ASpriteRenderer(unsigned char* data, int width, int height, int channels) {
+    m_Quad     = std::make_unique<AQuad>();
+    m_SpriteId = Utilities::LoadTextureFromData(data, width, height, channels);
 }
 
 void ASpriteRenderer::Start(FSceneContext& sceneContext) {
