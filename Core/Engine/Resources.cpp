@@ -1,11 +1,11 @@
 #include "Resources.h"
 #include "STL.h"
 
-#include <filesystem>
-
 namespace Resources {
-    std::string g_Cwd = "";
-    namespace fs        = std::filesystem;
+    std::string g_Cwd                              = "";
+    std::vector<Packer::Schemes::Sprite> g_Sprites = {};
+
+    namespace fs = std::filesystem;
 
     void SetCwd(const char* exePath) {
         const std::string exePathStr = exePath;
@@ -16,6 +16,8 @@ namespace Resources {
 #endif
         g_Cwd = cwdStr;
     }
+
+    std::filesystem::path GetRoot() { return fs::path(g_Cwd); }
 
     /**
      * \brief Gets the full path of a resource stored in the Resources directory
@@ -37,4 +39,6 @@ namespace Resources {
 
         return path.string().c_str();
     }
+
+    std::vector<Packer::Schemes::Sprite>& GetSprites() { return g_Sprites; }
 }  // namespace Resources

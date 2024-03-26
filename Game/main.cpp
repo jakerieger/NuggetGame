@@ -1,9 +1,13 @@
 #include "Engine/GameApp.h"
 #include "InputCodes.h"
 #include "Nugget.h"
+#include "Packer.h"
+#include "Unpacker.h"
 #include "Utilities.inl"
 #include "Engine/GraphicsContext.h"
 #include "Engine/Resources.h"
+
+#include <filesystem>
 
 class NuggetGame final : public IGameApp {
 public:
@@ -37,9 +41,23 @@ void NuggetGame::OnKeyDown(FKeyEvent& event) {
 
 int main(int argc, char* argv[]) {
     Resources::SetCwd(argv[0]);
-    NuggetGame app;
-    Application::InitializeApp(app, 1280, 720, "Nugget Game", false);
-    Utilities::SetWindowIcon(Resources::GetResource(RES_SPRITE, "nugget.png").c_str());
-    Application::RunApp(app);
+
+    // Unpack game assets
+    {
+        using namespace Packer::Schemes;
+
+        const auto dataRoot = Resources::GetRoot() / "Data";
+        // const auto piss     = 0;
+        Unpacker::UnpackSprites(dataRoot, &Resources::GetSprites());
+    }
+
+    // Run game
+    {
+        NuggetGame app;
+        Application::InitializeApp(app, 1280, 720, "Nugget Game", false);
+        Utilities::SetWindowIcon(Resources::GetResource(RES_SPRITE, "nugget.png").c_str());
+        Application::RunApp(app);
+    }
+
     return 0;
 }
