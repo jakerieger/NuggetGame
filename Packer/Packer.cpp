@@ -10,7 +10,12 @@
 #include <cassert>
 #include <cstring>
 #include <fstream>
-#include <bits/ranges_algo.h>
+
+#ifdef _WIN32
+    #include <algorithm>
+#else
+    #include <bits/ranges_algo.h>
+#endif
 
 namespace Packer {
     namespace fs = std::filesystem;
