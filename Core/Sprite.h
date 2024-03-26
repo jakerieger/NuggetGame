@@ -28,9 +28,9 @@ static constexpr float g_Verts[] = {
   0.0f,
 };
 
-class AQuad {
+class ASprite {
 public:
-    AQuad() = default;
+    ASprite() = default;
     void Init();
     void Draw(u32 texture, const glm::mat4& projection, const glm::mat4& model) const;
     void Cleanup() const;
@@ -41,7 +41,7 @@ private:
     std::unique_ptr<AShader> m_Shader;
 };
 
-inline void AQuad::Init() {
+inline void ASprite::Init() {
     m_Shader = std::make_unique<AShader>(BuiltinShaders::Sprite);
 
     glGenVertexArrays(1, &m_VAO);
@@ -59,7 +59,7 @@ inline void AQuad::Init() {
 }
 
 inline void
-AQuad::Draw(const u32 texture, const glm::mat4& projection, const glm::mat4& model) const {
+ASprite::Draw(const u32 texture, const glm::mat4& projection, const glm::mat4& model) const {
     m_Shader->Use();
     m_Shader->SetMat4("u_Projection", projection);
     m_Shader->SetMat4("u_Model", model);
@@ -72,7 +72,7 @@ AQuad::Draw(const u32 texture, const glm::mat4& projection, const glm::mat4& mod
     glBindVertexArray(0);
 }
 
-inline void AQuad::Cleanup() const {
+inline void ASprite::Cleanup() const {
     glDeleteVertexArrays(1, &m_VAO);
     glDeleteBuffers(1, &m_VBO);
 }

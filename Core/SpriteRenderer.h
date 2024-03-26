@@ -23,6 +23,6 @@ public:
     void Destroyed(FSceneContext& sceneContext) override;
 
 private:
-    std::unique_ptr<AQuad> m_Quad;
+    std::unique_ptr<ASprite> m_Sprite;
     u32 m_SpriteId = 0;
 };

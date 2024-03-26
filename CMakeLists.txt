@@ -57,10 +57,13 @@ add_library(Core STATIC
         Core/SpriteRenderer.h
         Core/Color.cpp
         Core/Color.h
+        Core/Rigidbody.cpp
+        Core/Rigidbody.h
 )
 
 find_package(glfw3 CONFIG REQUIRED)
-target_link_libraries(Core PRIVATE glfw)
+find_package(box2d CONFIG REQUIRED)
+target_link_libraries(Core PRIVATE glfw box2d::box2d)
 
 # NugPak
 add_library(Packer STATIC
