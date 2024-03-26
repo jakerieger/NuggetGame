@@ -29,7 +29,7 @@ void ATransform::Rotate(const float angle, const EAxis axis) {
     }
 }
 
-void ATransform::Scale(const glm::vec2& scale) { m_Scale *= scale; }
+void ATransform::Scale(const glm::vec2& scale) { m_Scale = scale; }
 
 void ATransform::Scale(const float x, const float y) {
     const glm::vec2 scale = {x, y};
@@ -63,13 +63,9 @@ void ATransform::SetScale(const glm::vec2& scale) { m_Scale = scale; }
 void ATransform::SetScale(float x, float y) { m_Scale = {x, y}; }
 
 void ATransform::Update(float deltaTime, FSceneContext& sceneContext) {
-    // m_ModelMatrix = glm::mat4(1.0f);
-    // m_ModelMatrix = glm::translate(m_ModelMatrix, m_Position);
-    // m_ModelMatrix =
-    //   glm::rotate(m_ModelMatrix, glm::radians(m_Rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-    // m_ModelMatrix =
-    //   glm::rotate(m_ModelMatrix, glm::radians(m_Rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-    // m_ModelMatrix =
-    //   glm::rotate(m_ModelMatrix, glm::radians(m_Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-    // m_ModelMatrix = glm::scale(m_ModelMatrix, m_Scale);
+    m_ModelMatrix = glm::mat4(1.0f);
+    m_ModelMatrix = translate(m_ModelMatrix, {m_Position, 0.f});
+    m_ModelMatrix = rotate(m_ModelMatrix, glm::radians(m_Rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    m_ModelMatrix = rotate(m_ModelMatrix, glm::radians(m_Rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+    m_ModelMatrix = scale(m_ModelMatrix, {m_Scale, 0.f});
 }

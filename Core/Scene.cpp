@@ -51,7 +51,7 @@ void AScene::Destroyed() {
 void AScene::DrawMainPass() {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glViewport(0, 0, Graphics::GetWindowSize().at(0), Graphics::GetWindowSize().at(1));
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
 
     for (const auto& go : m_SceneContext.GameObjects) {
         const auto drawable = go->Cast<IDrawable>();

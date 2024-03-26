@@ -9,7 +9,7 @@
 #include "GraphicsError.h"
 
 namespace Application {
-    AColor g_ClearColor(0xFF77B5FE);
+    AColor g_ClearColor(0xFF33404C);
     // =========================================================
 
     void InitializeApp(IGameApp& app,
@@ -59,8 +59,12 @@ namespace Application {
         // Clear buffers
         glClearColor(g_ClearColor.Red, g_ClearColor.Green, g_ClearColor.Blue, g_ClearColor.Alpha);
         // Enable transparency in rendering
-        glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_CULL_FACE);
+        glFrontFace(GL_CCW);
+        glEnable(GL_BLEND);
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_SCISSOR_TEST);
 
         // Render scene + UI
         if (activeScene) {

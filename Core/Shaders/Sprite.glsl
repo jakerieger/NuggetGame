@@ -1,31 +1,28 @@
 R""(
 #define VERTEX
 #version 460 core
-layout (location = 0) in vec4 aVertex;
+layout(location = 0) in vec4 aVertex;
 
-in mat4 u_ProjModel;
+uniform mat4 u_Projection;
+uniform mat4 u_Model;
 
-out vec2 TexCoords;
+out vec2 TexCoord;
 
 void main() {
-    TexCoords = aVertex.zw;
-    vec4 pos = vec4(aVertex.xy, 0.0, 1.0);
-    gl_Position = pos;
+    gl_Position = u_Projection * u_Model * vec4(aVertex.xy, 0.0, 1.0);
+    TexCoord = aVertex.zw;
 }
 
 #undef VERTEX
 
 #define FRAGMENT
 #version 460 core
-in vec2 TexCoords;
-
 out vec4 FragColor;
-
-uniform sampler2D u_Texture;
+in vec2 TexCoord;
+uniform sampler2D u_Sprite;
 
 void main() {
-    vec4 color = texture(u_Texture, TexCoords);
-    FragColor = color;
+    FragColor = texture(u_Sprite, TexCoord);
 }
 #undef FRAGMENT
 )"";

@@ -8,13 +8,14 @@
 #include "Interfaces/Component.h"
 #include "STL.h"
 #include "Sprite.h"
+#include "Packer.h"
 
 class AShader;
 
 class ASpriteRenderer final : public IComponent {
 public:
     explicit ASpriteRenderer(const char* resource);
-    ASpriteRenderer(unsigned char* data, int width, int height, int channels);
+    explicit ASpriteRenderer(const Packer::Schemas::Sprite& sprite);
 
     void Start(FSceneContext& sceneContext) override;
     void Update(float deltaTime, FSceneContext& sceneContext) override;

@@ -12,9 +12,10 @@ ASpriteRenderer::ASpriteRenderer(const char* resource) {
     m_SpriteId = Utilities::LoadTextureFromFile(resource);
 }
 
-ASpriteRenderer::ASpriteRenderer(unsigned char* data, int width, int height, int channels) {
-    m_Quad     = std::make_unique<AQuad>();
-    m_SpriteId = Utilities::LoadTextureFromData(data, width, height, channels);
+ASpriteRenderer::ASpriteRenderer(const Packer::Schemas::Sprite& sprite) {
+    m_Quad = std::make_unique<AQuad>();
+    m_SpriteId =
+      Utilities::LoadTextureFromData(sprite.data, sprite.width, sprite.height, sprite.channels);
 }
 
 void ASpriteRenderer::Start(FSceneContext& sceneContext) {
@@ -27,12 +28,7 @@ void ASpriteRenderer::Update(float deltaTime, FSceneContext& sceneContext) {
 }
 
 void ASpriteRenderer::Draw(FSceneContext& sceneContext, const ATransform* transform) const {
-    const auto projection = glm::ortho(0.f,
-                                       static_cast<float>(Graphics::GetWindowSize().at(0)),
-                                       static_cast<float>(Graphics::GetWindowSize().at(1)),
-                                       0.f,
-                                       -1.f,
-                                       1.f);
+    const auto projection = glm::ortho(0.f, 640.f, 0.f, 360.f);
     m_Quad->Draw(m_SpriteId, projection, transform->GetModelMatrix());
 }
 
