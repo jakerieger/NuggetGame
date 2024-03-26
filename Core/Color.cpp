@@ -7,6 +7,7 @@
 #include "Utilities.inl"
 
 #include <cassert>
+#include <cmath>
 
 AColor::AColor() : Red(0.f), Green(0.f), Blue(0.f), Alpha(1.f) {}
 

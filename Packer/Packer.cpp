@@ -4,11 +4,13 @@
 
 #include "Packer.h"
 
-#include "Types.h"
+#include "STL.h"
 #include "stb_image.h"
 
-#include <assert.h>
+#include <cassert>
+#include <cstring>
 #include <fstream>
+#include <bits/ranges_algo.h>
 
 namespace Packer {
     namespace fs = std::filesystem;

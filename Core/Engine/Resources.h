@@ -2,6 +2,8 @@
 
 #include "Packer.h"
 #include "STL.h"
+
+#include <cstring>
 #include <filesystem>
 
 #define RES_SPRITE "sprites"

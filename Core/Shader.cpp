@@ -9,6 +9,8 @@
 
 #include "glad/glad.h"
 
+#include <cstring>
+
 static std::string CheckCompileErrors(u32 shader, std::string type) {
     int success;
     char infoLog[1024];

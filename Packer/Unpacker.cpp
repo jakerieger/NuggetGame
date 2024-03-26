@@ -4,6 +4,7 @@
 
 #include "Unpacker.h"
 
+#include <cstring>
 #include <lz4.h>
 #include <fstream>
 #include <iostream>
@@ -27,12 +28,9 @@ void Unpacker::UnpackSprites(const std::filesystem::path& dataDir,
         auto bytes    = new char[metaSize];
         metaFile.read(bytes, metaSize);
 
-        memcpy_s(&srcSize, sizeof(size_t), bytes, sizeof(size_t));
-        memcpy_s(&compressedSize, sizeof(int), bytes + sizeof(size_t), sizeof(int));
-        memcpy_s(&numElements,
-                 sizeof(unsigned int),
-                 bytes + sizeof(size_t) + sizeof(int),
-                 sizeof(unsigned int));
+        memcpy(&srcSize, bytes, sizeof(size_t));
+        memcpy(&compressedSize, bytes + sizeof(size_t), sizeof(int));
+        memcpy(&numElements, bytes + sizeof(size_t) + sizeof(int), sizeof(unsigned int));
 
         if (srcSize == 0 || compressedSize == 0 || numElements == 0) {
             std::cerr << "(Error) Failed to read one or more metadata values" << std::endl;
@@ -51,7 +49,7 @@ void Unpacker::UnpackSprites(const std::filesystem::path& dataDir,
             auto offset = sizeof(size_t) * i;
 
             size_t blockSize = 0;
-            memcpy_s(&blockSize, sizeof(size_t), blockSizeBytes + offset, sizeof(size_t));
+            memcpy(&blockSize, blockSizeBytes + offset, sizeof(size_t));
 
             blockSizes.push_back(blockSize);
         }
@@ -87,7 +85,7 @@ void Unpacker::UnpackSprites(const std::filesystem::path& dataDir,
         for (auto i = 0; i < numElements; i++) {
             auto blockSize   = blockSizes.at(i);
             auto spriteBytes = new char[blockSize];
-            memcpy_s(spriteBytes, blockSize, decompressedBytes + totalBlockSize, blockSize);
+            memcpy(spriteBytes, decompressedBytes + totalBlockSize, blockSize);
 
             unsigned int nameLen  = 0;
             unsigned int dataLen  = 0;
@@ -97,33 +95,18 @@ void Unpacker::UnpackSprites(const std::filesystem::path& dataDir,
             char* name;
             unsigned char* data;
 
-            memcpy_s(&nameLen, sizeof(unsigned int), spriteBytes, sizeof(unsigned int));
-            memcpy_s(&dataLen,
-                     sizeof(unsigned int),
-                     spriteBytes + sizeof(unsigned int),
-                     sizeof(unsigned int));
-            memcpy_s(&width,
-                     sizeof(unsigned int),
-                     spriteBytes + sizeof(unsigned int) * 2,
-                     sizeof(unsigned int));
-            memcpy_s(&height,
-                     sizeof(unsigned int),
-                     spriteBytes + sizeof(unsigned int) * 3,
-                     sizeof(unsigned int));
-            memcpy_s(&channels,
-                     sizeof(unsigned int),
-                     spriteBytes + sizeof(unsigned int) * 4,
-                     sizeof(unsigned int));
+            memcpy(&nameLen, spriteBytes, sizeof(unsigned int));
+            memcpy(&dataLen, spriteBytes + sizeof(unsigned int), sizeof(unsigned int));
+            memcpy(&width, spriteBytes + sizeof(unsigned int) * 2, sizeof(unsigned int));
+            memcpy(&height, spriteBytes + sizeof(unsigned int) * 3, sizeof(unsigned int));
+            memcpy(&channels, spriteBytes + sizeof(unsigned int) * 4, sizeof(unsigned int));
 
             name = new char[nameLen];
             strncpy(name, spriteBytes + sizeof(unsigned int) * 5, nameLen);
             name[nameLen - 1] = '\0';
 
             data = new unsigned char[dataLen];
-            memcpy_s(data,
-                     dataLen,
-                     spriteBytes + sizeof(unsigned int) * 5 + Packer::MAX_STR_LEN,
-                     dataLen);
+            memcpy(data, spriteBytes + sizeof(unsigned int) * 5 + Packer::MAX_STR_LEN, dataLen);
 
             Packer::Schemas::Sprite sprite(name, width, height, channels, data);
             sprites.push_back(sprite);
