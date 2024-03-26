@@ -7,12 +7,12 @@
 
 Nugget::Nugget(const std::string& name) : IGameObject(name) {
     const auto nuggetSprite =
-      Resources::GetResource<Packer::Schemes::Sprite>(Resources::ResourceType::Sprite,
+      Resources::GetResource<Packer::Schemas::Sprite>(Resources::ResourceType::Sprite,
                                                       "nugget.png");
-    m_SpriteRenderer = new ASpriteRenderer(nuggetSprite->data,
-                                           nuggetSprite->width,
-                                           nuggetSprite->height,
-                                           nuggetSprite->channels);
+    m_SpriteRenderer = new ASpriteRenderer(nuggetSprite.data,
+                                           nuggetSprite.width,
+                                           nuggetSprite.height,
+                                           nuggetSprite.channels);
     m_SpriteRenderer->SetParent(this);
     RegisterComponent(m_SpriteRenderer);
 }

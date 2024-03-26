@@ -13,7 +13,7 @@
 namespace Packer {
     namespace fs = std::filesystem;
 
-    namespace Schemes {
+    namespace Schemas {
         Sprite::Sprite(const char* _name,
                        const unsigned int _width,
                        const unsigned int _height,
@@ -28,11 +28,11 @@ namespace Packer {
             memcpy(data, _data, width * height * 4);
             dataLen = width * height * 4;
         }
-    }  // namespace Schemes
+    }  // namespace Schemas
 
     std::optional<PackError> PackSprites(const std::filesystem::path& spritesDir,
                                          const std::filesystem::path& dataDir) {
-        std::vector<Schemes::Sprite> sprites;
+        std::vector<Schemas::Sprite> sprites;
 
         // For each sprite asset in our Assets directory
         {

@@ -9,5 +9,5 @@
 
 namespace Unpacker {
     void UnpackSprites(const std::filesystem::path& dataDir,
-                       std::vector<Packer::Schemes::Sprite>* sprites);
+                       std::vector<Packer::Schemas::Sprite>& sprites);
 }  // namespace Unpacker

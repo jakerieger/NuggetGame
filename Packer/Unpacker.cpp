@@ -9,7 +9,7 @@
 #include <iostream>
 
 void Unpacker::UnpackSprites(const std::filesystem::path& dataDir,
-                             std::vector<Packer::Schemes::Sprite>* sprites) {
+                             std::vector<Packer::Schemas::Sprite>& sprites) {
     // Read the metadata required for decompression
     size_t srcSize           = 0;
     int compressedSize       = 0;
@@ -125,8 +125,8 @@ void Unpacker::UnpackSprites(const std::filesystem::path& dataDir,
                      spriteBytes + sizeof(unsigned int) * 5 + Packer::MAX_STR_LEN,
                      dataLen);
 
-            Packer::Schemes::Sprite sprite(name, width, height, channels, data);
-            sprites->push_back(sprite);
+            Packer::Schemas::Sprite sprite(name, width, height, channels, data);
+            sprites.push_back(sprite);
 
             delete[] data;
             delete[] name;

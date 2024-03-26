@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Packer.h"
 #include "Engine/GraphicsContext.h"
 #include "Types.h"
 #include "STL.h"
@@ -64,9 +65,11 @@ namespace Utilities {
         return {};
     }
 
-    inline void SetWindowIcon(const char* file) {
+    inline void SetWindowIcon(const Packer::Schemas::Sprite& iconSprite) {
         GLFWimage appIcon;
-        appIcon.pixels = stbi_load(file, &appIcon.width, &appIcon.height, nullptr, 4);
+        appIcon.pixels = iconSprite.data;
+        appIcon.width  = iconSprite.width;
+        appIcon.height = iconSprite.height;
         glfwSetWindowIcon(Graphics::GetWindow(), 1, &appIcon);
         stbi_image_free(appIcon.pixels);
     }

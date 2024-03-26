@@ -3,7 +3,7 @@
 
 namespace Resources {
     std::string g_Cwd                              = "";
-    std::vector<Packer::Schemes::Sprite> g_Sprites = {};
+    std::vector<Packer::Schemas::Sprite> g_Sprites = {};
 
     namespace fs = std::filesystem;
 
@@ -40,5 +40,5 @@ namespace Resources {
         return path.string().c_str();
     }
 
-    std::vector<Packer::Schemes::Sprite>& GetSprites() { return g_Sprites; }
+    std::vector<Packer::Schemas::Sprite>& GetSprites() { return g_Sprites; }
 }  // namespace Resources

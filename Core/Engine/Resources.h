@@ -19,20 +19,18 @@ namespace Resources {
     void SetCwd(const char* exePath);
     std::filesystem::path GetRoot();
     std::string GetResource(const char* type, const char* name);
-    std::vector<Packer::Schemes::Sprite>& GetSprites();
+    std::vector<Packer::Schemas::Sprite>& GetSprites();
 
     template<typename T>
-    T* GetResource(const ResourceType type, const char* name) {
+    T& GetResource(const ResourceType type, const char* name) {
         if (type == ResourceType::Sprite) {
-            static_assert(std::is_same_v<T, Packer::Schemes::Sprite>, "T is not Sprite type");
+            static_assert(std::is_same_v<T, Packer::Schemas::Sprite>, "T is not Sprite type");
 
             for (auto& sprite : GetSprites()) {
                 if (strcmp(sprite.name, name) == 0) {
-                    return &sprite;
+                    return sprite;
                 }
             }
         }
-
-        return nullptr;
     }
 }  // namespace Resources

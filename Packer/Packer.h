@@ -12,7 +12,7 @@
 namespace Packer {
     static constexpr int MAX_STR_LEN = 64;
 
-    namespace Schemes {
+    namespace Schemas {
         struct Sprite {
             unsigned int nameLen;
             unsigned int dataLen;
@@ -28,7 +28,7 @@ namespace Packer {
                    unsigned int _channels,
                    const unsigned char* _data);
         };
-    }  // namespace Schemes
+    }  // namespace Schemas
 
     enum class PackError : unsigned char {
         ERROR_IMAGE_LOADING_FAILED,

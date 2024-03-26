@@ -9,6 +9,11 @@
 
 #include <filesystem>
 
+#ifdef _WIN32
+    #define WIN32_LEAN_AND_MEAN
+    #include <windows.h>
+#endif
+
 class NuggetGame final : public IGameApp {
 public:
     NuggetGame() = default;
@@ -41,20 +46,27 @@ void NuggetGame::OnKeyDown(FKeyEvent& event) {
 
 int main(int argc, char* argv[]) {
     Resources::SetCwd(argv[0]);
+    using namespace Packer::Schemas;
 
     // Unpack game assets
     {
-        using namespace Packer::Schemes;
-
         const auto dataRoot = Resources::GetRoot() / "Data";
-        Unpacker::UnpackSprites(dataRoot, &Resources::GetSprites());
+        Unpacker::UnpackSprites(dataRoot, Resources::GetSprites());
+
+        std::cout << "Unpacked game assets\n";
     }
 
     // Run game
     {
         NuggetGame app;
         Application::InitializeApp(app, 1280, 720, "Nugget Game", false);
-        Utilities::SetWindowIcon(Resources::GetResource(RES_SPRITE, "nugget.png").c_str());
+        Utilities::SetWindowIcon(
+          Resources::GetResource<Sprite>(Resources::ResourceType::Sprite, "nugget.png"));
+
+#ifdef _WIN32
+        ::FreeConsole();
+#endif
+
         Application::RunApp(app);
     }
 
