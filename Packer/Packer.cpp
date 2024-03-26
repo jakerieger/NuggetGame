@@ -41,6 +41,7 @@ namespace Packer {
               [&](const fs::directory_entry& dirEntry) {
                   const auto entry = dirEntry.path().string();
                   int width, height, nrComponents;
+                  stbi_set_flip_vertically_on_load(true);
                   unsigned char* data = stbi_load(entry.c_str(), &width, &height, &nrComponents, 0);
                   if (data) {
                       const auto filename = dirEntry.path().filename().string();

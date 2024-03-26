@@ -3,7 +3,6 @@
 //
 
 #include "Nugget.h"
-
 #include "Engine/GraphicsContext.h"
 #include "Engine/Resources.h"
 

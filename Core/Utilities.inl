@@ -79,6 +79,7 @@ namespace Utilities {
         glGenTextures(1, &id);
 
         i32 width, height, nrComponents;
+        stbi_set_flip_vertically_on_load(true);
         u8* data = stbi_load(path, &width, &height, &nrComponents, 0);
         if (data) {
             GLenum format = GL_RGB;
