@@ -14,7 +14,7 @@ public:
     virtual void Start(FSceneContext& sceneContext) {}
     virtual void Update(float deltaTime, FSceneContext& sceneContext) {}
     virtual void LateUpdate(FSceneContext& sceneContext) {}
-    virtual void FixedUpdated(FSceneContext& sceneContext) {}
+    virtual void FixedUpdate(FSceneContext& sceneContext) {}
     virtual void Destroyed(FSceneContext& sceneContext) {}
 
     void SetParent(IGameObject* parent) {

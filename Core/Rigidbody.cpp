@@ -35,8 +35,8 @@ void ARigidbody::Start(FSceneContext& sceneContext) {
     m_Body->CreateFixture(&fixtureDef);
 }
 
-void ARigidbody::Update(float deltaTime, FSceneContext& sceneContext) {
-    IComponent::Update(deltaTime, sceneContext);
+void ARigidbody::FixedUpdate(FSceneContext& sceneContext) {
+    IComponent::FixedUpdate(sceneContext);
 
     const auto transform = GetParent()->GetTransform();
     transform->SetPosition(m_Body->GetPosition().x, m_Body->GetPosition().y);

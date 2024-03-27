@@ -45,7 +45,7 @@ protected:
 namespace Application {
     void
     InitializeApp(IGameApp& app, int width, int height, const char* title, bool launchFullscreen);
-    bool UpdateApp(IGameApp& app);
+    void Update(IGameApp& app);
     void RunApp(IGameApp& app);
 }  // namespace Application
 

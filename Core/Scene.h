@@ -15,7 +15,7 @@ public:
     void Start() override;
     void Update(float deltaTime) override;
     void LateUpdate() override;
-    void FixedUpdated() override;
+    void FixedUpdate() override;
     void Destroyed() override;
 
     void Render();

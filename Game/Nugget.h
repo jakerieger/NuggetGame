@@ -17,6 +17,7 @@ public:
     void Draw(FSceneContext& sceneContext) override;
     void Start(FSceneContext& sceneContext) override;
     void Update(float deltaTime, FSceneContext& sceneContext) override;
+    void FixedUpdate(FSceneContext& sceneContext) override;
     void Destroyed(FSceneContext& sceneContext) override;
 
     void OnKeyDown(FKeyEvent& event) override;

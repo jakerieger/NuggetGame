@@ -36,9 +36,9 @@ void AScene::LateUpdate() {
     }
 }
 
-void AScene::FixedUpdated() {
+void AScene::FixedUpdate() {
     for (const auto& go : m_SceneContext.GameObjects) {
-        go->FixedUpdated(m_SceneContext);
+        go->FixedUpdate(m_SceneContext);
     }
 }
 

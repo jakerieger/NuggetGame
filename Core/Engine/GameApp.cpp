@@ -11,9 +11,13 @@
 #include "PhysicsContext.h"
 #include "Profiler.h"
 
+#include <thread>
+
 namespace Application {
+    static constexpr float FIXED_TIMESTEP = 1.f / 60.f;
     AColor g_ClearColor(0xFF9eb9df);
     // =========================================================
+    bool IsRunning() { return !glfwWindowShouldClose(Graphics::GetWindow()); }
 
     void InitializeApp(IGameApp& app,
                        const int width,
@@ -37,30 +41,14 @@ namespace Application {
         app.Startup();
     }
 
-    bool UpdateApp(IGameApp& app) {
+    void Update(IGameApp& app) {
         Graphics::ResetDrawCalls();
         Graphics::UpdateFrameTime();
 
-        // FixedUpdate time step is a constant 1000 FPS
-        // Used for polling IO events and physics simulations
-        constexpr float FIXED_TIME_STEP = 1.0 / 1000.0;
-        static float accumulatedTime    = 0.0;
-        const float frameTime           = Graphics::GetDeltaTime();
-        accumulatedTime += frameTime;
+        Physics::Tick(FIXED_TIMESTEP);
 
+        const float frameTime  = Graphics::GetDeltaTime();
         const auto activeScene = app.GetActiveScene();
-
-        // Fixed update loop
-        while (accumulatedTime >= FIXED_TIME_STEP) {
-            if (activeScene) {
-                activeScene->FixedUpdated();
-            }
-
-            accumulatedTime -= FIXED_TIME_STEP;
-        }
-
-        // Tick physics simulation
-        Physics::Tick(FIXED_TIME_STEP);
 
         // Update scene
         if (activeScene) {
@@ -100,12 +88,26 @@ namespace Application {
         if (activeScene) {
             activeScene->LateUpdate();
         }
+    }
 
-        return !glfwWindowShouldClose(Graphics::GetWindow());
+    void FixedUpdate(IGameApp& app) {
+        if (const auto activeScene = app.GetActiveScene())
+            activeScene->FixedUpdate();
     }
 
     void RunApp(IGameApp& app) {
-        while (UpdateApp(app)) {}
+        std::thread fixedThread([&]() {
+            while (IsRunning()) {
+                FixedUpdate(app);
+                // std::this_thread::sleep_for(std::chrono::duration<double>(FIXED_TIMESTEP));
+            }
+        });
+
+        while (IsRunning()) {
+            Update(app);
+        }
+
+        fixedThread.join();
 
         app.Cleanup();
 #ifndef NDEBUG

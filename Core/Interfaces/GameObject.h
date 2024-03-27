@@ -34,9 +34,7 @@ public:
 
     virtual void LateUpdate(FSceneContext& sceneContext) { m_Transform.LateUpdate(sceneContext); }
 
-    virtual void FixedUpdated(FSceneContext& sceneContext) {
-        m_Transform.FixedUpdated(sceneContext);
-    }
+    virtual void FixedUpdate(FSceneContext& sceneContext) { m_Transform.FixedUpdate(sceneContext); }
 
     virtual void Destroyed(FSceneContext& sceneContext) { m_Transform.Destroyed(sceneContext); }
 

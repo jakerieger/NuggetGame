@@ -36,7 +36,11 @@ void Nugget::Start(FSceneContext& sceneContext) {
 void Nugget::Update(float deltaTime, FSceneContext& sceneContext) {
     IGameObject::Update(deltaTime, sceneContext);
     m_SpriteRenderer->Update(deltaTime, sceneContext);
-    m_Rigidbody->Update(deltaTime, sceneContext);
+}
+
+void Nugget::FixedUpdate(FSceneContext& sceneContext) {
+    IGameObject::FixedUpdate(sceneContext);
+    m_Rigidbody->FixedUpdate(sceneContext);
 }
 
 void Nugget::Destroyed(FSceneContext& sceneContext) {

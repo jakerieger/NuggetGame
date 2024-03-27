@@ -14,7 +14,7 @@ public:
     ARigidbody();
 
     void Start(FSceneContext& sceneContext) override;
-    void Update(float deltaTime, FSceneContext& sceneContext) override;
+    void FixedUpdate(FSceneContext& sceneContext) override;
     void Destroyed(FSceneContext& sceneContext) override;
 
     void AddImpulse(glm::vec2 impulse) const;

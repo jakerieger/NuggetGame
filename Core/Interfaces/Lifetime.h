@@ -11,6 +11,6 @@ public:
     virtual void Start() {}
     virtual void Update(float deltaTime) {}
     virtual void LateUpdate() {}
-    virtual void FixedUpdated() {}
+    virtual void FixedUpdate() {}
     virtual void Destroyed() {}
 };
