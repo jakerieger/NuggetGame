@@ -34,5 +34,7 @@ namespace Resources {
                 }
             }
         }
+
+        throw std::runtime_error("Could not fetch resource!");
     }
 }  // namespace Resources
