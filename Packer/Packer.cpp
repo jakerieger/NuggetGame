@@ -152,8 +152,6 @@ namespace Packer {
                 blockSize += sprite.dataLen;
                 blockSize += MAX_STR_LEN;
 
-                std::cout << blockSize << std::endl;
-
                 blockSizeBytes.insert(blockSizeBytes.end(),
                                       reinterpret_cast<const char*>(&blockSize),
                                       reinterpret_cast<const char*>(&blockSize) + sizeof(size_t));
