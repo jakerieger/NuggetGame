@@ -5,11 +5,11 @@
 #pragma once
 #include "Scene.h"
 
-namespace DebugUI {
+namespace Debug::UI {
     void Initialize();
     void Update(float deltaTime, AScene* activeScene);
     void Draw();
     void Shutdown();
 
     void ToggleVisible();
-}  // namespace DebugUI
+}  // namespace Debug::UI

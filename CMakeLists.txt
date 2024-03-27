@@ -74,6 +74,8 @@ add_library(Core STATIC
         Core/Tilemap.cpp
         Core/Tilemap.h
         Core/Primitives.h
+        Core/Engine/DebugPhysics.cpp
+        Core/Engine/DebugPhysics.h
 )
 
 find_package(glfw3 CONFIG REQUIRED)

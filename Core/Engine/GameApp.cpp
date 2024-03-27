@@ -45,8 +45,6 @@ namespace Application {
         Graphics::ResetDrawCalls();
         Graphics::UpdateFrameTime();
 
-        Physics::Tick(FIXED_TIMESTEP);
-
         const float frameTime  = Graphics::GetDeltaTime();
         const auto activeScene = app.GetActiveScene();
 
@@ -58,7 +56,7 @@ namespace Application {
 // Update engine analytics
 #ifndef NDEBUG
         Profiler::Update();
-        DebugUI::Update(frameTime, activeScene);
+        Debug::UI::Update(frameTime, activeScene);
 #endif
 
         // Clear buffers
@@ -77,7 +75,7 @@ namespace Application {
         }
 
 #ifndef NDEBUG
-        DebugUI::Draw();
+        Debug::UI::Draw();
 #endif
 
         // Swap buffers and poll events
@@ -90,7 +88,8 @@ namespace Application {
         }
     }
 
-    void FixedUpdate(IGameApp& app) {
+    static void FixedUpdate(IGameApp& app) {
+        Physics::Tick(FIXED_TIMESTEP);
         if (const auto activeScene = app.GetActiveScene())
             activeScene->FixedUpdate();
     }
@@ -99,7 +98,7 @@ namespace Application {
         std::thread fixedThread([&]() {
             while (IsRunning()) {
                 FixedUpdate(app);
-                // std::this_thread::sleep_for(std::chrono::duration<double>(FIXED_TIMESTEP));
+                std::this_thread::sleep_for(std::chrono::duration<double>(FIXED_TIMESTEP));
             }
         });
 
@@ -111,7 +110,7 @@ namespace Application {
 
         app.Cleanup();
 #ifndef NDEBUG
-        DebugUI::Shutdown();
+        Debug::UI::Shutdown();
         Profiler::Shutdown();
 #endif
         Graphics::Shutdown();
