@@ -10,7 +10,7 @@
 #include "PhysicsContext.h"
 
 namespace Application {
-    AColor g_ClearColor(0xFF33404C);
+    AColor g_ClearColor(0xFF8caad2);
     // =========================================================
 
     void InitializeApp(IGameApp& app,

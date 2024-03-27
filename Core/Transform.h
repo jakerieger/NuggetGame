@@ -23,15 +23,14 @@ public:
 
     void Translate(const glm::vec2& translation);
     void Translate(float x, float y);
-    void Rotate(float angle, EAxis axis);
+    void Rotate(float angle);
     void Scale(const glm::vec2& scale);
     void Scale(float x, float y);
-    void SetPositionAndRotation(const glm::vec2& position, const glm::vec2& rotation);
-    void SetPositionAndRotation(float posX, float posY, float rotX, float rotY);
+    void SetPositionAndRotation(const glm::vec2& position, float rotDegrees);
+    void SetPositionAndRotation(float posX, float posY, float rotDegrees);
     void SetPosition(const glm::vec2& pos);
     void SetPosition(float x, float y);
-    void SetRotation(const glm::vec2& rot);
-    void SetRotation(float x, float y);
+    void SetRotation(float deg);
     void SetScale(const glm::vec2& scale);
     void SetScale(float x, float y);
 
@@ -39,13 +38,13 @@ public:
 
     [[nodiscard]] glm::vec2 GetPosition() const { return m_Position; }
 
-    [[nodiscard]] glm::vec2 GetRotation() const { return m_Rotation; }
+    [[nodiscard]] float GetRotation() const { return m_Rotation; }
 
     [[nodiscard]] glm::vec2 GetScale() const { return m_Scale; }
 
 private:
     glm::vec2 m_Position {};
-    glm::vec2 m_Rotation {};
+    float m_Rotation {};
     glm::vec2 m_Scale {};
     glm::mat4 m_ModelMatrix {};
 };

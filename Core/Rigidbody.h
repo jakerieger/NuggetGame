@@ -18,6 +18,7 @@ public:
     void Destroyed(FSceneContext& sceneContext) override;
 
     void AddImpulse(glm::vec2 impulse) const;
+    void AddTorque(float torque) const;
 
 private:
     b2Body* m_Body;
