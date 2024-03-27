@@ -1,5 +1,6 @@
 #include "Resources.h"
 #include "STL.h"
+#include "Utilities.inl"
 
 namespace Resources {
     std::string g_Cwd;
@@ -28,10 +29,10 @@ namespace Resources {
     std::string GetResource(const char* type, const char* name) {
         const auto root     = fs::path(g_Cwd.c_str());
         const auto res      = fs::path("Assets");
-        const auto subdir   = (strcmp(type, RES_ROOT) == 0) ? fs::path() : fs::path(type);
+        const auto subdir   = Utilities::BitCompare(type, RES_ROOT) ? fs::path() : fs::path(type);
         const auto filename = fs::path(name);
-        const auto path     = (strcmp(type, RES_ROOT) == 0) ? (root / res / filename)
-                                                            : (root / res / subdir / filename);
+        const auto path     = Utilities::BitCompare(type, RES_ROOT) ? (root / res / filename)
+                                                                    : (root / res / subdir / filename);
         if (!exists(path)) {
             fprintf(stderr, "Resource not found: '%s'\n", path.string().c_str());
             throw std::exception();
