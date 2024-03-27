@@ -5,7 +5,6 @@
 #include "Nugget.h"
 
 #include "InputCodes.h"
-#include "Engine/GraphicsContext.h"
 #include "Engine/Resources.h"
 
 Nugget::Nugget(const std::string& name) : IGameObject(name) {
@@ -51,6 +50,10 @@ void Nugget::OnKeyDown(FKeyEvent& event) {
 
     if (event.KeyCode == KeyCode::Space) {
         m_Rigidbody->AddImpulse({0.f, 100.f});
+    }
+
+    if (event.KeyCode == KeyCode::F) {
+        // Interact event, use for buttons and stuff
     }
 }
 

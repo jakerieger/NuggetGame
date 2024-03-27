@@ -67,9 +67,11 @@ namespace Application {
             activeScene->Update(frameTime);
         }
 
-        // Update engine analytics
+// Update engine analytics
+#ifndef NDEBUG
         Profiler::Update();
         DebugUI::Update(frameTime, activeScene);
+#endif
 
         // Clear buffers
         glClearColor(g_ClearColor.Red, g_ClearColor.Green, g_ClearColor.Blue, g_ClearColor.Alpha);
@@ -86,7 +88,9 @@ namespace Application {
             activeScene->Render();
         }
 
+#ifndef NDEBUG
         DebugUI::Draw();
+#endif
 
         // Swap buffers and poll events
         glfwSwapBuffers(Graphics::GetWindow());
@@ -104,8 +108,10 @@ namespace Application {
         while (UpdateApp(app)) {}
 
         app.Cleanup();
+#ifndef NDEBUG
         DebugUI::Shutdown();
         Profiler::Shutdown();
+#endif
         Graphics::Shutdown();
         Physics::Shutdown();
     }
