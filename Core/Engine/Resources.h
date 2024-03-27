@@ -6,9 +6,6 @@
 #include <cstring>
 #include <filesystem>
 
-#define RES_SPRITE "sprites"
-#define RES_ROOT ""
-
 namespace Resources {
     enum class ResourceType : u8 {
         Sprite,
@@ -20,7 +17,6 @@ namespace Resources {
 
     void SetCwd(const char* exePath);
     std::filesystem::path GetRoot();
-    std::string GetResource(const char* type, const char* name);
     std::vector<Packer::Schemas::Sprite>& GetSprites();
 
     template<typename T>
