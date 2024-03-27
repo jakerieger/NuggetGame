@@ -59,6 +59,8 @@ add_library(Core STATIC
         Core/Color.h
         Core/Rigidbody.cpp
         Core/Rigidbody.h
+        Core/Engine/PhysicsContext.cpp
+        Core/Engine/PhysicsContext.h
 )
 
 find_package(glfw3 CONFIG REQUIRED)
@@ -79,8 +81,8 @@ target_link_libraries(Packer PRIVATE lz4::lz4)
 add_executable(NugPak Packer/NugPak.cpp)
 target_link_libraries(NugPak PRIVATE Packer lz4::lz4)
 
-add_executable(NuggetGame Game/app.rc Game/main.cpp
-        Game/resource.h
+add_executable(NuggetGame Game/Res/app.rc Game/main.cpp
+        Game/Res/resource.h
         Game/Nugget.cpp
         Game/Nugget.h
 )
@@ -89,7 +91,3 @@ target_link_libraries(NuggetGame PRIVATE Core glfw Packer lz4::lz4)
 add_custom_command(TARGET Packer PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/Assets ${CMAKE_BINARY_DIR}/Assets)
-
-
-#find_package(libdeflate CONFIG REQUIRED)
-#target_link_libraries(main PRIVATE $<IF:$<TARGET_EXISTS:libdeflate::libdeflate_shared>,libdeflate::libdeflate_shared,libdeflate::libdeflate_static>)

@@ -4,4 +4,21 @@
 
 #pragma once
 
-class ARigidbody {};
+#include "Interfaces/Component.h"
+
+#include <box2d/b2_body.h>
+#include <glm/vec2.hpp>
+
+class ARigidbody final : public IComponent {
+public:
+    ARigidbody();
+
+    void Start(FSceneContext& sceneContext) override;
+    void Update(float deltaTime, FSceneContext& sceneContext) override;
+    void Destroyed(FSceneContext& sceneContext) override;
+
+    void AddImpulse(glm::vec2 impulse) const;
+
+private:
+    b2Body* m_Body;
+};

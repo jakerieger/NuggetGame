@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "Rigidbody.h"
 #include "SpriteRenderer.h"
 #include "Interfaces/Drawable.h"
 #include "Interfaces/GameObject.h"
@@ -18,5 +19,9 @@ public:
     void Update(float deltaTime, FSceneContext& sceneContext) override;
     void Destroyed(FSceneContext& sceneContext) override;
 
+    void OnKeyDown(FKeyEvent& event) override;
+    void OnKey(FKeyEvent& event) override;
+
     ASpriteRenderer* m_SpriteRenderer;
+    ARigidbody* m_Rigidbody;
 };

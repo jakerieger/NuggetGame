@@ -7,6 +7,7 @@
 #include "Color.h"
 #include "GraphicsContext.h"
 #include "GraphicsError.h"
+#include "PhysicsContext.h"
 
 namespace Application {
     AColor g_ClearColor(0xFF33404C);
@@ -21,6 +22,7 @@ namespace Application {
         if (launchFullscreen) {
             Graphics::ToggleFullscreen();
         }
+        Physics::Init();
         Input::Initialize(Graphics::GetWindow());
 
 #ifndef NDEBUG
@@ -50,6 +52,9 @@ namespace Application {
 
             accumulatedTime -= FIXED_TIME_STEP;
         }
+
+        // Tick physics simulation
+        Physics::Tick(FIXED_TIME_STEP);
 
         // Update scene
         if (activeScene) {
@@ -88,6 +93,7 @@ namespace Application {
 
         app.Cleanup();
         Graphics::Shutdown();
+        Physics::Shutdown();
     }
 }  // namespace Application
 
