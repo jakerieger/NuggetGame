@@ -61,6 +61,8 @@ add_library(Core STATIC
         Core/Rigidbody.h
         Core/Engine/PhysicsContext.cpp
         Core/Engine/PhysicsContext.h
+        Core/Tilemap.cpp
+        Core/Tilemap.h
 )
 
 find_package(glfw3 CONFIG REQUIRED)
