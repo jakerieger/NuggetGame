@@ -9,6 +9,8 @@ include_directories(
         Lib
         Game
         Packer
+        imgui
+        imgui/backends
 )
 
 add_definitions(
@@ -16,9 +18,16 @@ add_definitions(
         -D_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 )
 
+file(GLOB IMGUI_SRCS imgui/*.cpp imgui/backends/imgui_impl_opengl3.cpp imgui/backends/imgui_impl_glfw.cpp)
+
 add_library(Core STATIC
+        ${IMGUI_SRCS}
         Lib/glad.c
         Lib/stb_image.cpp
+        Core/Engine/Profiler.cpp
+        Core/Engine/Profiler.h
+        Core/Engine/DebugUI.cpp
+        Core/Engine/DebugUI.h
         Core/Shader.cpp
         Core/Engine/GameApp.cpp
         Core/Engine/GameApp.h
@@ -53,6 +62,7 @@ add_library(Core STATIC
         Core/Framebuffer.h
         Core/Interfaces/RenderPass.h
         Core/Sprite.h
+        Core/SpriteBatch.h
         Core/SpriteRenderer.cpp
         Core/SpriteRenderer.h
         Core/Color.cpp
@@ -63,10 +73,13 @@ add_library(Core STATIC
         Core/Engine/PhysicsContext.h
         Core/Tilemap.cpp
         Core/Tilemap.h
+        Core/Primitives.h
 )
 
 find_package(glfw3 CONFIG REQUIRED)
 find_package(box2d CONFIG REQUIRED)
+find_package(OpenAL CONFIG REQUIRED)
+#target_link_libraries(main PRIVATE OpenAL::OpenAL)
 target_link_libraries(Core PRIVATE glfw box2d::box2d)
 
 # NugPak

@@ -59,4 +59,8 @@ namespace BuiltinShaders {
     const inline std::string Sprite =
 #include "Shaders/Sprite.glsl"
       ;
+
+    const inline std::string SpriteBatch =
+#include "Shaders/SpriteBatch.glsl"
+      ;
 }  // namespace BuiltinShaders

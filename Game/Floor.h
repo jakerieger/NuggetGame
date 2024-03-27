@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "SpriteRenderer.h"
+#include "Tilemap.h"
 #include "Engine/Resources.h"
 #include "Interfaces/Drawable.h"
 #include "Interfaces/GameObject.h"
@@ -12,12 +12,12 @@
 class Floor final : public IGameObject,
                     public IDrawable {
 public:
-    explicit Floor(const std::string& name, const glm::vec2& pos);
+    explicit Floor(const std::string& name);
 
     void Start(FSceneContext& sceneContext) override;
     void Update(const float deltaTime, FSceneContext& sceneContext) override;
     void Draw(FSceneContext& sceneContext) override;
     void Destroyed(FSceneContext& sceneContext) override;
 
-    ASpriteRenderer* m_SpriteRenderer;
+    ATilemap* m_Tilemap = nullptr;
 };

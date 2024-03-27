@@ -31,7 +31,7 @@ void ARigidbody::Start(FSceneContext& sceneContext) {
     b2FixtureDef fixtureDef;
     fixtureDef.shape    = &circle;
     fixtureDef.density  = 0.01f;
-    fixtureDef.friction = 0.8f;
+    fixtureDef.friction = 1.f;
     m_Body->CreateFixture(&fixtureDef);
 }
 

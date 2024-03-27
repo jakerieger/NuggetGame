@@ -6,27 +6,11 @@
 
 #include "Shader.h"
 #include "STL.h"
+#include "Primitives.h"
+#include "Engine/GraphicsContext.h"
+
 #include <glad/glad.h>
 #include <memory>
-
-static constexpr float g_Verts[] = {
-  -1.0f,
-  1.0f,
-  0.0f,
-  1.0f,
-  -1.0f,
-  -1.0f,
-  0.0f,
-  0.0f,
-  1.0f,
-  1.0f,
-  1.0f,
-  1.0f,
-  1.0f,
-  -1.0f,
-  1.0f,
-  0.0f,
-};
 
 class ASprite {
 public:
@@ -49,7 +33,7 @@ inline void ASprite::Init() {
 
     glBindVertexArray(m_VAO);
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(g_Verts), g_Verts, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(Primitives::Quad), Primitives::Quad, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
@@ -68,6 +52,7 @@ ASprite::Draw(const u32 texture, const glm::mat4& projection, const glm::mat4& m
     glBindTexture(GL_TEXTURE_2D, texture);
 
     glBindVertexArray(m_VAO);
+    Graphics::AddDrawCall();
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glBindVertexArray(0);
 }

@@ -5,9 +5,11 @@
 #include "GameApp.h"
 
 #include "Color.h"
+#include "DebugUI.h"
 #include "GraphicsContext.h"
 #include "GraphicsError.h"
 #include "PhysicsContext.h"
+#include "Profiler.h"
 
 namespace Application {
     AColor g_ClearColor(0xFF9eb9df);
@@ -26,13 +28,17 @@ namespace Application {
         Input::Initialize(Graphics::GetWindow());
 
 #ifndef NDEBUG
+        Profiler::Initialize();
+        DebugUI::Initialize();
         Graphics::Error::EnableDebugOutput();
+        Profiler::Start();
 #endif
 
         app.Startup();
     }
 
     bool UpdateApp(IGameApp& app) {
+        Graphics::ResetDrawCalls();
         Graphics::UpdateFrameTime();
 
         // FixedUpdate time step is a constant 1000 FPS
@@ -61,6 +67,10 @@ namespace Application {
             activeScene->Update(frameTime);
         }
 
+        // Update engine analytics
+        Profiler::Update();
+        DebugUI::Update(frameTime, activeScene);
+
         // Clear buffers
         glClearColor(g_ClearColor.Red, g_ClearColor.Green, g_ClearColor.Blue, g_ClearColor.Alpha);
         // Enable transparency in rendering
@@ -75,6 +85,8 @@ namespace Application {
         if (activeScene) {
             activeScene->Render();
         }
+
+        DebugUI::Draw();
 
         // Swap buffers and poll events
         glfwSwapBuffers(Graphics::GetWindow());
@@ -92,6 +104,8 @@ namespace Application {
         while (UpdateApp(app)) {}
 
         app.Cleanup();
+        DebugUI::Shutdown();
+        Profiler::Shutdown();
         Graphics::Shutdown();
         Physics::Shutdown();
     }
