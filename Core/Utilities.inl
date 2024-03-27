@@ -166,4 +166,11 @@ namespace Utilities {
 
         return id;
     }
+
+    template<typename T1, typename T2>
+    bool BitCompare(T1 A, T2 B) {
+        const auto a = *reinterpret_cast<char*>(&A);
+        const auto b = *reinterpret_cast<char*>(&B);
+        return (a ^ b) == 0;
+    }
 }  // namespace Utilities
