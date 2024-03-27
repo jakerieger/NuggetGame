@@ -85,6 +85,8 @@ add_executable(NuggetGame Game/Res/app.rc Game/main.cpp
         Game/Res/resource.h
         Game/Nugget.cpp
         Game/Nugget.h
+        Game/Floor.cpp
+        Game/Floor.h
 )
 target_link_libraries(NuggetGame PRIVATE Core glfw Packer lz4::lz4)
 

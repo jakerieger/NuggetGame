@@ -22,37 +22,25 @@ public:
         return make_unique<T>(name);
     }
 
-    std::string GetName() const {
-        return m_Name;
-    }
+    std::string GetName() const { return m_Name; }
 
-    virtual void Awake(FSceneContext& sceneContext) {
-        m_Transform.Awake(sceneContext);
-    }
+    virtual void Awake(FSceneContext& sceneContext) { m_Transform.Awake(sceneContext); }
 
-    virtual void Start(FSceneContext& sceneContext) {
-        m_Transform.Start(sceneContext);
-    }
+    virtual void Start(FSceneContext& sceneContext) { m_Transform.Start(sceneContext); }
 
     virtual void Update(const float deltaTime, FSceneContext& sceneContext) {
         m_Transform.Update(deltaTime, sceneContext);
     }
 
-    virtual void LateUpdate(FSceneContext& sceneContext) {
-        m_Transform.LateUpdate(sceneContext);
-    }
+    virtual void LateUpdate(FSceneContext& sceneContext) { m_Transform.LateUpdate(sceneContext); }
 
     virtual void FixedUpdated(FSceneContext& sceneContext) {
         m_Transform.FixedUpdated(sceneContext);
     }
 
-    virtual void Destroyed(FSceneContext& sceneContext) {
-        m_Transform.Destroyed(sceneContext);
-    }
+    virtual void Destroyed(FSceneContext& sceneContext) { m_Transform.Destroyed(sceneContext); }
 
-    ATransform* GetTransform() {
-        return &m_Transform;
-    }
+    ATransform* GetTransform() { return &m_Transform; }
 
     template<typename T>
     T* Cast() {
@@ -61,16 +49,14 @@ public:
 
     template<typename T>
     void RegisterComponent(T* component) {
-        static_assert(std::is_base_of_v<IComponent, T>,
-                      "T must be a subclass of IComponent");
+        static_assert(std::is_base_of_v<IComponent, T>, "T must be a subclass of IComponent");
 
         m_Components.push_back(component);
     }
 
     template<typename T>
     T* GetComponent() {
-        static_assert(std::is_base_of_v<IComponent, T>,
-                      "T must be a subclass of IComponent");
+        static_assert(std::is_base_of_v<IComponent, T>, "T must be a subclass of IComponent");
 
         for (auto& component : m_Components) {
             auto casted = dynamic_cast<T*>(component);

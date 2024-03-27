@@ -1,3 +1,4 @@
+#include "Floor.h"
 #include "Engine/GameApp.h"
 #include "InputCodes.h"
 #include "Nugget.h"
@@ -27,6 +28,14 @@ void NuggetGame::Startup() {
     auto nugget    = IGameObject::Create<Nugget>("nugget");
 
     testScene->AddGameObject<Nugget>(nugget);
+
+    static constexpr u32 NUM_FLOOR_TILES = 640 / 32;
+    for (auto i = 0; i < NUM_FLOOR_TILES; ++i) {
+        auto floorTile =
+          // ReSharper disable once CppSmartPointerVsMakeFunction
+          std::unique_ptr<Floor>(new Floor(std::to_string(i), {(32.f * i) + 16.f, 16.f}));
+        testScene->AddGameObject<Floor>(floorTile);
+    }
 
     AddScene(testScene);
     LoadScene("Test");
