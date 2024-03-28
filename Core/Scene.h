@@ -28,10 +28,6 @@ public:
 
     FSceneContext& GetContext() { return m_SceneContext; }
 
-    static std::unique_ptr<AScene> Create(const std::string& name) {
-        return make_unique<AScene>(name);
-    }
-
     template<typename T>
     static std::vector<T*> FindAllGameObjectsOf(FSceneContext& context) {
         static_assert(std::is_base_of_v<IGameObject, T>, "T must be a subclass of IGameObject");
@@ -72,3 +68,9 @@ private:
 
     void DrawMainPass();
 };
+
+namespace Scene {
+    static std::unique_ptr<AScene> Create(const std::string& name) {
+        return make_unique<AScene>(name);
+    }
+}  // namespace Scene

@@ -76,6 +76,7 @@ add_library(Core STATIC
         Core/Primitives.h
         Core/Engine/DebugPhysics.cpp
         Core/Engine/DebugPhysics.h
+        Core/GameObject.h
 )
 
 find_package(glfw3 CONFIG REQUIRED)

@@ -17,11 +17,6 @@ class IGameObject : public ILifetime,
 public:
     explicit IGameObject(const std::string& name) : m_Name(name) {}
 
-    template<typename T>
-    static std::unique_ptr<T> Create(const std::string& name) {
-        return make_unique<T>(name);
-    }
-
     std::string GetName() const { return m_Name; }
 
     virtual void Awake(FSceneContext& sceneContext) { m_Transform.Awake(sceneContext); }

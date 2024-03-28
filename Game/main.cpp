@@ -7,6 +7,7 @@
 #include "Utilities.inl"
 #include "Engine/GraphicsContext.h"
 #include "Engine/Resources.h"
+#include "GameObject.h"
 
 #include <filesystem>
 
@@ -24,9 +25,9 @@ public:
 };
 
 void NuggetGame::Startup() {
-    auto testScene = AScene::Create("Test");
-    auto nugget    = IGameObject::Create<Nugget>("nugget");
-    auto floor     = IGameObject::Create<Floor>("floor");
+    auto testScene = Scene::Create("Test");
+    auto nugget    = GameObject::Create<Nugget>("nugget");
+    auto floor     = GameObject::Create<Floor>("floor");
 
     testScene->AddGameObject<Nugget>(nugget);
     testScene->AddGameObject<Floor>(floor);
