@@ -173,4 +173,13 @@ namespace Utilities {
         const auto b = *reinterpret_cast<char*>(&B);
         return (a ^ b) == 0;
     }
+
+    inline bool CheckTolerance(const f32 v1, const f32 v2, const f32 t) {
+        const auto upperBound = v2 + t;
+        const auto lowerBound = v2 - t;
+        if (v1 >= lowerBound && upperBound >= v1) {
+            return true;
+        }
+        return false;
+    }
 }  // namespace Utilities
