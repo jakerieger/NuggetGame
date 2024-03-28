@@ -13,11 +13,24 @@
 
 #include <thread>
 
+#define RUNNING IsRunning()
+
 namespace Application {
     static constexpr float FIXED_TIMESTEP = 1.f / 60.f;
+    static constexpr i64 SLEEP_FOR        = 2;
     AColor g_ClearColor(0xFF9eb9df);
     // =========================================================
     bool IsRunning() { return !glfwWindowShouldClose(Graphics::GetWindow()); }
+
+    //
+    // (1/60)   1/1000
+    // ------ = ------
+    //    2        x
+    float GetSleepDuration(float timestep) {
+        auto t1 = (1.f / 60.f);
+        auto s1 = 2.f;
+        return (s1 * timestep) / t1;
+    }
 
     void InitializeApp(IGameApp& app,
                        const int width,
@@ -96,13 +109,16 @@ namespace Application {
 
     void RunApp(IGameApp& app) {
         std::thread fixedThread([&]() {
-            while (IsRunning()) {
+            while (RUNNING) {
                 FixedUpdate(app);
-                std::this_thread::sleep_for(std::chrono::duration<double>(FIXED_TIMESTEP));
+                // I don't understand why this is the correct sleep duration,
+                // but it works. The relationship is 0.01 : 2 for timestep : sleep
+                // where sleep is in milliseconds.
+                std::this_thread::sleep_for(std::chrono::milliseconds(SLEEP_FOR));
             }
         });
 
-        while (IsRunning()) {
+        while (RUNNING) {
             Update(app);
         }
 

@@ -44,6 +44,8 @@ void NuggetGame::OnKeyDown(FKeyEvent& event) {
         Graphics::MarkWindowForClose();
     } else if (event.KeyCode == KeyCode::Tab) {
         Graphics::ToggleWireframe();
+    } else if (event.KeyCode == KeyCode::F11) {
+        Graphics::ToggleFullscreen();
     }
 }
 
