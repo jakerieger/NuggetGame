@@ -16,16 +16,16 @@
 
 namespace Application {
     static constexpr float FIXED_TIMESTEP = 1.f / 60.f;
-    static constexpr float ADJUSTMENT        = 8.f;
+    static constexpr float ADJUSTMENT     = 8.f;
     AColor g_ClearColor(0xFF9eb9df);
     // =========================================================
     bool IsRunning() { return !glfwWindowShouldClose(Graphics::GetWindow()); }
 
     static void Shutdown() {
-        #ifndef NDEBUG
+#ifndef NDEBUG
         Debug::UI::Shutdown();
         Profiler::Shutdown();
-        #endif
+#endif
         Graphics::Shutdown();
         Physics::Shutdown();
     }
