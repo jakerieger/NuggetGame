@@ -7,6 +7,7 @@
 #include "Types.h"
 #include "Interfaces/Component.h"
 
+#include <box2d/b2_fixture.h>
 #include <box2d/b2_body.h>
 #include <glm/vec2.hpp>
 
@@ -30,6 +31,7 @@ private:
     f32 m_Density;
     f32 m_Friction;
     ColliderShape m_Shape;
-
+    b2FixtureDef m_b2FixtureDef;
+    b2Shape* m_b2Shape;
     f32 m_LastY = 0.f;
 };

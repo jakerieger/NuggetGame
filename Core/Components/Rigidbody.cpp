@@ -23,23 +23,26 @@ void ARigidbody::Start(FSceneContext& sceneContext) {
     bodyDef.position.Set(position.x, position.y);
     m_Body = Physics::GetWorld()->CreateBody(&bodyDef);
 
-    b2FixtureDef fixtureDef;
-    if (m_Shape == ColliderShape::Box) {
-        b2PolygonShape box;
-        box.SetAsBox(scale.x / 2.f, scale.y / 2.f);
-        fixtureDef.shape = &box;
-    } else if (m_Shape == ColliderShape::Circle) {
-        b2CircleShape circle;
-        circle.m_p.Set(0.f, 0.f);
-        circle.m_radius  = scale.x / 2.f;
-        fixtureDef.shape = &circle;
-    } else if (m_Shape == ColliderShape::Polygon) {
-        throw std::runtime_error("Not yet implemented");
-    }
+    // if (m_Shape == ColliderShape::Box) {
+    //     b2PolygonShape box;
+    //     box.SetAsBox(scale.x / 2.f, scale.y / 2.f);
+    //     m_b2Shape = std::move(&box);
+    // } else if (m_Shape == ColliderShape::Circle) {
+    //     b2CircleShape circle;
+    //     circle.m_p.Set(0.f, 0.f);
+    //     circle.m_radius = scale.x / 2.f;
+    //     m_b2Shape       = std::move(&circle);
+    // } else if (m_Shape == ColliderShape::Polygon) {
+    //     throw std::runtime_error("Not yet implemented");
+    // }
 
-    fixtureDef.density  = m_Density;
-    fixtureDef.friction = m_Friction;
-    m_Body->CreateFixture(&fixtureDef);
+    b2CircleShape circle;
+    circle.m_p.Set(0.f, 0.f);
+    circle.m_radius         = scale.x / 2.f;
+    m_b2FixtureDef.shape    = &circle;
+    m_b2FixtureDef.density  = m_Density;
+    m_b2FixtureDef.friction = m_Friction;
+    m_Body->CreateFixture(&m_b2FixtureDef);
 }
 
 void ARigidbody::FixedUpdate(FSceneContext& sceneContext) {
