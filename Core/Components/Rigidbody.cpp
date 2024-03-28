@@ -6,6 +6,8 @@
 #include "Engine/PhysicsContext.h"
 #include "Interfaces/GameObject.h"
 
+#include <stdexcept>
+
 ARigidbody::ARigidbody(const f32 density, const f32 friction, const ColliderShape shape)
     : m_Body(nullptr), m_Density(density), m_Friction(friction), m_Shape(shape) {}
 

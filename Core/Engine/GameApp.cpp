@@ -3,7 +3,6 @@
 //
 
 #include "GameApp.h"
-
 #include "Color.h"
 #include "DebugUI.h"
 #include "GraphicsContext.h"
@@ -13,23 +12,22 @@
 
 #include <thread>
 
-#define RUNNING IsRunning()
+#define RUNNING Application::IsRunning()
 
 namespace Application {
     static constexpr float FIXED_TIMESTEP = 1.f / 60.f;
-    static constexpr i64 SLEEP_FOR        = 2;
+    static constexpr float ADJUSTMENT        = 8.f;
     AColor g_ClearColor(0xFF9eb9df);
     // =========================================================
     bool IsRunning() { return !glfwWindowShouldClose(Graphics::GetWindow()); }
 
-    //
-    // (1/60)   1/1000
-    // ------ = ------
-    //    2        x
-    float GetSleepDuration(float timestep) {
-        auto t1 = (1.f / 60.f);
-        auto s1 = 2.f;
-        return (s1 * timestep) / t1;
+    static void Shutdown() {
+        #ifndef NDEBUG
+        Debug::UI::Shutdown();
+        Profiler::Shutdown();
+        #endif
+        Graphics::Shutdown();
+        Physics::Shutdown();
     }
 
     void InitializeApp(IGameApp& app,
@@ -108,29 +106,28 @@ namespace Application {
     }
 
     void RunApp(IGameApp& app) {
-        std::thread fixedThread([&]() {
-            while (RUNNING) {
-                FixedUpdate(app);
-                // I don't understand why this is the correct sleep duration,
-                // but it works. The relationship is 0.01 : 2 for timestep : sleep
-                // where sleep is in milliseconds.
-                std::this_thread::sleep_for(std::chrono::milliseconds(SLEEP_FOR));
-            }
-        });
+        double t            = 0.0;
+        constexpr double dt = FIXED_TIMESTEP / ADJUSTMENT;
+        double currentTime  = glfwGetTime();
+        double accumulator  = 0.0;
 
         while (RUNNING) {
+            const double newTime   = glfwGetTime();
+            const double frameTime = newTime - currentTime;
+            currentTime            = newTime;
+            accumulator += frameTime;
+            while (accumulator >= dt) {
+                FixedUpdate(app);
+                accumulator -= dt;
+                t += dt;
+            }
+
             Update(app);
         }
 
-        fixedThread.join();
-
         app.Cleanup();
-#ifndef NDEBUG
-        Debug::UI::Shutdown();
-        Profiler::Shutdown();
-#endif
-        Graphics::Shutdown();
-        Physics::Shutdown();
+
+        Shutdown();
     }
 }  // namespace Application
 
