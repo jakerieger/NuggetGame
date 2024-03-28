@@ -33,7 +33,7 @@ namespace Application {
 
 #ifndef NDEBUG
         Profiler::Initialize();
-        DebugUI::Initialize();
+        Debug::UI::Initialize();
         Graphics::Error::EnableDebugOutput();
         Profiler::Start();
 #endif
