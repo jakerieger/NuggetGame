@@ -23,9 +23,13 @@ public:
     void AddImpulse(glm::vec2 impulse) const;
     void AddTorque(float torque) const;
 
+    bool IsGrounded() const;
+
 private:
     b2Body* m_Body;
     f32 m_Density;
     f32 m_Friction;
     ColliderShape m_Shape;
+
+    f32 m_LastY = 0.f;
 };

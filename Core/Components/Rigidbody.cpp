@@ -44,10 +44,14 @@ void ARigidbody::Start(FSceneContext& sceneContext) {
     fixtureDef.density  = m_Density;
     fixtureDef.friction = m_Friction;
     m_Body->CreateFixture(&fixtureDef);
+
+    m_LastY = position.y;
 }
 
 void ARigidbody::FixedUpdate(FSceneContext& sceneContext) {
     IComponent::FixedUpdate(sceneContext);
+
+    m_LastY = m_Body->GetPosition().y;
 
     const auto transform = GetParent()->GetTransform();
     transform->SetPosition(m_Body->GetPosition().x, m_Body->GetPosition().y);
@@ -63,3 +67,20 @@ void ARigidbody::AddImpulse(glm::vec2 impulse) const {
 }
 
 void ARigidbody::AddTorque(const float torque) const { m_Body->ApplyTorque(torque, true); }
+
+static bool CheckTolerance(const f32 v1, const f32 v2, const f32 t) {
+    const auto upperBound = v2 + t;
+    const auto lowerBound = v2 - t;
+    if (v1 >= lowerBound && upperBound >= v1) {
+        return true;
+    }
+    return false;
+}
+
+bool ARigidbody::IsGrounded() const {
+    static constexpr f32 TOLERANCE = 1.f;
+    if (m_Body->GetLinearVelocity().y < -TOLERANCE || m_Body->GetLinearVelocity().y > TOLERANCE)
+        return false;
+
+    return true;
+}
