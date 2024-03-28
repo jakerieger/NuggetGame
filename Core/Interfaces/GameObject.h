@@ -8,7 +8,7 @@
 #include "Interfaces/InputListener.h"
 #include "Interfaces/Lifetime.h"
 #include "STL.h"
-#include "Transform.h"
+#include "Components/Transform.h"
 
 struct FSceneContext;
 

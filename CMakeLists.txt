@@ -44,8 +44,8 @@ add_library(Core STATIC
         Core/Engine/GraphicsError.h
         Core/Engine/Profiler.cpp
         Core/Engine/Profiler.h
-        Core/Transform.cpp
-        Core/Transform.h
+        Core/Components/Transform.cpp
+        Core/Components/Transform.h
         Core/Scene.cpp
         Core/Scene.h
         Core/SceneContext.cpp
@@ -63,16 +63,16 @@ add_library(Core STATIC
         Core/Interfaces/RenderPass.h
         Core/Sprite.h
         Core/SpriteBatch.h
-        Core/SpriteRenderer.cpp
-        Core/SpriteRenderer.h
+        Core/Components/SpriteRenderer.cpp
+        Core/Components/SpriteRenderer.h
         Core/Color.cpp
         Core/Color.h
-        Core/Rigidbody.cpp
-        Core/Rigidbody.h
+        Core/Components/Rigidbody.cpp
+        Core/Components/Rigidbody.h
         Core/Engine/PhysicsContext.cpp
         Core/Engine/PhysicsContext.h
-        Core/Tilemap.cpp
-        Core/Tilemap.h
+        Core/Components/Tilemap.cpp
+        Core/Components/Tilemap.h
         Core/Primitives.h
         Core/Engine/DebugPhysics.cpp
         Core/Engine/DebugPhysics.h

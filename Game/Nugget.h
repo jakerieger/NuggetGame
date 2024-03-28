@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "Rigidbody.h"
-#include "SpriteRenderer.h"
+#include "Components/Rigidbody.h"
+#include "Components/SpriteRenderer.h"
 #include "Interfaces/Drawable.h"
 #include "Interfaces/GameObject.h"
 

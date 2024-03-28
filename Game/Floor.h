@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Tilemap.h"
+#include "Components/Tilemap.h"
 #include "Engine/Resources.h"
 #include "Interfaces/Drawable.h"
 #include "Interfaces/GameObject.h"
@@ -15,7 +15,7 @@ public:
     explicit Floor(const std::string& name);
 
     void Start(FSceneContext& sceneContext) override;
-    void Update(const float deltaTime, FSceneContext& sceneContext) override;
+    void Update(float deltaTime, FSceneContext& sceneContext) override;
     void Draw(FSceneContext& sceneContext) override;
     void Destroyed(FSceneContext& sceneContext) override;
 
