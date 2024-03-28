@@ -14,7 +14,7 @@ Nugget::Nugget(const std::string& name) : IGameObject(name) {
     m_SpriteRenderer = new ASpriteRenderer(nuggetSprite);
     m_SpriteRenderer->SetParent(this);
 
-    m_Rigidbody = new ARigidbody();
+    m_Rigidbody = new ARigidbody(0.1f, 1.f, ColliderShape::Circle);
     m_Rigidbody->SetParent(this);
 
     RegisterComponent(m_SpriteRenderer);
@@ -53,7 +53,7 @@ void Nugget::OnKeyDown(FKeyEvent& event) {
     IGameObject::OnKeyDown(event);
 
     if (event.KeyCode == KeyCode::Space) {
-        m_Rigidbody->AddImpulse({0.f, 100.f});
+        m_Rigidbody->AddImpulse({0.f, 1000.f});
     }
 
     if (event.KeyCode == KeyCode::F) {

@@ -3,11 +3,11 @@
 //
 
 #include "Rigidbody.h"
-
 #include "Engine/PhysicsContext.h"
 #include "Interfaces/GameObject.h"
 
-ARigidbody::ARigidbody() : m_Body(nullptr) {}
+ARigidbody::ARigidbody(const f32 density, const f32 friction, const ColliderShape shape)
+    : m_Body(nullptr), m_Density(density), m_Friction(friction), m_Shape(shape) {}
 
 void ARigidbody::Start(FSceneContext& sceneContext) {
     IComponent::Start(sceneContext);
@@ -24,14 +24,25 @@ void ARigidbody::Start(FSceneContext& sceneContext) {
     // b2PolygonShape dynamicBox;
     // dynamicBox.SetAsBox(scale.x / 2.f, scale.y / 2.f);
 
-    b2CircleShape circle;
-    circle.m_p.Set(0.f, 0.f);
-    circle.m_radius = scale.x / 2.f;
-
+    // b2CircleShape circle;
+    // circle.m_p.Set(0.f, 0.f);
+    // circle.m_radius = scale.x / 2.f;
     b2FixtureDef fixtureDef;
-    fixtureDef.shape    = &circle;
-    fixtureDef.density  = 0.01f;
-    fixtureDef.friction = 1.f;
+    if (m_Shape == ColliderShape::Box) {
+        b2PolygonShape box;
+        box.SetAsBox(scale.x / 2.f, scale.y / 2.f);
+        fixtureDef.shape = &box;
+    } else if (m_Shape == ColliderShape::Circle) {
+        b2CircleShape circle;
+        circle.m_p.Set(0.f, 0.f);
+        circle.m_radius  = scale.x / 2.f;
+        fixtureDef.shape = &circle;
+    } else if (m_Shape == ColliderShape::Polygon) {
+        throw std::runtime_error("Not yet implemented");
+    }
+
+    fixtureDef.density  = m_Density;
+    fixtureDef.friction = m_Friction;
     m_Body->CreateFixture(&fixtureDef);
 }
 
