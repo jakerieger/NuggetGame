@@ -4,7 +4,7 @@
 
 #### Required
 
-- [ ] Fixed timestep for physics simulation
+- [x] Fixed timestep for physics simulation
 - [ ] Debug renderer for physics bodies
 - [ ] Font rendering
 - [ ] Level class that can be easily serialized
