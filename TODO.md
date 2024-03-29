@@ -14,3 +14,7 @@
 #### Optional
 
 - [ ] Script for building and copying release files so game builds can be easily deployed
+
+### 3/29/24
+
+- [ ] Revamp Tilemap class to read from on big tilemap texture
