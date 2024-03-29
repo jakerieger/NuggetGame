@@ -10,6 +10,7 @@
 #include "GameObject.h"
 
 #include <filesystem>
+#include <fmt/format.h>
 
 #ifdef _WIN32
     #define WIN32_LEAN_AND_MEAN
@@ -47,7 +48,7 @@ void NuggetGame::OnKeyDown(FKeyEvent& event) {
         } else {
             SetPaused(true);
         }
-        const auto windowTitle = std::format("Nugget Game {}", Paused() ? "(Paused)" : "");
+        const auto windowTitle = fmt::format("Nugget Game {}", Paused() ? "(Paused)" : "");
         glfwSetWindowTitle(Graphics::GetWindow(), windowTitle.c_str());
     } else if (event.KeyCode == KeyCode::Tab) {
         Graphics::ToggleWireframe();
