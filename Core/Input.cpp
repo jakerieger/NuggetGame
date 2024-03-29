@@ -6,24 +6,58 @@
 #include "Engine/GameApp.h"
 #include "Interfaces/InputListener.h"
 
+#include <thread>
+
 #define GLFW_KEY_NONE 0
 
 namespace Input {
     std::vector<IInputListener*> g_Listeners;
     int g_ConnectedGamepad;
 
+    struct FKeyState {
+        bool Pressed  = false;
+        bool Released = false;
+    };
+
+    std::unordered_map<u32, FKeyState> g_KeyStates;
+    std::thread g_DispatcherThread;
+
+    void EventDispatcher() {
+        while (Application::IsRunning()) {
+            for (const auto& [key, state] : g_KeyStates) {
+                // Check if the key is pressed
+                if (state.Pressed) {
+                    // Dispatch OnKey event to listeners
+                    FKeyEvent event {key, 0};
+                    for (const auto listener : g_Listeners) {
+                        listener->OnKey(event);
+                    }
+                }
+            }
+            // Sleep for a short duration to avoid busy waiting
+            std::this_thread::sleep_for(std::chrono::milliseconds(8));
+        }
+    }
+
+    /// https://discourse.glfw.org/t/key-callback-not-registering-every-key-press/1438/4
     void KeyCallback(GLFWwindow*, const int key, int, const int action, const int mods) {
         const u32 _key  = static_cast<u32>(key);
         const u32 _mods = static_cast<u32>(mods);
         FKeyEvent event {_key, _mods};
 
+        if (action == GLFW_PRESS) {
+            g_KeyStates[key].Pressed  = true;
+            g_KeyStates[key].Released = false;
+        } else if (action == GLFW_RELEASE) {
+            g_KeyStates[key].Pressed  = false;
+            g_KeyStates[key].Released = true;
+        }
+
         for (const auto listener : g_Listeners) {
-            if (action == GLFW_PRESS && listener) {
+            if (g_KeyStates[key].Pressed) {
                 listener->OnKeyDown(event);
-            } else if (action == GLFW_RELEASE && listener) {
+            } else if (g_KeyStates[key].Released) {
                 listener->OnKeyUp(event);
-            } else if (action == GLFW_REPEAT && listener) {
-                listener->OnKey(event);
             }
         }
     }
@@ -72,6 +106,8 @@ namespace Input {
         glfwSetCursorPosCallback(window, MouseMovementCallback);
         glfwSetScrollCallback(window, ScrollCallback);
         glfwSetJoystickCallback(GamepadCallback);
+
+        g_DispatcherThread = std::thread(EventDispatcher);
     }
 
     void RegisterListener(IInputListener* listener) { g_Listeners.push_back(listener); }
@@ -81,11 +117,13 @@ namespace Input {
         // just dumb). It will leave the pointers in the array and only clear
         // the memory associated with those pointers leading to 'Invalid
         // address' errors
-        for (u32 i = 0; i < g_Listeners.size(); i++) {
-            g_Listeners[i] = nullptr;
+        for (auto& g_Listener : g_Listeners) {
+            g_Listener = nullptr;
         }
         g_Listeners.clear();
         RegisterListener(appListener);
     }
+
+    void Shutdown() { g_DispatcherThread.join(); }
 
 }  // namespace Input

@@ -48,6 +48,7 @@ namespace Application {
     void
     InitializeApp(IGameApp& app, int width, int height, const char* title, bool launchFullscreen);
     void RunApp(IGameApp& app);
+    bool IsRunning();
 }  // namespace Application
 
 #define CREATE_AND_RUN(appClass, size, fullscreen)                                                 \

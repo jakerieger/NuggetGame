@@ -67,10 +67,10 @@ void Nugget::OnKey(FKeyEvent& event) {
     IGameObject::OnKey(event);
 
     if (event.KeyCode == KeyCode::D) {
-        m_Rigidbody->AddTorque(-10000.f);
+        m_Rigidbody->AddTorque(-1000.f);
     }
 
     if (event.KeyCode == KeyCode::A) {
-        m_Rigidbody->AddTorque(10000.f);
+        m_Rigidbody->AddTorque(1000.f);
     }
 }

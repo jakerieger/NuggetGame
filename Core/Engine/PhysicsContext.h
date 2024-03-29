@@ -7,7 +7,7 @@
 #include <box2d/box2d.h>
 
 namespace Physics {
-    void Init();
+    void Initialize();
     void Tick(float timeStep);
     b2World* GetWorld();
     void Shutdown();

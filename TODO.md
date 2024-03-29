@@ -9,7 +9,7 @@
 - [x] Font rendering
 - [ ] Level class that can be easily serialized
 - [ ] Correct shape collider for nugget (currently just a circle)
-- [ ] Parallelize input events so multiple key presses can be registered simultaneously
+- [x] Parallelize input events so multiple key presses can be registered simultaneously
 
 #### Optional
 

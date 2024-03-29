@@ -12,4 +12,5 @@ namespace Input {
     void Initialize(GLFWwindow* window);
     void RegisterListener(IInputListener* listener);
     void UnregisterSceneListeners(IInputListener* appListener);
+    void Shutdown();
 }  // namespace Input

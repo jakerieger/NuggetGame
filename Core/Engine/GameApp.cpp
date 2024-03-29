@@ -25,6 +25,7 @@ namespace Application {
         Profiler::Shutdown();
         Debug::UI::Shutdown();
 #endif
+        Input::Shutdown();
         UI::Shutdown();
         Graphics::Shutdown();
         Physics::Shutdown();
@@ -39,8 +40,7 @@ namespace Application {
         if (launchFullscreen) {
             Graphics::ToggleFullscreen();
         }
-        Physics::Init();
-        Input::Initialize(Graphics::GetWindow());
+        Physics::Initialize();
         UI::Initialize();
 
 #ifndef NDEBUG
@@ -50,6 +50,7 @@ namespace Application {
         Debug::UI::Initialize();
 #endif
 
+        Input::Initialize(Graphics::GetWindow());
         app.Startup();
     }
 

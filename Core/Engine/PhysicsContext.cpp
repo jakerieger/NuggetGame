@@ -14,7 +14,7 @@ namespace Physics {
     static constexpr float GRAVITY = -9.8f;
     b2World g_World({0.f, GRAVITY});
 
-    void Init() {
+    void Initialize() {
         // Floor
         {
             b2BodyDef groundbodyDef;
