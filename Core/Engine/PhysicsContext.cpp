@@ -24,7 +24,7 @@ namespace Physics {
             b2PolygonShape groundBox;
             glm::vec2 pos =
               Camera::WorldToScreen({1280.f / 2.f, 0.f}, Graphics::GetWindowSizeGLM());
-            groundBox.SetAsBox(1280.f / 2.f, 0.f);
+            groundBox.SetAsBox(100, 0.f);
 
             groundBody->CreateFixture(&groundBox, 0.f);
         }
@@ -32,11 +32,11 @@ namespace Physics {
         // Right wall
         {
             b2BodyDef rWallDef;
-            rWallDef.position.Set(644.f, 360.f);
+            rWallDef.position.Set(45.f, 0.f);
 
             const auto rWallBody = g_World.CreateBody(&rWallDef);
             b2PolygonShape rWallBox;
-            rWallBox.SetAsBox(10.f, 720.f);
+            rWallBox.SetAsBox(1.f, 100.f);
 
             rWallBody->CreateFixture(&rWallBox, 0.f);
         }
@@ -44,11 +44,11 @@ namespace Physics {
         // Left wall
         {
             b2BodyDef lWallDef;
-            lWallDef.position.Set(-5.f, 720.f / 2.f);
+            lWallDef.position.Set(-45.f, 0.f);
 
             const auto lWallBody = g_World.CreateBody(&lWallDef);
             b2PolygonShape lWallBox;
-            lWallBox.SetAsBox(10.f, 720.f);
+            lWallBox.SetAsBox(1.f, 100.f);
 
             lWallBody->CreateFixture(&lWallBox, 0.f);
         }
