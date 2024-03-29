@@ -39,8 +39,8 @@ add_library(Core STATIC
         Core/STL.h
         Core/Engine/Resources.h
         Core/STL.cpp
-        Core/Input.cpp
-        Core/Input.h
+        Core/Engine/Input.cpp
+        Core/Engine/Input.h
         Core/Engine/Resources.cpp
         Core/Engine/GraphicsError.cpp
         Core/Engine/GraphicsError.h
@@ -57,8 +57,8 @@ add_library(Core STATIC
         Core/Interfaces/Lifetime.h
         Core/Interfaces/Drawable.h
         Core/Interfaces/InputListener.h
-        Core/InputEvents.h
-        Core/InputCodes.h
+        Core/Engine/InputEvents.h
+        Core/Engine/InputCodes.h
         Core/Types.h
         Core/Framebuffer.cpp
         Core/Framebuffer.h
@@ -81,8 +81,8 @@ add_library(Core STATIC
         Core/GameObject.h
         Core/Engine/GameUI.cpp
         Core/Engine/GameUI.h
-        Core/Engine/Camera.cpp
-        Core/Engine/Camera.h
+        Core/Camera.cpp
+        Core/Camera.h
 )
 
 find_package(glfw3 CONFIG REQUIRED)

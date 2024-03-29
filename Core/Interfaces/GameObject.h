@@ -4,7 +4,7 @@
 
 #pragma once
 #include "Interfaces/Component.h"
-#include "Input.h"
+#include "../Engine/Input.h"
 #include "Interfaces/InputListener.h"
 #include "Interfaces/Lifetime.h"
 #include "STL.h"

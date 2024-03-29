@@ -3,8 +3,8 @@
 //
 
 #include "Input.h"
-#include "Engine/GameApp.h"
-#include "Interfaces/InputListener.h"
+#include "GameApp.h"
+#include "../Interfaces/InputListener.h"
 
 #include <thread>
 

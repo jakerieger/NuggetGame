@@ -3,8 +3,7 @@
 //
 
 #include "Camera.h"
-
-#include "GraphicsContext.h"
+#include "Engine/GraphicsContext.h"
 
 FCamera::FCamera() {
     m_Width  = Graphics::GetWindowSize().at(0);

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Types.h"
+#include "../Types.h"
 
 namespace KeyCode {
     static constexpr u32 Space        = 32;

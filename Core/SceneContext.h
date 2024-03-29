@@ -6,7 +6,7 @@
 
 #include "Interfaces/GameObject.h"
 #include "STL.h"
-#include "Engine/Camera.h"
+#include "Camera.h"
 
 struct FSceneContext {
     std::vector<std::unique_ptr<IGameObject>> GameObjects;
