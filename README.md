@@ -25,6 +25,7 @@ The general process for compiling and running Nugget Game is as follows:
 The only files and folders actually needed to run the game after the above steps
 have been completed are:
 
+- `Assets/`
 - `Data/`
 - `glfw3.dll`
 - `lz4.dll` (`lz4d.dll` for debug)
@@ -40,3 +41,6 @@ Nugget Game relies on the following third party libraries to compile successfull
 - [glm](https://github.com/g-truc/glm)
 - [glad](https://glad.dav1d.de/)
 - [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h)
+- [fmt](#)
+- [OpenAL]()
+- [RmlUi]()
