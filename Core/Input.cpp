@@ -8,8 +8,6 @@
 
 #include <thread>
 
-#define GLFW_KEY_NONE 0
-
 namespace Input {
     std::vector<IInputListener*> g_Listeners;
     int g_ConnectedGamepad;
@@ -22,7 +20,9 @@ namespace Input {
     std::unordered_map<u32, FKeyState> g_KeyStates;
     std::thread g_DispatcherThread;
 
-    void EventDispatcher() {
+    /// Required to maintain OnKey events once a new key has been pressed.
+    /// GLFW can only register a single key per frame.
+    void Dispatcher() {
         while (Application::IsRunning()) {
             for (const auto& [key, state] : g_KeyStates) {
                 // Check if the key is pressed
@@ -34,7 +34,7 @@ namespace Input {
                     }
                 }
             }
-            // Sleep for a short duration to avoid busy waiting
+            // Sleep for a short duration (120 FPS) to avoid busy waiting
             std::this_thread::sleep_for(std::chrono::milliseconds(8));
         }
     }
@@ -107,20 +107,23 @@ namespace Input {
         glfwSetScrollCallback(window, ScrollCallback);
         glfwSetJoystickCallback(GamepadCallback);
 
-        g_DispatcherThread = std::thread(EventDispatcher);
+        g_DispatcherThread = std::thread(Dispatcher);
     }
 
     void RegisterListener(IInputListener* listener) { g_Listeners.push_back(listener); }
 
     void UnregisterSceneListeners(IInputListener* appListener) {
-        // Hack for .clear() not clearing pointers for some reason (probably
+        // Hack for .clear() not clearing pointers for some reason (I'm probably
         // just dumb). It will leave the pointers in the array and only clear
         // the memory associated with those pointers leading to 'Invalid
-        // address' errors
+        // address' errors.
         for (auto& g_Listener : g_Listeners) {
             g_Listener = nullptr;
         }
+
+        // Remove all the active input listeners
         g_Listeners.clear();
+        // Re-register the main app as a listener
         RegisterListener(appListener);
     }
 
