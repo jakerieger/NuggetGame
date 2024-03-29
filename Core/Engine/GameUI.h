@@ -12,4 +12,6 @@ namespace UI {
     void Draw();
     void End();
     void Shutdown();
+
+    void LoadDocument(const std::string& source);
 }  // namespace UI

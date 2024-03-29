@@ -27,6 +27,8 @@
  */
 
 #include "RmlUi_Platform_GLFW.h"
+
+#include <iostream>
 #include <RmlUi/Core/Context.h>
 #include <RmlUi/Core/Input.h>
 #include <RmlUi/Core/Math.h>
@@ -97,6 +99,33 @@ void SystemInterface_GLFW::SetClipboardText(const Rml::String& text_utf8) {
 void SystemInterface_GLFW::GetClipboardText(Rml::String& text) {
     if (window)
         text = Rml::String(glfwGetClipboardString(window));
+}
+
+bool SystemInterface_GLFW::LogMessage(Rml::Log::Type type, const Rml::String& message) {
+    switch (type) {
+        case Rml::Log::Type::LT_INFO:
+            std::cout << "(Rml::Info) " << message << std::endl;
+            break;
+        case Rml::Log::Type::LT_WARNING:
+            std::cout << "(Rml::Warning) " << message << std::endl;
+            break;
+        case Rml::Log::Type::LT_DEBUG:
+            std::cout << "(Rml::Debug) " << message << std::endl;
+            break;
+        case Rml::Log::Type::LT_ERROR:
+            std::cerr << "(Rml::Error) " << message << std::endl;
+            break;
+        case Rml::Log::Type::LT_MAX:
+            std::cerr << "(Rml::Max) " << message << std::endl;
+            break;
+        case Rml::Log::Type::LT_ALWAYS:
+            std::cerr << "(Rml::Always) " << message << std::endl;
+            break;
+        case Rml::Log::Type::LT_ASSERT:
+            std::cout << "(Rml::Assert) " << message << std::endl;
+            break;
+    }
+    return true;
 }
 
 bool RmlGLFW::ProcessKeyCallback(Rml::Context* context, int key, int action, int mods) {
