@@ -8,13 +8,27 @@ Floor::Floor(const std::string& name) : IGameObject(name) {
     const auto floorSprite =
       Resources::GetResource<Packer::Schemas::Sprite>(Resources::ResourceType::Sprite, "floor.png");
 
-    static constexpr u32 NUM_FLOOR_TILES = 640 / 32;
-    std::vector<glm::vec2> tiles;
+    static constexpr f32 TILE_DENOM      = 32.f;
+    static constexpr f32 TILE_OFFSET     = TILE_DENOM;
+    static constexpr f32 TILE_SIZE       = TILE_DENOM / 2.f;
+    static constexpr u32 NUM_FLOOR_TILES = 640 / (TILE_SIZE * 2.f);
+    static constexpr u32 HEIGHT          = 1;
+
+    std::vector<glm::vec2> tiles(NUM_FLOOR_TILES);
+
     for (auto i = 0; i < NUM_FLOOR_TILES; ++i) {
-        tiles.push_back({(32.f * i) + 16.f, 16.f});
+        for (auto k = 0; k < HEIGHT; ++k) {
+            const auto _i = static_cast<f32>(i);
+            const auto _k = static_cast<f32>(k);
+
+            auto x = TILE_OFFSET * _i + TILE_SIZE;
+            auto y = (_k * TILE_SIZE * 2) + TILE_SIZE;
+
+            tiles.emplace_back(x, y);
+        }
     }
 
-    m_Tilemap = new ATilemap(floorSprite, tiles, 16.f);
+    m_Tilemap = new ATilemap(floorSprite, tiles, TILE_SIZE);
     m_Tilemap->SetParent(this);
 
     RegisterComponent(m_Tilemap);

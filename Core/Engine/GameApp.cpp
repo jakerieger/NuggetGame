@@ -3,14 +3,13 @@
 //
 
 #include "GameApp.h"
+#include "GraphicsContext.h"
 #include "Color.h"
 #include "DebugUI.h"
-#include "GraphicsContext.h"
+#include "GameUI.h"
 #include "GraphicsError.h"
 #include "PhysicsContext.h"
 #include "Profiler.h"
-
-#include <thread>
 
 #define RUNNING Application::IsRunning()
 
@@ -23,9 +22,10 @@ namespace Application {
 
     static void Shutdown() {
 #ifndef NDEBUG
-        Debug::UI::Shutdown();
         Profiler::Shutdown();
+        Debug::UI::Shutdown();
 #endif
+        UI::Shutdown();
         Graphics::Shutdown();
         Physics::Shutdown();
     }
@@ -41,12 +41,13 @@ namespace Application {
         }
         Physics::Init();
         Input::Initialize(Graphics::GetWindow());
+        UI::Initialize();
 
 #ifndef NDEBUG
         Profiler::Initialize();
-        Debug::UI::Initialize();
         Graphics::Error::EnableDebugOutput();
         Profiler::Start();
+        Debug::UI::Initialize();
 #endif
 
         app.Startup();
@@ -61,7 +62,8 @@ namespace Application {
 
         // Update scene
         if (activeScene) {
-            activeScene->Update(frameTime);
+            if (!app.Paused())
+                activeScene->Update(frameTime);
         }
 
 // Update engine analytics
@@ -77,6 +79,7 @@ namespace Application {
         glEnable(GL_CULL_FACE);
         glFrontFace(GL_CCW);
         glEnable(GL_BLEND);
+        glEnable(GL_MULTISAMPLE);
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_SCISSOR_TEST);
 
@@ -84,6 +87,10 @@ namespace Application {
         if (activeScene) {
             activeScene->Render();
         }
+
+        UI::Begin();
+        UI::Draw();
+        UI::End();
 
 #ifndef NDEBUG
         Debug::UI::Draw();
@@ -100,9 +107,11 @@ namespace Application {
     }
 
     static void FixedUpdate(IGameApp& app) {
-        Physics::Tick(FIXED_TIMESTEP);
-        if (const auto activeScene = app.GetActiveScene())
-            activeScene->FixedUpdate();
+        if (!app.Paused()) {
+            Physics::Tick(FIXED_TIMESTEP);
+            if (const auto activeScene = app.GetActiveScene())
+                activeScene->FixedUpdate();
+        }
     }
 
     void RunApp(IGameApp& app) {
@@ -159,3 +168,5 @@ void IGameApp::UnloadScene(AScene* scene) {
     // scene->Destroyed();
     scene->SetActive(false);
 }
+
+void IGameApp::SetPaused(const bool paused) { m_Paused = paused; }

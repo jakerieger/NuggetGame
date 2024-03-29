@@ -9,6 +9,8 @@
 #include <memory>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <imgui.h>
+#include <glm/vec2.hpp>
 
 namespace Graphics {
     GLFWwindow* GetWindow();
@@ -26,6 +28,9 @@ namespace Graphics {
     void ResetDrawCalls();
     bool Initialize(int width, int height, const char* title);
     void Shutdown();
+
+    glm::vec2 GetWindowSizeGLM();
+    ImVec2 GetWindowSizeImGui();
 
     namespace GL {
         void UpdateWindowSize(int width, int height);

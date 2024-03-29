@@ -7,9 +7,6 @@
 #include "Scene.h"
 #include "Input.h"
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 class IGameApp : public IInputListener {
 public:
     IGameApp() { Input::RegisterListener(this); }
@@ -19,6 +16,8 @@ public:
     void AddScene(std::unique_ptr<AScene>& scene);
     void LoadScene(const std::string& name);
     void UnloadScene(AScene* scene);
+    void SetPaused(bool paused);
+    bool Paused() const { return m_Paused; }
 
     AScene* GetActiveScene() {
         for (const auto& scene : m_Scenes) {
@@ -40,6 +39,9 @@ public:
 
 protected:
     std::vector<std::unique_ptr<AScene>> m_Scenes;
+
+private:
+    bool m_Paused = false;
 };
 
 namespace Application {

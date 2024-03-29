@@ -31,12 +31,13 @@ namespace Debug::UI {
     }
 
     void Draw() {
-        if (g_Visible) {
-            ImGui_ImplOpenGL3_NewFrame();
-            ImGui_ImplGlfw_NewFrame();
-            ImGui::NewFrame();
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
 
+        if (g_Visible) {
             ImGui::SetNextWindowPos(ImVec2(10, 10));
+            // ImGui::SetNextWindowFocus();
             ImGui::Begin("Debug",
                          nullptr,
                          ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove);
@@ -64,10 +65,10 @@ namespace Debug::UI {
             }
 
             ImGui::End();
-
-            ImGui::Render();
-            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         }
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
 
     void Shutdown() {

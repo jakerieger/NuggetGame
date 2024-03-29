@@ -41,14 +41,22 @@ void NuggetGame::Cleanup() {}
 void NuggetGame::OnKeyDown(FKeyEvent& event) {
     IInputListener::OnKeyDown(event);
 
-    if (event.KeyCode == KeyCode::Escape) {
-        Graphics::MarkWindowForClose();
+    if (event.KeyCode == KeyCode::E) {
+        if (Paused()) {
+            SetPaused(false);
+        } else {
+            SetPaused(true);
+        }
+        const auto windowTitle = std::format("Nugget Game {}", Paused() ? "(Paused)" : "");
+        glfwSetWindowTitle(Graphics::GetWindow(), windowTitle.c_str());
     } else if (event.KeyCode == KeyCode::Tab) {
         Graphics::ToggleWireframe();
     } else if (event.KeyCode == KeyCode::F11) {
         Graphics::ToggleFullscreen();
     } else if (event.KeyCode == KeyCode::R) {
         LoadScene("Test");
+    } else if (event.KeyCode == KeyCode::Escape) {
+        Graphics::MarkWindowForClose();
     }
 }
 

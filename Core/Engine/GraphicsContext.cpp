@@ -99,6 +99,20 @@ namespace Graphics {
         };
     }
 
+    glm::vec2 GetWindowSizeGLM() {
+        return {
+          g_CurrentWindowWidth,
+          g_CurrentWindowHeight,
+        };
+    }
+
+    ImVec2 GetWindowSizeImGui() {
+        return {
+          static_cast<f32>(g_CurrentWindowWidth),
+          static_cast<f32>(g_CurrentWindowHeight),
+        };
+    }
+
     float GetWindowAspect() {
         return (static_cast<float>(g_CurrentWindowWidth) /
                 static_cast<float>(g_CurrentWindowHeight));
@@ -115,6 +129,7 @@ namespace Graphics {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_SAMPLES, 4);
 
 #ifndef NDEBUG
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);

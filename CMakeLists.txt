@@ -19,11 +19,13 @@ add_definitions(
 )
 
 file(GLOB IMGUI_SRCS imgui/*.cpp imgui/backends/imgui_impl_opengl3.cpp imgui/backends/imgui_impl_glfw.cpp)
+file(GLOB RMLUI_SRCS Lib/RmlUi/*.cpp)
 
 add_library(Core STATIC
-        ${IMGUI_SRCS}
         Lib/glad.c
         Lib/stb_image.cpp
+        ${IMGUI_SRCS}
+        ${RMLUI_SRCS}
         Core/Engine/Profiler.cpp
         Core/Engine/Profiler.h
         Core/Engine/DebugUI.cpp
@@ -77,13 +79,16 @@ add_library(Core STATIC
         Core/Engine/DebugPhysics.cpp
         Core/Engine/DebugPhysics.h
         Core/GameObject.h
+        Core/Engine/GameUI.cpp
+        Core/Engine/GameUI.h
 )
 
 find_package(glfw3 CONFIG REQUIRED)
 find_package(box2d CONFIG REQUIRED)
 find_package(OpenAL CONFIG REQUIRED)
+find_package(RmlUi CONFIG REQUIRED)
 #target_link_libraries(main PRIVATE OpenAL::OpenAL)
-target_link_libraries(Core PRIVATE glfw box2d::box2d)
+target_link_libraries(Core PRIVATE glfw box2d::box2d RmlCore RmlDebugger)
 
 # NugPak
 add_library(Packer STATIC
@@ -99,14 +104,17 @@ target_link_libraries(Packer PRIVATE lz4::lz4)
 add_executable(NugPak Packer/NugPak.cpp)
 target_link_libraries(NugPak PRIVATE Packer lz4::lz4)
 
-add_executable(NuggetGame Game/Res/app.rc Game/main.cpp
+add_executable(NuggetGame
+        ${RMLUI_SRCS}
+        Game/Res/app.rc
+        Game/main.cpp
         Game/Res/resource.h
         Game/Nugget.cpp
         Game/Nugget.h
         Game/Floor.cpp
         Game/Floor.h
 )
-target_link_libraries(NuggetGame PRIVATE Core glfw Packer lz4::lz4)
+target_link_libraries(NuggetGame PRIVATE Core glfw Packer lz4::lz4 RmlCore RmlDebugger)
 
 add_custom_command(TARGET Packer PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
