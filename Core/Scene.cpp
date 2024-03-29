@@ -25,6 +25,9 @@ void AScene::Start() {
 }
 
 void AScene::Update(const float deltaTime) {
+    const auto dimensions = Graphics::GetWindowSize();
+    m_SceneContext.Camera.Update(dimensions.at(0), dimensions.at(1));
+
     for (const auto& go : m_SceneContext.GameObjects) {
         go->Update(deltaTime, m_SceneContext);
     }

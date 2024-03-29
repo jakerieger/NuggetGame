@@ -31,7 +31,7 @@ void NuggetGame::Startup() {
     auto floor     = GameObject::Create<Floor>("floor");
 
     testScene->AddGameObject<Nugget>(nugget);
-    testScene->AddGameObject<Floor>(floor);
+    // testScene->AddGameObject<Floor>(floor);
 
     AddScene(testScene);
     LoadScene("Test");

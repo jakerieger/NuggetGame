@@ -14,11 +14,11 @@ Nugget::Nugget(const std::string& name) : IGameObject(name) {
     m_SpriteRenderer = new ASpriteRenderer(nuggetSprite);
     m_SpriteRenderer->SetParent(this);
 
-    m_Rigidbody = new ARigidbody(0.1f, 1.f, ColliderShape::Circle);
+    m_Rigidbody = new ARigidbody(100.f, 1.f, ColliderShape::Circle);
     m_Rigidbody->SetParent(this);
 
-    m_Transform.SetScale(16.f, 16.f);
-    m_Transform.SetPosition(640.f / 2.f, 360.f / 2.f);
+    m_Transform.SetScale(2.f, 2.f);
+    m_Transform.SetPosition(3.f, 3.f);
 
     RegisterComponent(m_SpriteRenderer);
     RegisterComponent(m_Rigidbody);
@@ -55,7 +55,7 @@ void Nugget::OnKeyDown(FKeyEvent& event) {
 
     if (event.KeyCode == KeyCode::Space) {
         if (m_Rigidbody->IsGrounded())
-            m_Rigidbody->AddImpulse({0.f, 700.f});
+            m_Rigidbody->AddImpulse({0.f, 5000.f});
     }
 
     if (event.KeyCode == KeyCode::F) {

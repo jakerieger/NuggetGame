@@ -22,7 +22,7 @@ public:
 
     void SetActive(const bool active) { m_Active = active; }
 
-    bool GetActive() const { return m_Active; }
+    [[nodiscard]] bool GetActive() const { return m_Active; }
 
     std::string& GetName() { return m_Name; }
 

@@ -3,7 +3,12 @@
 //
 
 #include "PhysicsContext.h"
+
+#include "Camera.h"
+#include "GraphicsContext.h"
 #include "STL.h"
+
+#include <glm/vec2.hpp>
 
 namespace Physics {
     static constexpr float GRAVITY = -9.8f;
@@ -13,10 +18,12 @@ namespace Physics {
         // Floor
         {
             b2BodyDef groundbodyDef;
-            groundbodyDef.position.Set(0.f, 36.f);
+            groundbodyDef.position.Set(0.f, 0.5f);
 
             const auto groundBody = g_World.CreateBody(&groundbodyDef);
             b2PolygonShape groundBox;
+            glm::vec2 pos =
+              Camera::WorldToScreen({1280.f / 2.f, 0.f}, Graphics::GetWindowSizeGLM());
             groundBox.SetAsBox(1280.f / 2.f, 0.f);
 
             groundBody->CreateFixture(&groundBox, 0.f);

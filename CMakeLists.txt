@@ -81,6 +81,8 @@ add_library(Core STATIC
         Core/GameObject.h
         Core/Engine/GameUI.cpp
         Core/Engine/GameUI.h
+        Core/Engine/Camera.cpp
+        Core/Engine/Camera.h
 )
 
 find_package(glfw3 CONFIG REQUIRED)

@@ -3,6 +3,8 @@
 //
 
 #include "Tilemap.h"
+
+#include "SceneContext.h"
 #include "Utilities.inl"
 
 #include <glm/ext/matrix_clip_space.hpp>
@@ -43,7 +45,8 @@ void ATilemap::Update(float deltaTime, FSceneContext& sceneContext) {
 }
 
 void ATilemap::Draw(FSceneContext& sceneContext) const {
-    const auto projection = glm::ortho(0.f, 640.f, 0.f, 360.f);
+    auto projection = glm::mat4(1.f);
+    sceneContext.Camera.BuildProjectionMatrix(projection, 0.f);
     m_SpriteBatch->Draw(m_Sprite, projection, m_ModelMatrices.size());
 }
 
