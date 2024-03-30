@@ -18,7 +18,7 @@ Nugget::Nugget(const std::string& name) : IGameObject(name) {
     m_Rigidbody->SetParent(this);
 
     m_Transform.SetScale(2.f, 2.f);
-    m_Transform.SetPosition(3.f, 3.f);
+    m_Transform.SetPosition(0.f, 4.f);
 
     RegisterComponent(m_SpriteRenderer);
     RegisterComponent(m_Rigidbody);
@@ -67,10 +67,10 @@ void Nugget::OnKey(FKeyEvent& event) {
     IGameObject::OnKey(event);
 
     if (event.KeyCode == KeyCode::D) {
-        m_Rigidbody->AddTorque(-1000.f);
+        m_Rigidbody->AddTorque(-2000.f);
     }
 
     if (event.KeyCode == KeyCode::A) {
-        m_Rigidbody->AddTorque(1000.f);
+        m_Rigidbody->AddTorque(2000.f);
     }
 }

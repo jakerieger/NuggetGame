@@ -22,9 +22,8 @@ namespace Physics {
 
             const auto groundBody = g_World.CreateBody(&groundbodyDef);
             b2PolygonShape groundBox;
-            glm::vec2 pos =
-              Camera::WorldToScreen({1280.f / 2.f, 0.f}, Graphics::GetWindowSizeGLM());
-            groundBox.SetAsBox(100, 0.f);
+            glm::vec2 pos = Camera::WorldToScreen({1280.f / 2.f, 0.f});
+            groundBox.SetAsBox(pos.x, 0.f);
 
             groundBody->CreateFixture(&groundBox, 0.f);
         }

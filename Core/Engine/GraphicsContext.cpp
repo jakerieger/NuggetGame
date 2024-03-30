@@ -149,7 +149,7 @@ namespace Graphics {
         GL::FramebufferCallback(g_Window.get(), width, height);
         glfwSetFramebufferSizeCallback(GetWindow(), GL::FramebufferCallback);
         glfwSwapInterval(1);
-        // glfwSetInputMode(g_Window.get(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetInputMode(g_Window.get(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         return true;
     }

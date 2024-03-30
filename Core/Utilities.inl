@@ -68,8 +68,8 @@ namespace Utilities {
     inline void SetWindowIcon(const Packer::Schemas::Sprite& iconSprite) {
         GLFWimage appIcon;
         appIcon.pixels = iconSprite.data;
-        appIcon.width  = iconSprite.width;
-        appIcon.height = iconSprite.height;
+        appIcon.width  = static_cast<int>(iconSprite.width);
+        appIcon.height = static_cast<int>(iconSprite.height);
         glfwSetWindowIcon(Graphics::GetWindow(), 1, &appIcon);
         stbi_image_free(appIcon.pixels);
     }
@@ -94,7 +94,7 @@ namespace Utilities {
             glBindTexture(GL_TEXTURE_2D, id);
             glTexImage2D(GL_TEXTURE_2D,
                          0,
-                         format,
+                         static_cast<int>(format),
                          width,
                          height,
                          0,
@@ -124,7 +124,10 @@ namespace Utilities {
         return id;
     }
 
-    inline u32 LoadTextureFromData(unsigned char* data, int width, int height, int channels) {
+    inline u32 LoadTextureFromData(const unsigned char* data,
+                                   const unsigned int width,
+                                   const unsigned int height,
+                                   const unsigned int channels) {
         u32 id;
         glGenTextures(1, &id);
 
@@ -141,9 +144,9 @@ namespace Utilities {
             glBindTexture(GL_TEXTURE_2D, id);
             glTexImage2D(GL_TEXTURE_2D,
                          0,
-                         format,
-                         width,
-                         height,
+                         static_cast<int>(format),
+                         static_cast<int>(width),
+                         static_cast<int>(height),
                          0,
                          format,
                          GL_UNSIGNED_BYTE,
@@ -169,8 +172,8 @@ namespace Utilities {
 
     template<typename T1, typename T2>
     bool BitCompare(T1 A, T2 B) {
-        const auto a = *reinterpret_cast<char*>(&A);
-        const auto b = *reinterpret_cast<char*>(&B);
+        const auto a = *(char*)&A;
+        const auto b = *(char*)&B;
         return (a ^ b) == 0;
     }
 

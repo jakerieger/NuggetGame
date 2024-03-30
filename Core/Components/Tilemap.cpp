@@ -3,11 +3,10 @@
 //
 
 #include "Tilemap.h"
-
+#include "Camera.h"
 #include "SceneContext.h"
 #include "Utilities.inl"
 
-#include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
 static void UpdateModelMatrices(const std::vector<glm::vec2>& tiles,
@@ -40,14 +39,11 @@ void ATilemap::Start(FSceneContext& sceneContext) {
 
 void ATilemap::Update(float deltaTime, FSceneContext& sceneContext) {
     IComponent::Update(deltaTime, sceneContext);
-    // UpdateModelMatrices(m_Tiles, m_TileSize, m_ModelMatrices);
     m_SpriteBatch->UpdateInstances(m_ModelMatrices);
 }
 
 void ATilemap::Draw(FSceneContext& sceneContext) const {
-    auto projection = glm::mat4(1.f);
-    sceneContext.Camera.BuildProjectionMatrix(projection, 0.f);
-    m_SpriteBatch->Draw(m_Sprite, projection, m_ModelMatrices.size());
+    m_SpriteBatch->Draw(m_Sprite, Camera::BuildProjectionMatrix(0.f), m_ModelMatrices.size());
 }
 
 void ATilemap::Destroyed(FSceneContext& sceneContext) {

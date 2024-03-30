@@ -3,6 +3,8 @@
 //
 
 #include "SpriteRenderer.h"
+
+#include "Camera.h"
 #include "Utilities.inl"
 #include "SceneContext.h"
 
@@ -29,9 +31,7 @@ void ASpriteRenderer::Update(float deltaTime, FSceneContext& sceneContext) {
 }
 
 void ASpriteRenderer::Draw(FSceneContext& sceneContext, const ATransform* transform) const {
-    auto projection = glm::mat4(1.f);
-    sceneContext.Camera.BuildProjectionMatrix(projection, 0.f);
-    m_Sprite->Draw(m_SpriteId, projection, transform->GetModelMatrix());
+    m_Sprite->Draw(m_SpriteId, Camera::BuildProjectionMatrix(0.f), transform->GetModelMatrix());
 }
 
 void ASpriteRenderer::Destroyed(FSceneContext& sceneContext) {

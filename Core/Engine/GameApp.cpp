@@ -3,6 +3,8 @@
 //
 
 #include "GameApp.h"
+
+#include "Camera.h"
 #include "GraphicsContext.h"
 #include "Color.h"
 #include "DebugUI.h"
@@ -17,7 +19,7 @@ namespace Application {
     static constexpr float FIXED_TIMESTEP = 1.f / 60.f;
     static constexpr float ADJUSTMENT     = 4.f;
     AColor g_ClearColor(0xFF9eb9df);
-    // =========================================================
+
     bool IsRunning() { return !glfwWindowShouldClose(Graphics::GetWindow()); }
 
     static void Shutdown() {
@@ -40,6 +42,7 @@ namespace Application {
         if (launchFullscreen) {
             Graphics::ToggleFullscreen();
         }
+        Camera::Initialize();
         Physics::Initialize();
         UI::Initialize();
 
@@ -57,6 +60,7 @@ namespace Application {
     void Update(IGameApp& app) {
         Graphics::ResetDrawCalls();
         Graphics::UpdateFrameTime();
+        Camera::Update();
 
         const float frameTime  = Graphics::GetDeltaTime();
         const auto activeScene = app.GetActiveScene();
@@ -136,7 +140,6 @@ namespace Application {
         }
 
         app.Cleanup();
-
         Shutdown();
     }
 }  // namespace Application
