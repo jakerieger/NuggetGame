@@ -178,6 +178,8 @@ namespace Packer {
                 delete[] sprite.data;
                 delete[] sprite.name;
             }
+
+            free(compressedData);
         }
 
         return {};
