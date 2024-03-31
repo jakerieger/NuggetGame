@@ -4,7 +4,7 @@
 
 #include "Nugget.h"
 
-#include "../Core/Engine/InputCodes.h"
+#include "Engine/InputCodes.h"
 #include "Engine/Resources.h"
 
 Nugget::Nugget(const std::string& name) : IGameObject(name) {

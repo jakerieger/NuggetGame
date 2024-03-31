@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.28)
 project(NuggetGame)
 
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(
@@ -90,8 +90,14 @@ find_package(box2d CONFIG REQUIRED)
 find_package(OpenAL CONFIG REQUIRED)
 find_package(RmlUi CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
-#target_link_libraries(main PRIVATE OpenAL::OpenAL)
-target_link_libraries(Core PRIVATE glfw box2d::box2d RmlCore RmlDebugger fmt::fmt)
+target_link_libraries(Core PRIVATE
+        glfw
+        box2d::box2d
+        RmlCore
+        RmlDebugger
+        fmt::fmt
+        OpenAL::OpenAL
+)
 
 # NugPak
 add_library(Packer STATIC
@@ -117,7 +123,15 @@ add_executable(NuggetGame
         Game/Floor.cpp
         Game/Floor.h
 )
-target_link_libraries(NuggetGame PRIVATE Core glfw Packer lz4::lz4 RmlCore RmlDebugger fmt::fmt)
+target_link_libraries(NuggetGame PRIVATE
+        Core
+        glfw
+        Packer
+        lz4::lz4
+        RmlCore
+        RmlDebugger
+        fmt::fmt
+)
 
 add_custom_command(TARGET Packer PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
