@@ -3,6 +3,9 @@
 //
 
 #include "GraphicsError.h"
+
+#include "Logger.h"
+
 #include <cstdio>
 
 namespace Graphics::Error {
@@ -10,13 +13,14 @@ namespace Graphics::Error {
         int flags;
         glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
         if (flags & GL_CONTEXT_FLAG_DEBUG_BIT) {
-            printf("Graphics debugging enabled\n");
+            Logger::LogInfo(Logger::Subsystems::GRAPHICS, "Graphics debugging is enabled");
             glEnable(GL_DEBUG_OUTPUT);
             glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
             glDebugMessageCallback(GLDebugCallback, nullptr);
             glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
         } else {
-            fprintf(stderr, "Failed to enable graphics debugging\n");
+            Logger::LogError(Logger::Subsystems::GRAPHICS,
+                             "Graphics debugging failed to initialize");
         }
     }
 

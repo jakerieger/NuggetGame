@@ -70,13 +70,13 @@ namespace Camera {
         const glm::vec2 lower = g_Center - extents;
         const glm::vec2 upper = g_Center + extents;
 
-        const glm::vec4 a = {2.0f / (upper.x - lower.x), 0.f, 0.f, 0.f};
-        const glm::vec4 b = {0.f, 2.0f / (upper.y - lower.y), 0.f, 0.f};
-        const glm::vec4 c = {0.f, 0.f, 1.0f, 0.f};
-        const glm::vec4 d = {-(upper.x + lower.x) / (upper.x - lower.x),
-                             -(upper.y + lower.y) / (upper.y - lower.y),
-                             zBias,
-                             1.f};
+        const glm::vec4 a     = {2.0f / (upper.x - lower.x), 0.f, 0.f, 0.f};
+        const glm::vec4 b     = {0.f, 2.0f / (upper.y - lower.y), 0.f, 0.f};
+        constexpr glm::vec4 c = {0.f, 0.f, 1.0f, 0.f};
+        const glm::vec4 d     = {-(upper.x + lower.x) / (upper.x - lower.x),
+                                 -(upper.y + lower.y) / (upper.y - lower.y),
+                                 zBias,
+                                 1.f};
 
         glm::mat4 m(1.f);
         m[0] = a;

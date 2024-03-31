@@ -1,6 +1,6 @@
 #include "Floor.h"
 #include "Engine/GameApp.h"
-#include "../Core/Engine/InputCodes.h"
+#include "Engine/InputCodes.h"
 #include "Nugget.h"
 #include "Packer.h"
 #include "Unpacker.h"
@@ -8,6 +8,7 @@
 #include "Engine/GraphicsContext.h"
 #include "Engine/Resources.h"
 #include "GameObject.h"
+#include "Logger.h"
 
 #include <filesystem>
 #include <fmt/format.h>
@@ -70,7 +71,7 @@ int main(int argc, char* argv[]) {
         const auto dataRoot = Resources::GetRoot() / "Data";
         Unpacker::UnpackSprites(dataRoot, Resources::GetSprites());
 
-        std::cout << "Unpacked game assets\n";
+        Logger::LogInfo(Logger::Subsystems::RUNTIME, "Unpacked game asset");
     }
 
     // Run game

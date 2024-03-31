@@ -28,6 +28,8 @@
 
 #include "RmlUi_Platform_GLFW.h"
 
+#include "Logger.h"
+
 #include <iostream>
 #include <RmlUi/Core/Context.h>
 #include <RmlUi/Core/Input.h>
@@ -103,26 +105,21 @@ void SystemInterface_GLFW::GetClipboardText(Rml::String& text) {
 
 bool SystemInterface_GLFW::LogMessage(Rml::Log::Type type, const Rml::String& message) {
     switch (type) {
+        case Rml::Log::Type::LT_DEBUG:
         case Rml::Log::Type::LT_INFO:
-            std::cout << "(Rml::Info) " << message << std::endl;
+            Logger::LogInfo(Logger::Subsystems::UI, message.c_str());
             break;
         case Rml::Log::Type::LT_WARNING:
-            std::cout << "(Rml::Warning) " << message << std::endl;
-            break;
-        case Rml::Log::Type::LT_DEBUG:
-            std::cout << "(Rml::Debug) " << message << std::endl;
+            Logger::LogWarning(Logger::Subsystems::UI, message.c_str());
             break;
         case Rml::Log::Type::LT_ERROR:
-            std::cerr << "(Rml::Error) " << message << std::endl;
+            Logger::LogError(Logger::Subsystems::UI, message.c_str());
             break;
         case Rml::Log::Type::LT_MAX:
-            std::cerr << "(Rml::Max) " << message << std::endl;
+            Logger::LogFatal(Logger::Subsystems::UI, message.c_str());
             break;
-        case Rml::Log::Type::LT_ALWAYS:
-            std::cerr << "(Rml::Always) " << message << std::endl;
-            break;
-        case Rml::Log::Type::LT_ASSERT:
-            std::cout << "(Rml::Assert) " << message << std::endl;
+        default:
+            Logger::LogWarning(Logger::Subsystems::UI, message.c_str());
             break;
     }
     return true;
