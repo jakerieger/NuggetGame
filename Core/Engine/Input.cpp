@@ -117,8 +117,8 @@ namespace Input {
         // just dumb). It will leave the pointers in the array and only clear
         // the memory associated with those pointers leading to 'Invalid
         // address' errors.
-        for (auto& g_Listener : g_Listeners) {
-            g_Listener = nullptr;
+        for (auto& listener : g_Listeners) {
+            listener = nullptr;
         }
 
         // Remove all the active input listeners
