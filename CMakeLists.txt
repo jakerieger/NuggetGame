@@ -60,8 +60,6 @@ add_library(Core STATIC
         Core/Engine/InputEvents.h
         Core/Engine/InputCodes.h
         Core/Types.h
-        Core/Framebuffer.cpp
-        Core/Framebuffer.h
         Core/Interfaces/RenderPass.h
         Core/Sprite.h
         Core/SpriteBatch.h

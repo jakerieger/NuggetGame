@@ -44,3 +44,9 @@ Nugget Game relies on the following third party libraries to compile successfull
 - [fmt](#)
 - [OpenAL]()
 - [RmlUi]()
+
+## Contributions
+
+Nugget Game is open to the public for viewing, modifying, and borrowing the core engine code. The project itself
+is not accepting contributions, however. Please do not submit pull requests as they will immediately be
+closed. Issues are more than welcome. See the [license](LICENSE.md) for more details.

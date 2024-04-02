@@ -171,10 +171,10 @@ namespace Utilities {
     }
 
     template<typename T1, typename T2>
-    bool BitCompare(T1 A, T2 B) {
-        const auto a = *(char*)&A;
-        const auto b = *(char*)&B;
-        return (a ^ b) == 0;
+    bool BitCompare(T1 a, T2 b) {
+        const auto A = *(char*)&a;
+        const auto B = *(char*)&b;
+        return (A ^ B) == 0;
     }
 
     inline bool CheckTolerance(const f32 v1, const f32 v2, const f32 t) {
