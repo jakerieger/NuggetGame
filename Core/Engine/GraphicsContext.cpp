@@ -4,6 +4,7 @@
 
 #include "GraphicsContext.h"
 #include "GraphicsError.h"
+#include "Logger.h"
 
 namespace Graphics {
     // Window vars
@@ -150,6 +151,8 @@ namespace Graphics {
         glfwSetFramebufferSizeCallback(GetWindow(), GL::FramebufferCallback);
         glfwSwapInterval(1);
         glfwSetInputMode(g_Window.get(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+        Logger::LogInfo(Logger::Subsystems::GRAPHICS, "Graphics subsystem initialized.");
 
         return true;
     }

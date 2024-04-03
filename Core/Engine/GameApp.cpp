@@ -4,6 +4,7 @@
 
 #include "GameApp.h"
 
+#include "AudioContext.h"
 #include "Camera.h"
 #include "GraphicsContext.h"
 #include "Color.h"
@@ -31,6 +32,7 @@ namespace Application {
         UI::Shutdown();
         Graphics::Shutdown();
         Physics::Shutdown();
+        Audio::Shutdown();
     }
 
     void InitializeApp(IGameApp& app,
@@ -38,22 +40,25 @@ namespace Application {
                        const int height,
                        const char* title,
                        const bool launchFullscreen) {
-        Graphics::Initialize(width, height, title);
-        if (launchFullscreen) {
-            Graphics::ToggleFullscreen();
-        }
-        Camera::Initialize();
-        Physics::Initialize();
-        UI::Initialize();
-
+        // Initialize engine subsytems
+        {
+            Graphics::Initialize(width, height, title);
+            if (launchFullscreen) {
+                Graphics::ToggleFullscreen();
+            }
+            Camera::Initialize();
+            Physics::Initialize();
+            UI::Initialize();
+            Audio::Initialize();
 #ifndef NDEBUG
-        Profiler::Initialize();
-        Graphics::Error::EnableDebugOutput();
-        Profiler::Start();
-        Debug::UI::Initialize();
+            Profiler::Initialize();
+            Graphics::Error::EnableDebugOutput();
+            Profiler::Start();
+            Debug::UI::Initialize();
 #endif
+            Input::Initialize(Graphics::GetWindow());
+        }
 
-        Input::Initialize(Graphics::GetWindow());
         app.Startup();
     }
 

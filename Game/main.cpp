@@ -77,7 +77,7 @@ int main(int argc, char* argv[]) {
     // Run game
     {
         NuggetGame app;
-        Application::InitializeApp(app, 1280, 720, "Nugget Game", true);
+        Application::InitializeApp(app, 1280, 720, "Nugget Game", false);
         Utilities::SetWindowIcon(
           Resources::GetResource<Sprite>(Resources::ResourceType::Sprite, "nugget.png"));
 

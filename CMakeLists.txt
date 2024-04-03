@@ -83,13 +83,18 @@ add_library(Core STATIC
         Core/Camera.h
         Core/Logger.cpp
         Core/Logger.h
+        Core/Engine/AudioContext.cpp
+        Core/Engine/AudioContext.h
 )
 
+# ============[ PACKAGES ]============ #
 find_package(glfw3 CONFIG REQUIRED)
 find_package(box2d CONFIG REQUIRED)
 find_package(OpenAL CONFIG REQUIRED)
 find_package(RmlUi CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
+# ============++++++++++++============ #
+
 target_link_libraries(Core PRIVATE
         glfw
         box2d::box2d

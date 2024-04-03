@@ -6,6 +6,7 @@
 
 #include "Camera.h"
 #include "GraphicsContext.h"
+#include "Logger.h"
 #include "STL.h"
 
 #include <glm/vec2.hpp>
@@ -51,6 +52,8 @@ namespace Physics {
 
             lWallBody->CreateFixture(&lWallBox, 0.f);
         }
+
+        Logger::LogInfo(Logger::Subsystems::PHYSICS, "Physics subsystem initialized.");
     }
 
     void Tick(const float timeStep) {

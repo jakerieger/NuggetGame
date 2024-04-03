@@ -5,6 +5,7 @@
 #include "GameUI.h"
 
 #include "GraphicsContext.h"
+#include "Logger.h"
 #include "Resources.h"
 
 #include <RmlUi/Core.h>
@@ -134,6 +135,8 @@ namespace UI {
         // {
         //     document->Show();
         // }
+
+        Logger::LogInfo(Logger::Subsystems::UI, "UI subsystem initialized.");
     }
 
     void Begin() {

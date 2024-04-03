@@ -4,6 +4,7 @@
 
 #include "Input.h"
 #include "GameApp.h"
+#include "Logger.h"
 #include "../Interfaces/InputListener.h"
 
 #include <thread>
@@ -108,6 +109,8 @@ namespace Input {
         glfwSetJoystickCallback(GamepadCallback);
 
         g_DispatcherThread = std::thread(Dispatcher);
+
+        Logger::LogInfo(Logger::Subsystems::INPUT, "Input subsystem initialized.");
     }
 
     void RegisterListener(IInputListener* listener) { g_Listeners.push_back(listener); }
