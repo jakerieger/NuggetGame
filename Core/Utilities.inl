@@ -10,6 +10,8 @@
 #include <GLFW/glfw3.h>
 
 namespace Utilities {
+    namespace fs = std::filesystem;
+
     inline void HexToRGBA(const u32 hex, f32& r, f32& g, f32& b, f32& a) {
         const unsigned char alphaByte = (hex >> 24) & 0xFF;
         const unsigned char redByte   = (hex >> 16) & 0xFF;
@@ -184,5 +186,14 @@ namespace Utilities {
             return true;
         }
         return false;
+    }
+
+    inline fs::path JoinPath(const fs::path& root, const std::string& first) {
+        return root / first;
+    }
+
+    template<typename... Args>
+    fs::path JoinPath(const fs::path& root, const std::string& first, const Args&... rest) {
+        return JoinPath(root / first, rest...);
     }
 }  // namespace Utilities

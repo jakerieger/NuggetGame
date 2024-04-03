@@ -7,6 +7,7 @@
 #include "GraphicsContext.h"
 #include "Logger.h"
 #include "Resources.h"
+#include "Utilities.inl"
 
 #include <RmlUi/Core.h>
 #include <RmlUi/Debugger.h>
@@ -125,9 +126,12 @@ namespace UI {
         }
 
         // Load font
-        if (!Rml::LoadFontFace(
-              (Resources::GetRoot() / "Assets/fonts/ShareTechMono-Regular.ttf").string(),
-              false)) {
+        if (!Rml::LoadFontFace(Utilities::JoinPath(Resources::GetRoot(),
+                                                   "Assets",
+                                                   "fonts",
+                                                   "ShareTechMono-Regular.ttf")
+                                 .string(),
+                               false)) {
             throw std::runtime_error("Failed to load font");
         }
 

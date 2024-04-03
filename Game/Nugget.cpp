@@ -4,6 +4,7 @@
 
 #include "Nugget.h"
 
+#include "Utilities.inl"
 #include "Engine/AudioContext.h"
 #include "Engine/InputCodes.h"
 #include "Engine/Resources.h"
@@ -58,8 +59,9 @@ void Nugget::OnKeyDown(FKeyEvent& event) {
         if (m_Rigidbody->IsGrounded()) {
             m_Rigidbody->AddImpulse({0.f, 5000.f});
             // Play jump sound effect
-            const auto sfx = Resources::GetRoot() / "Assets/audio/jump.wav";
-            Audio::PlayOneShot(sfx.string());
+            const auto sfxPath =
+              Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "jump.wav");
+            Audio::PlayOneShot(sfxPath.string());
         }
     }
 

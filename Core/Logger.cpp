@@ -6,6 +6,31 @@
 #include <cstdarg>
 
 #define NOW (unsigned long)time(NULL)
+#define RESET_COLOR "\033[0m"
+#define BLACK_COLOR "\033[30m"
+#define RED_COLOR "\033[31m"
+#define GREEN_COLOR "\033[32m"
+#define YELLOW_COLOR "\033[33m"
+#define BLUE_COLOR "\033[34m"
+#define MAGENTA_COLOR "\033[35m"
+#define CYAN_COLOR "\033[36m"
+#define WHITE_COLOR "\033[37m"
+#define BOLD_BLACK_COLOR "\033[1m\033[30m"
+#define BOLD_RED_COLOR "\033[1m\033[31m"
+#define BOLD_GREEN_COLOR "\033[1m\033[32m"
+#define BOLD_YELLOW_COLOR "\033[1m\033[33m"
+#define BOLD_BLUE_COLOR "\033[1m\033[34m"
+#define BOLD_MAGENTA_COLOR "\033[1m\033[35m"
+#define BOLD_CYAN_COLOR "\033[1m\033[36m"
+#define BOLD_WHITE_COLOR "\033[1m\033[37m"
+#define BG_BLACK_COLOR "\033[40m"
+#define BG_RED_COLOR "\033[41m"
+#define BG_GREEN_COLOR "\033[42m"
+#define BG_YELLOW_COLOR "\033[43m"
+#define BG_BLUE_COLOR "\033[44m"
+#define BG_MAGENTA_COLOR "\033[45m"
+#define BG_CYAN_COLOR "\033[46m"
+#define BG_WHITE_COLOR "\033[47m"
 
 namespace Logger {
     std::vector<FLogEntry> g_LogEntries;
@@ -16,42 +41,57 @@ namespace Logger {
       {ELogLevel::Fatal, "FATAL"},
     };
 
-    /// https://stackoverflow.com/a/69004694/5521933
-    /// TODO: Figure out why this don't work :(
-    static void FormatTime(std::string& out, const time_t timestamp) {
-        tm ts             = {};
-        ts                = *localtime(&timestamp);
-        const auto buffer = new char[80];
-        strftime(buffer, sizeof(buffer), "%H:%M:%S %Z", &ts);
-        out = STRDUP(buffer);
+    static std::string GetTimestamp() {
+        time_t rawtime;
+        char buffer[80];
+        time(&rawtime);
+        const tm* timeinfo = localtime(&rawtime);
+        strftime(buffer, 80, "%I:%M %p", timeinfo);
+        auto timestamp = std::string(buffer);
+
+        return timestamp;
+    }
+
+    static void PrintColoredMessage(const char* colorCode,
+                                    const char* logLevel,
+                                    const char* subsystem,
+                                    const char* message) {
+        printf("%s|%s| [%s] (%s) %s%s\n",
+               colorCode,
+               GetTimestamp().c_str(),
+               logLevel,
+               subsystem,
+               message,
+               RESET_COLOR);
     }
 
     static void Log(const FLogEntry& entry) {
         g_LogEntries.push_back(entry);
 
-        // Format timestamp into HH::MM::SS AM/PM
-        std::string timestamp;
-        FormatTime(timestamp, entry.Timestamp);
+        const char* logLevel  = g_LevelMap.find(entry.Level)->second;
+        const char* subsystem = entry.Subsystem.c_str();
+        const char* message   = entry.Message.c_str();
 
-        if (entry.Level >= ELogLevel::Error) {
-            fprintf(stderr,
-                    "[%s] (%s) %s\n",
-                    g_LevelMap.find(entry.Level)->second,
-                    entry.Subsystem.c_str(),
-                    entry.Message.c_str());
-        } else {
-            fprintf(stdout,
-                    "[%s] (%s) %s\n",
-                    g_LevelMap.find(entry.Level)->second,
-                    entry.Subsystem.c_str(),
-                    entry.Message.c_str());
+        switch (entry.Level) {
+            case ELogLevel::Info: {
+                PrintColoredMessage(WHITE_COLOR, logLevel, subsystem, message);
+            } break;
+            case ELogLevel::Warning: {
+                PrintColoredMessage(YELLOW_COLOR, logLevel, subsystem, message);
+            } break;
+            case ELogLevel::Error: {
+                PrintColoredMessage(RED_COLOR, logLevel, subsystem, message);
+            } break;
+            case ELogLevel::Fatal: {
+                PrintColoredMessage(BOLD_RED_COLOR, logLevel, subsystem, message);
+            } break;
         }
     }
 
     static void FormatMessage(std::string& out, const char* format, va_list args) {
-        const size_t bufferSize = snprintf(nullptr, 0, format, args);
+        const size_t bufferSize = vsnprintf(nullptr, 0, format, args);
         const auto buffer       = new char[bufferSize];
-        sprintf(buffer, format, args);
+        vsprintf(buffer, format, args);
         out = STRDUP(buffer);
     }
 
