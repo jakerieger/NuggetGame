@@ -23,7 +23,7 @@ namespace Logger {
         ts                = *localtime(&timestamp);
         const auto buffer = new char[80];
         strftime(buffer, sizeof(buffer), "%H:%M:%S %Z", &ts);
-        out = _strdup(buffer);
+        out = STRDUP(buffer);
     }
 
     static void Log(const FLogEntry& entry) {
@@ -52,7 +52,7 @@ namespace Logger {
         const size_t bufferSize = snprintf(nullptr, 0, format, args);
         const auto buffer       = new char[bufferSize];
         sprintf(buffer, format, args);
-        out = _strdup(buffer);
+        out = STRDUP(buffer);
     }
 
     static void CreateLogEntry(const ELogLevel level,
