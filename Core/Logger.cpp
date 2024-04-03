@@ -61,7 +61,7 @@ namespace Logger {
                                     const char* logLevel,
                                     const char* subsystem,
                                     const char* message) {
-        printf("%s|%s| [%s] (%s) %s%s\n",
+        printf("%s|%s| [%s] (%s)\n  => %s%s\n",
                colorCode,
                timestamp,
                logLevel,
@@ -77,14 +77,14 @@ namespace Logger {
         const std::string timestamp = GetTimestamp(entry.Timestamp);
         const size_t bufferSize     = snprintf(nullptr,
                                            0,
-                                           "|%s| [%s] (%s) %s",
+                                           "|%s| [%s] (%s)\n  => %s",
                                            timestamp.c_str(),
                                            logLevel,
                                            subsystem,
                                            message);
         const auto buffer           = new char[bufferSize + 1];
         buffer[bufferSize]          = '\0';
-        sprintf(buffer, "|%s| [%s] (%s) %s", timestamp.c_str(), logLevel, subsystem, message);
+        sprintf(buffer, "|%s| [%s] (%s)\n  => %s", timestamp.c_str(), logLevel, subsystem, message);
         std::string out = STRDUP(buffer);
         delete[] buffer;
         return out;
@@ -119,10 +119,14 @@ namespace Logger {
     }
 
     static void FormatMessage(std::string& out, const char* format, va_list args) {
+        va_list copiedArgs;
+        va_copy(copiedArgs, args);
         const size_t bufferSize = vsnprintf(nullptr, 0, format, args);
-        const auto buffer       = new char[bufferSize];
-        vsprintf(buffer, format, args);
+        const auto buffer       = new char[bufferSize + 1];
+        buffer[bufferSize]      = '\0';
+        vsprintf(buffer, format, copiedArgs);
         out = STRDUP(buffer);
+        delete[] buffer;
     }
 
     static void CreateLogEntry(const ELogLevel level,
@@ -156,6 +160,9 @@ namespace Logger {
         va_start(args, format);
         CreateLogEntry(ELogLevel::Error, subsystem, format, args);
         va_end(args);
+
+        // Force dump logs to disk on error so log persists after crash
+        DumpToDisk();
     }
 
     void LogFatal(const std::string& subsystem, const char* format, ...) {

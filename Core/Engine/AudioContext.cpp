@@ -109,6 +109,7 @@ namespace Audio {
 
     void PlayOneShot(const std::string& filename) {
         AudioFile<f32> oneShot;
+        oneShot.shouldLogErrorsToConsole(false);
         if (!oneShot.load(filename)) {
             Logger::LogError(Logger::Subsystems::AUDIO,
                              "Failed to load audio file: '%s'",
