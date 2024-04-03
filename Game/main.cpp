@@ -8,6 +8,7 @@
 #include "Engine/GraphicsContext.h"
 #include "Engine/Resources.h"
 #include "GameObject.h"
+#include "Level.h"
 #include "Logger.h"
 
 #include <filesystem>

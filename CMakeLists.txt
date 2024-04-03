@@ -85,6 +85,8 @@ add_library(Core STATIC
         Core/Logger.h
         Core/Engine/AudioContext.cpp
         Core/Engine/AudioContext.h
+        Core/Level.cpp
+        Core/Level.h
 )
 
 # ============[ PACKAGES ]============ #
