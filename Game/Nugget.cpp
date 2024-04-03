@@ -58,7 +58,7 @@ void Nugget::OnKeyDown(FKeyEvent& event) {
         if (m_Rigidbody->IsGrounded()) {
             m_Rigidbody->AddImpulse({0.f, 5000.f});
             // Play jump sound effect
-            const auto sfx = Resources::GetRoot() / "Assets\\audio\\jump.wav";
+            const auto sfx = Resources::GetRoot() / "Assets/audio/jump.wav";
             Audio::PlayOneShot(sfx.string());
         }
     }

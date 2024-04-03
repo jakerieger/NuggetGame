@@ -32,10 +32,10 @@ namespace Logger {
         time_t Timestamp;
     };
 
-    void LogInfo(const std::string& subsystem, const char* _restrict format, ...);
-    void LogWarning(const std::string& subsystem, const char* _restrict format, ...);
-    void LogError(const std::string& subsystem, const char* _restrict format, ...);
-    void LogFatal(const std::string& subsystem, const char* _restrict format, ...);
+    void LogInfo(const std::string& subsystem, const char* format, ...);
+    void LogWarning(const std::string& subsystem, const char* format, ...);
+    void LogError(const std::string& subsystem, const char* format, ...);
+    void LogFatal(const std::string& subsystem, const char* format, ...);
     void Dump(std::vector<FLogEntry>& out);
     void DumpToDisk(const std::filesystem::path& filename);
 }  // namespace Logger
