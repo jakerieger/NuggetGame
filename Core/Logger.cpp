@@ -3,7 +3,12 @@
 //
 
 #include "Logger.h"
+
+#include "Engine/Resources.h"
+
 #include <cstdarg>
+#include <fstream>
+#include <fmt/core.h>
 
 #define NOW (unsigned long)time(NULL)
 #define RESET_COLOR "\033[0m"
@@ -41,49 +46,74 @@ namespace Logger {
       {ELogLevel::Fatal, "FATAL"},
     };
 
-    static std::string GetTimestamp() {
-        time_t rawtime;
+    static std::string GetTimestamp(time_t rawtime) {
         char buffer[80];
         time(&rawtime);
         const tm* timeinfo = localtime(&rawtime);
-        strftime(buffer, 80, "%I:%M %p", timeinfo);
+        strftime(buffer, 80, "%m/%d/%Y @ %I:%M:%S %p", timeinfo);
         auto timestamp = std::string(buffer);
 
         return timestamp;
     }
 
     static void PrintColoredMessage(const char* colorCode,
+                                    const char* timestamp,
                                     const char* logLevel,
                                     const char* subsystem,
                                     const char* message) {
         printf("%s|%s| [%s] (%s) %s%s\n",
                colorCode,
-               GetTimestamp().c_str(),
+               timestamp,
                logLevel,
                subsystem,
                message,
                RESET_COLOR);
     }
 
+    static std::string FormatEntryString(const FLogEntry& entry) {
+        const char* logLevel        = g_LevelMap.find(entry.Level)->second;
+        const char* subsystem       = entry.Subsystem.c_str();
+        const char* message         = entry.Message.c_str();
+        const std::string timestamp = GetTimestamp(entry.Timestamp);
+        const size_t bufferSize     = snprintf(nullptr,
+                                           0,
+                                           "|%s| [%s] (%s) %s",
+                                           timestamp.c_str(),
+                                           logLevel,
+                                           subsystem,
+                                           message);
+        const auto buffer           = new char[bufferSize + 1];
+        buffer[bufferSize]          = '\0';
+        sprintf(buffer, "|%s| [%s] (%s) %s", timestamp.c_str(), logLevel, subsystem, message);
+        std::string out = STRDUP(buffer);
+        delete[] buffer;
+        return out;
+    }
+
     static void Log(const FLogEntry& entry) {
         g_LogEntries.push_back(entry);
 
-        const char* logLevel  = g_LevelMap.find(entry.Level)->second;
-        const char* subsystem = entry.Subsystem.c_str();
-        const char* message   = entry.Message.c_str();
+        const char* logLevel        = g_LevelMap.find(entry.Level)->second;
+        const char* subsystem       = entry.Subsystem.c_str();
+        const char* message         = entry.Message.c_str();
+        const std::string timestamp = GetTimestamp(entry.Timestamp);
 
         switch (entry.Level) {
             case ELogLevel::Info: {
-                PrintColoredMessage(WHITE_COLOR, logLevel, subsystem, message);
+                PrintColoredMessage(WHITE_COLOR, timestamp.c_str(), logLevel, subsystem, message);
             } break;
             case ELogLevel::Warning: {
-                PrintColoredMessage(YELLOW_COLOR, logLevel, subsystem, message);
+                PrintColoredMessage(YELLOW_COLOR, timestamp.c_str(), logLevel, subsystem, message);
             } break;
             case ELogLevel::Error: {
-                PrintColoredMessage(RED_COLOR, logLevel, subsystem, message);
+                PrintColoredMessage(RED_COLOR, timestamp.c_str(), logLevel, subsystem, message);
             } break;
             case ELogLevel::Fatal: {
-                PrintColoredMessage(BOLD_RED_COLOR, logLevel, subsystem, message);
+                PrintColoredMessage(BOLD_RED_COLOR,
+                                    timestamp.c_str(),
+                                    logLevel,
+                                    subsystem,
+                                    message);
             } break;
         }
     }
@@ -135,7 +165,32 @@ namespace Logger {
         va_end(args);
     }
 
-    void Dump(std::vector<FLogEntry>& out) {}
+    std::vector<FLogEntry> Dump() { return g_LogEntries; }
 
-    void DumpToDisk(const std::filesystem::path& filename) {}
+    void DumpToDisk() {
+        namespace fs = std::filesystem;
+        std::string logOut;
+
+        // Set log timestamp as first entry timestamp
+        time_t logTimestamp = g_LogEntries.at(0).Timestamp;
+
+        for (auto& entry : g_LogEntries) {
+            logOut += FormatEntryString(entry);
+            logOut += '\n';
+        }
+
+        const fs::path logsDir = Resources::GetRoot() / "Logs";
+        if (!exists(logsDir)) {
+            create_directory(logsDir);
+        }
+        const auto filenameFmt = fmt::format("NuggetGame_{}.txt", logTimestamp);
+        const auto filename    = logsDir / filenameFmt;
+
+        if (std::ofstream outputFile(filename); outputFile.is_open()) {
+            outputFile << logOut;
+            outputFile.close();
+        } else {
+            LogFatal(Subsystems::RUNTIME, "Could not write log file to disk.");
+        }
+    }
 }  // namespace Logger

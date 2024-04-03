@@ -89,5 +89,10 @@ int main(int argc, char* argv[]) {
         Application::RunApp(app);
     }
 
+// Dump logs for debugging
+#ifndef NDEBUG
+    Logger::DumpToDisk();
+#endif
+
     return 0;
 }

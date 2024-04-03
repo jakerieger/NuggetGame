@@ -135,8 +135,8 @@ namespace Audio {
         // Wait until sound has finished playing to delete the buffers
         // TODO: Figure out a way to do this asynchronously or with threads
 
-        // alDeleteSources(1, &alSource);
-        // alDeleteBuffers(1, &alSampleSet);
+        alDeleteSources(1, &alSource);
+        alDeleteBuffers(1, &alSampleSet);
     }
 
     void Shutdown() {

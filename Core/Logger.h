@@ -36,6 +36,6 @@ namespace Logger {
     void LogWarning(const std::string& subsystem, const char* format, ...);
     void LogError(const std::string& subsystem, const char* format, ...);
     void LogFatal(const std::string& subsystem, const char* format, ...);
-    void Dump(std::vector<FLogEntry>& out);
-    void DumpToDisk(const std::filesystem::path& filename);
+    std::vector<FLogEntry> Dump();
+    void DumpToDisk();
 }  // namespace Logger
