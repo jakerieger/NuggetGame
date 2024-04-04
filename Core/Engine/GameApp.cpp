@@ -3,7 +3,6 @@
 //
 
 #include "GameApp.h"
-
 #include "AudioContext.h"
 #include "Camera.h"
 #include "GraphicsContext.h"
