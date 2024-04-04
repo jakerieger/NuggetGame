@@ -27,7 +27,7 @@ Nugget Game relies on the following third party libraries to compile successfull
 - [OpenAL Soft](https://github.com/kcat/openal-soft)
 - [RmlUi](https://github.com/mikke89/RmlUi)
 
-These should be installed via [vcpkg]() for the smoothest build chain setup process.
+These should be installed via [vcpkg](https://vcpkg.io/en/) for the smoothest build chain setup process.
 
 ## ℹ️ Contributions
 

@@ -38,14 +38,14 @@ void NuggetGame::Startup() {
     auto floor     = GameObject::Create<Floor>("floor");
 
     testScene->AddGameObject<Nugget>(nugget);
-    // testScene->AddGameObject<Floor>(floor);
+    testScene->AddGameObject<Floor>(floor);
 
     AddScene(testScene);
     LoadScene("Test");
 
     const auto bgMusicPath =
       Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "gameplay.wav");
-    Audio::PlayLoop(bgMusicPath.string(), 0.5f);
+    Audio::PlayLoop(bgMusicPath.string(), 0.33f);
 }
 
 void NuggetGame::Cleanup() {}

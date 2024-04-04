@@ -20,7 +20,7 @@ Nugget::Nugget(const std::string& name) : IGameObject(name) {
     m_Rigidbody->SetParent(this);
 
     m_Transform.SetScale(2.f, 2.f);
-    m_Transform.SetPosition(0.f, 4.f);
+    m_Transform.SetPosition(0.f, 6.f);
 
     RegisterComponent(m_SpriteRenderer);
     RegisterComponent(m_Rigidbody);

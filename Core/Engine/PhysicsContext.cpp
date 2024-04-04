@@ -19,7 +19,7 @@ namespace Physics {
         // Floor
         {
             b2BodyDef groundbodyDef;
-            groundbodyDef.position.Set(0.f, 0.5f);
+            groundbodyDef.position.Set(0.f, 4.5f);
 
             const auto groundBody = g_World.CreateBody(&groundbodyDef);
             b2PolygonShape groundBox;
