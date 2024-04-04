@@ -108,7 +108,7 @@ namespace Audio {
         Logger::LogInfo(Logger::Subsystems::AUDIO, "Audio subsystem initialized.");
     }
 
-    static std::tuple<unsigned int, unsigned int> PlaySoundFile(const std::string& filename) {
+    static std::tuple<u32, u32> PlaySoundFile(const std::string& filename) {
         AudioFile<f32> oneShot;
         oneShot.shouldLogErrorsToConsole(false);
         if (!oneShot.load(filename)) {
@@ -118,8 +118,8 @@ namespace Audio {
         }
 
         const auto samples = oneShot.samples[0];
-        unsigned int alSource;
-        unsigned int alSampleSet;
+        u32 alSource;
+        u32 alSampleSet;
 
         alGenSources(1, &alSource);
         alGenBuffers(1, &alSampleSet);
@@ -137,7 +137,7 @@ namespace Audio {
         return std::make_tuple(alSource, alSampleSet);
     }
 
-    static void Cleanup(const unsigned int source, const unsigned int buffer) {
+    static void Cleanup(const u32 source, const u32 buffer) {
         ALint sourceState;
         do {
             alGetSourcei(source, AL_SOURCE_STATE, &sourceState);
@@ -147,9 +147,9 @@ namespace Audio {
     }
 
     void PlayOneShot(const std::string& filename) {
-        const std::tuple<unsigned int, unsigned int> result = PlaySoundFile(filename);
-        const auto source                                   = std::get<0>(result);
-        const auto buffer                                   = std::get<1>(result);
+        const std::tuple<u32, u32> result = PlaySoundFile(filename);
+        const auto source                 = std::get<0>(result);
+        const auto buffer                 = std::get<1>(result);
 
         auto cleanupThread = std::thread(Cleanup, source, buffer);
         cleanupThread.detach();
