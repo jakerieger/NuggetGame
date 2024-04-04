@@ -53,7 +53,10 @@ void ARigidbody::FixedUpdate(FSceneContext& sceneContext) {
     transform->SetRotation(glm::degrees(m_Body->GetAngle()));
 }
 
-void ARigidbody::Destroyed(FSceneContext& sceneContext) { IComponent::Destroyed(sceneContext); }
+void ARigidbody::Destroyed(FSceneContext& sceneContext) {
+    IComponent::Destroyed(sceneContext);
+    Physics::GetWorld()->DestroyBody(m_Body);
+}
 
 void ARigidbody::AddImpulse(glm::vec2 impulse) const {
     const auto transform = GetParent()->GetTransform();

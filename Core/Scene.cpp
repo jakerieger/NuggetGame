@@ -6,7 +6,6 @@
 #include "Engine/GraphicsContext.h"
 #include "Interfaces/Drawable.h"
 
-#include <iostream>
 #include <utility>
 #include <glad/glad.h>
 

@@ -55,6 +55,7 @@ void Nugget::FixedUpdate(FSceneContext& sceneContext) {
 void Nugget::Destroyed(FSceneContext& sceneContext) {
     IGameObject::Destroyed(sceneContext);
     m_SpriteRenderer->Destroyed(sceneContext);
+    m_Rigidbody->Destroyed(sceneContext);
     delete m_SpriteRenderer;
 }
 
