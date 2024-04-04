@@ -1,9 +1,9 @@
-# Nugget Game
+# <img src="Assets/sprites/nugget.png" /> Nugget Game
 
 **Nugget Game** is a 2D platform physics puzzle game for Windows and Linux. Solve the puzzles to reach the sauce at
 the end of each level.
 
-## Structure
+## 🏗️ Structure
 
 This repository contains the following subdirectories:
 
@@ -13,25 +13,7 @@ This repository contains the following subdirectories:
 - [Lib](Lib) - Third party libraries
 - [Packer](Packer) - Asset packing and unpacking source
 
-## Building
-
-The general process for compiling and running Nugget Game is as follows:
-
-1. Build `Core` and `Packer` static libraries
-2. Copy `Assets` directory to build directory
-3. Build and run `NugPak` executable to pack game assets
-4. Build and run `NuggetGame` executable to launch the game
-
-The only files and folders actually needed to run the game after the above steps
-have been completed are:
-
-- `Assets/`
-- `Data/`
-- `glfw3.dll`
-- `lz4.dll` (`lz4d.dll` for debug)
-- `NuggetGame.exe`
-
-## Dependencies
+## 📚 Dependencies
 
 Nugget Game relies on the following third party libraries to compile successfully:
 
@@ -41,12 +23,15 @@ Nugget Game relies on the following third party libraries to compile successfull
 - [glm](https://github.com/g-truc/glm)
 - [glad](https://glad.dav1d.de/)
 - [stb_image](https://github.com/nothings/stb/blob/master/stb_image.h)
-- [fmt](#)
-- [OpenAL]()
-- [RmlUi]()
+- [fmt](https://github.com/fmtlib/fmt)
+- [OpenAL Soft](https://github.com/kcat/openal-soft)
+- [RmlUi](https://github.com/mikke89/RmlUi)
 
-## Contributions
+These should be installed via [vcpkg]() for the smoothest build chain setup process.
 
-Nugget Game is open to the public for viewing, modifying, and borrowing the core engine code. The project itself
+## ℹ️ Contributions
+
+Nugget Game is open to the public for viewing, modifying, and borrowing the core engine code (found in [Core](Core). The
+project itself
 is not accepting contributions, however. Please do not submit pull requests as they will immediately be
 closed. Issues are more than welcome. See the [license](LICENSE.md) for more details.
