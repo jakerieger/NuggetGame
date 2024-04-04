@@ -9,6 +9,7 @@
 #include <AL/al.h>
 #include <AL/alext.h>
 #include <AudioFile.h>
+#include <future>
 
 namespace Audio {
     ALCdevice* g_Device;
@@ -107,7 +108,7 @@ namespace Audio {
         Logger::LogInfo(Logger::Subsystems::AUDIO, "Audio subsystem initialized.");
     }
 
-    void PlayOneShot(const std::string& filename) {
+    static std::tuple<unsigned int, unsigned int> PlaySoundFile(const std::string& filename) {
         AudioFile<f32> oneShot;
         oneShot.shouldLogErrorsToConsole(false);
         if (!oneShot.load(filename)) {
@@ -133,11 +134,25 @@ namespace Audio {
 
         alSourcePlay(alSource);
 
-        // Wait until sound has finished playing to delete the buffers
-        // TODO: Figure out a way to do this asynchronously or with threads
+        return std::make_tuple(alSource, alSampleSet);
+    }
 
-        alDeleteSources(1, &alSource);
-        alDeleteBuffers(1, &alSampleSet);
+    static void Cleanup(const unsigned int source, const unsigned int buffer) {
+        ALint sourceState;
+        do {
+            alGetSourcei(source, AL_SOURCE_STATE, &sourceState);
+        } while (sourceState == AL_PLAYING);
+        alDeleteSources(1, &source);
+        alDeleteBuffers(1, &buffer);
+    }
+
+    void PlayOneShot(const std::string& filename) {
+        const std::tuple<unsigned int, unsigned int> result = PlaySoundFile(filename);
+        const auto source                                   = std::get<0>(result);
+        const auto buffer                                   = std::get<1>(result);
+
+        auto cleanupThread = std::thread(Cleanup, source, buffer);
+        cleanupThread.detach();
     }
 
     void Shutdown() {

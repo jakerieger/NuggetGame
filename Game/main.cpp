@@ -8,7 +8,6 @@
 #include "Engine/GraphicsContext.h"
 #include "Engine/Resources.h"
 #include "GameObject.h"
-#include "Level.h"
 #include "Logger.h"
 
 #include <filesystem>
@@ -89,10 +88,8 @@ int main(int argc, char* argv[]) {
         Application::RunApp(app);
     }
 
-// Dump logs for debugging
-#ifndef NDEBUG
+    // Dump logs for debugging
     Logger::DumpToDisk();
-#endif
 
     return 0;
 }

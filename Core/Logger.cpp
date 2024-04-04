@@ -190,7 +190,7 @@ namespace Logger {
         if (!exists(logsDir)) {
             create_directory(logsDir);
         }
-        const auto filenameFmt = fmt::format("NuggetGame_{}.txt", logTimestamp);
+        const auto filenameFmt = fmt::format("NuggetGame_{}.log", logTimestamp);
         const auto filename    = logsDir / filenameFmt;
 
         if (std::ofstream outputFile(filename); outputFile.is_open()) {
