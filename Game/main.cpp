@@ -9,6 +9,8 @@
 #include "Engine/Resources.h"
 #include "GameObject.h"
 #include "Logger.h"
+#include "Engine/GameUI.h"
+#include "UI/PauseMenu.h"
 
 #include <filesystem>
 #include <fmt/format.h>
@@ -24,6 +26,9 @@ public:
     void Startup() override;
     void Cleanup() override;
     void OnKeyDown(FKeyEvent& event) override;
+
+private:
+    Rml::ElementDocument* m_PauseMenu = nullptr;
 };
 
 void NuggetGame::Startup() {
@@ -46,8 +51,15 @@ void NuggetGame::OnKeyDown(FKeyEvent& event) {
     if (event.KeyCode == KeyCode::E) {
         if (Paused()) {
             SetPaused(false);
+            if (m_PauseMenu) {
+                UI::CloseDocument(m_PauseMenu);
+            }
         } else {
             SetPaused(true);
+            m_PauseMenu = UI::CreateDocument(PauseMenu::Code);
+            if (m_PauseMenu) {
+                m_PauseMenu->Show();
+            }
         }
         const auto windowTitle = fmt::format("Nugget Game {}", Paused() ? "(Paused)" : "");
         glfwSetWindowTitle(Graphics::GetWindow(), windowTitle.c_str());

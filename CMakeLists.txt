@@ -87,6 +87,7 @@ add_library(Core STATIC
         Core/Engine/AudioContext.h
         Core/Level.cpp
         Core/Level.h
+        Game/UI/PauseMenu.h
 )
 
 # ============[ PACKAGES ]============ #

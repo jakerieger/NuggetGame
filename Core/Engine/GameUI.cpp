@@ -14,82 +14,6 @@
 #include <RmlUi/RmlUi_Platform_GLFW.h>
 #include <RmlUi/RmlUi_Renderer_GL3.h>
 
-static const std::string TestDocument = R""(<rml>
-<head>
-	<title>Window</title>
-	<style>
-		body {
-			width: 100vw;
-			height: 100vh;
-			margin: auto;
-            font-family: Share Tech Mono;
-            font-size: 20dp;
-		}
-
-        .background {
-            background-color: #000000;
-            opacity: 0.5;
-			width: 100vw;
-			height: 100vh;
-            text-align: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
-
-        .panel {
-            width: 300dp;
-            height: 200dp;
-            text-align: center;
-            padding: 20dp;
-        }
-
-        .container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-        }
-
-        input[type="button"] {
-            width: 300dp;
-            min-height: 30dp;
-            background-color: #202020;
-            line-height: 20dp;
-            text-align: center;
-            padding: 16dp;
-        }
-
-        form {
-            width: 300dp;
-            background-color: #e6b038;
-            display: flex;
-            flex-direction: column;
-        }
-
-        h1 {
-            font-size: 30dp;
-            font-effect: glow(2dp #ed5);
-        }
-	</style>
-</head>
-<body class="window">
-    <div class="background"/>
-    <div class="container">
-        <div>
-            <div class="panel">
-                <form>
-                    <h1>PAUSE MENU</h1>
-                    <input type="button">MAIN MENU</input>
-                    <input type="button"button>QUIT</input>
-                </form>
-            </div>
-        </div>
-    </div>
-</body>
-</rml>)"";
-
 namespace UI {
     SystemInterface_GLFW* g_SysInterface   = nullptr;
     RenderInterface_GL3* g_RenderInterface = nullptr;
@@ -126,19 +50,11 @@ namespace UI {
         }
 
         // Load font
-        if (!Rml::LoadFontFace(Utilities::JoinPath(Resources::GetRoot(),
-                                                   "Assets",
-                                                   "fonts",
-                                                   "ShareTechMono-Regular.ttf")
-                                 .string(),
-                               false)) {
+        if (!Rml::LoadFontFace(
+              Utilities::JoinPath(Resources::GetRoot(), "Assets", "fonts", "Square.ttf").string(),
+              false)) {
             throw std::runtime_error("Failed to load font");
         }
-
-        // if (Rml::ElementDocument* document = g_Context->LoadDocumentFromMemory(TestDocument, ""))
-        // {
-        //     document->Show();
-        // }
 
         Logger::LogInfo(Logger::Subsystems::UI, "UI subsystem initialized.");
     }
@@ -163,5 +79,10 @@ namespace UI {
         delete g_RenderInterface;
     }
 
-    void LoadDocument(const std::string& source) {}
+    Rml::ElementDocument* CreateDocument(const std::string& source) {
+        Rml::ElementDocument* document = g_Context->LoadDocumentFromMemory(source, "");
+        return document;
+    }
+
+    void CloseDocument(Rml::ElementDocument* document) { document->Close(); }
 }  // namespace UI

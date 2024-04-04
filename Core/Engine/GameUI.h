@@ -6,6 +6,8 @@
 
 #include "STL.h"
 
+#include <RmlUi/Core/ElementDocument.h>
+
 namespace UI {
     void Initialize();
     void Begin();
@@ -13,5 +15,6 @@ namespace UI {
     void End();
     void Shutdown();
 
-    void LoadDocument(const std::string& source);
+    Rml::ElementDocument* CreateDocument(const std::string& source);
+    void CloseDocument(Rml::ElementDocument* document);
 }  // namespace UI
