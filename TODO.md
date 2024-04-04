@@ -13,8 +13,38 @@
 
 #### Optional
 
-- [ ] Script for building and copying release files so game builds can be easily deployed
+- [x] Script for building and copying release files so game builds can be easily deployed
 
 ### 3/29/24
 
 - [ ] Revamp Tilemap class to read from on big tilemap texture
+
+### 4/4/24
+
+**Notes**:
+
+Tilemaps can be handled by exporting the list of tile IDs from Tiled to a CSV format.
+Read in the map width and height with origin 0,0 at bottom center of the screen.
+
+Create a list of Sprite assets with their respective positions like so:
+
+```c++
+struct FTile {
+    Packer::Schema::Sprite sprite;
+    std::vector<gml::vec2> positions;
+};
+```
+
+Then batch the sprites of the same type and render with SpriteBatch.
+
+```c++
+for (FTile& tile : tiles) {
+    for (glm::vec2& pos : tile.positions) {
+        // SpriteBatch renderer
+    }
+}
+```
+
+For collision, there are two options. The most efficient would be the use an edge collider and generate
+positions seperate from the tilemap. The other option is to generate box colliders for each tile
+which would be easier to implement but sacrifices performance a little bit.
