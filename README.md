@@ -31,7 +31,9 @@ These should be installed via [vcpkg]() for the smoothest build chain setup proc
 
 ## ℹ️ Contributions
 
-Nugget Game is open to the public for viewing, modifying, and borrowing the core engine code (found in [Core](Core). The
+Nugget Game is open to the public for viewing, modifying, and borrowing the core engine code (found
+in [Core](Core)).
+The
 project itself
 is not accepting contributions, however. Please do not submit pull requests as they will immediately be
 closed. Issues are more than welcome. See the [license](LICENSE.md) for more details.
