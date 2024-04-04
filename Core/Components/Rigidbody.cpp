@@ -64,7 +64,7 @@ void ARigidbody::AddImpulse(glm::vec2 impulse) const {
 void ARigidbody::AddTorque(const float torque) const { m_Body->ApplyTorque(torque, true); }
 
 bool ARigidbody::IsGrounded() const {
-    static constexpr f32 TOLERANCE = 1.f;
+    static constexpr f32 TOLERANCE = 0.01f;
     if (m_Body->GetLinearVelocity().y < -TOLERANCE || m_Body->GetLinearVelocity().y > TOLERANCE)
         return false;
 

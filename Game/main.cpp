@@ -9,6 +9,7 @@
 #include "Engine/Resources.h"
 #include "GameObject.h"
 #include "Logger.h"
+#include "Engine/AudioContext.h"
 #include "Engine/GameUI.h"
 #include "UI/PauseMenu.h"
 
@@ -41,6 +42,10 @@ void NuggetGame::Startup() {
 
     AddScene(testScene);
     LoadScene("Test");
+
+    const auto bgMusicPath =
+      Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "gameplay.wav");
+    Audio::PlayLoop(bgMusicPath.string(), 0.5f);
 }
 
 void NuggetGame::Cleanup() {}
@@ -48,7 +53,7 @@ void NuggetGame::Cleanup() {}
 void NuggetGame::OnKeyDown(FKeyEvent& event) {
     IInputListener::OnKeyDown(event);
 
-    if (event.KeyCode == KeyCode::E) {
+    if (event.KeyCode == KeyCode::Escape) {
         if (Paused()) {
             SetPaused(false);
             if (m_PauseMenu) {
@@ -69,8 +74,6 @@ void NuggetGame::OnKeyDown(FKeyEvent& event) {
         Graphics::ToggleFullscreen();
     } else if (event.KeyCode == KeyCode::R) {
         LoadScene("Test");
-    } else if (event.KeyCode == KeyCode::Escape) {
-        Graphics::MarkWindowForClose();
     }
 }
 

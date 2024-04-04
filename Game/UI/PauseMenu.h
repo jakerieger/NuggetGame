@@ -46,7 +46,7 @@ namespace PauseMenu {
     <div class="background"/>
     <div class="container">
         <h1>PAUSED</h1>
-        <p>Press <b>[E]</b> to resume</p>
+        <p>Press <b>[ESC]</b> to resume</p>
     </div>
 </body>
 </rml>)"";

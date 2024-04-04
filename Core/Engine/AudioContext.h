@@ -8,6 +8,7 @@
 
 namespace Audio {
     void Initialize();
-    void PlayOneShot(const std::string& filename);
+    void PlayOneShot(const std::string& filename, f32 gain = 1.f);
+    void PlayLoop(const std::string& filename, f32 gain = 1.f);
     void Shutdown();
 }  // namespace Audio

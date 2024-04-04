@@ -39,6 +39,12 @@ void Nugget::Start(FSceneContext& sceneContext) {
 void Nugget::Update(float deltaTime, FSceneContext& sceneContext) {
     IGameObject::Update(deltaTime, sceneContext);
     m_SpriteRenderer->Update(deltaTime, sceneContext);
+
+    if (m_Rigidbody->IsGrounded() && m_Falling) {
+        m_Falling = false;
+        Audio::PlayOneShot(
+          (Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "land.wav")).string());
+    }
 }
 
 void Nugget::FixedUpdate(FSceneContext& sceneContext) {
@@ -58,6 +64,7 @@ void Nugget::OnKeyDown(FKeyEvent& event) {
     if (event.KeyCode == KeyCode::Space) {
         if (m_Rigidbody->IsGrounded()) {
             m_Rigidbody->AddImpulse({0.f, 5000.f});
+            m_Falling = true;
             // Play jump sound effect
             const auto sfxPath =
               Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "jump.wav");

@@ -5,6 +5,7 @@
 #include "AudioContext.h"
 
 #include "Logger.h"
+#include "Utilities.inl"
 
 #include <AL/al.h>
 #include <AL/alext.h>
@@ -108,7 +109,8 @@ namespace Audio {
         Logger::LogInfo(Logger::Subsystems::AUDIO, "Audio subsystem initialized.");
     }
 
-    static std::tuple<u32, u32> PlaySoundFile(const std::string& filename) {
+    static std::tuple<u32, u32>
+    PlaySoundFile(const std::string& filename, const bool loop = false, const f32 gain = 1.f) {
         AudioFile<f32> oneShot;
         oneShot.shouldLogErrorsToConsole(false);
         if (!oneShot.load(filename)) {
@@ -117,18 +119,39 @@ namespace Audio {
                              filename.c_str());
         }
 
-        const auto samples = oneShot.samples[0];
+        ALenum format;
+        if (oneShot.isMono()) {
+            format = AL_FORMAT_MONO_FLOAT32;
+        } else {
+            format = AL_FORMAT_STEREO_FLOAT32;
+        }
+
         u32 alSource;
         u32 alSampleSet;
+        std::vector<f32> samples;
+        samples.reserve(oneShot.getNumSamplesPerChannel() * oneShot.getNumChannels());
+
+        if (oneShot.isMono()) {
+            samples = oneShot.samples.at(0);
+        } else {
+            samples = Utilities::InterleaveVectors(oneShot.samples.at(0), oneShot.samples.at(1));
+        }
+
+        samples.resize(
+          Utilities::MakeMultiple(static_cast<i32>(samples.size()),
+                                  static_cast<i32>(sizeof(f32)) * oneShot.getNumChannels()),
+          0.f);
 
         alGenSources(1, &alSource);
         alGenBuffers(1, &alSampleSet);
         alBufferData(alSampleSet,
-                     AL_FORMAT_MONO_FLOAT32,
+                     format,
                      samples.data(),
                      static_cast<ALsizei>(samples.size()),
                      static_cast<ALsizei>(oneShot.getSampleRate()));
         alSourcei(alSource, AL_BUFFER, static_cast<ALint>(alSampleSet));
+        alSourcei(alSource, AL_LOOPING, loop);
+        alSourcef(alSource, AL_GAIN, gain);
 
         oneShot.samples.clear();
 
@@ -146,13 +169,19 @@ namespace Audio {
         alDeleteBuffers(1, &buffer);
     }
 
-    void PlayOneShot(const std::string& filename) {
-        const std::tuple<u32, u32> result = PlaySoundFile(filename);
+    void PlayOneShot(const std::string& filename, const f32 gain) {
+        const std::tuple<u32, u32> result = PlaySoundFile(filename, false, gain);
         const auto source                 = std::get<0>(result);
         const auto buffer                 = std::get<1>(result);
 
         auto cleanupThread = std::thread(Cleanup, source, buffer);
         cleanupThread.detach();
+    }
+
+    void PlayLoop(const std::string& filename, const f32 gain) {
+        const std::tuple<u32, u32> result = PlaySoundFile(filename, true, gain);
+        const auto source                 = std::get<0>(result);
+        const auto buffer                 = std::get<1>(result);
     }
 
     void Shutdown() {

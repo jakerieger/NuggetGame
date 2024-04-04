@@ -196,4 +196,31 @@ namespace Utilities {
     fs::path JoinPath(const fs::path& root, const std::string& first, const Args&... rest) {
         return JoinPath(root / first, rest...);
     }
+
+    template<typename T>
+    std::vector<T> InterleaveVectors(const std::vector<T>& vec1, const std::vector<T>& vec2) {
+        std::vector<T> result;
+        const size_t size = std::min(vec1.size(), vec2.size());
+
+        for (size_t i = 0; i < size; ++i) {
+            result.push_back(vec1[i]);
+            result.push_back(vec2[i]);
+        }
+
+        // Add any remaining elements from the longer vector
+        for (size_t i = size; i < vec1.size(); ++i) {
+            result.push_back(vec1[i]);
+        }
+        for (size_t i = size; i < vec2.size(); ++i) {
+            result.push_back(vec2[i]);
+        }
+
+        return result;
+    }
+
+    inline i32 MakeMultiple(const i32 number, const i32 multiple) {
+        const i32 remainder  = number % multiple;
+        const i32 difference = multiple - remainder;
+        return number + difference;
+    }
 }  // namespace Utilities

@@ -25,4 +25,7 @@ public:
 
     ASpriteRenderer* m_SpriteRenderer;
     ARigidbody* m_Rigidbody;
+
+private:
+    bool m_Falling = false;
 };
