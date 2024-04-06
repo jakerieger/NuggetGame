@@ -101,7 +101,7 @@ namespace Camera {
     }
 
     static constexpr f32 k_OffsetY    = -5.f;
-    static constexpr f32 k_LerpFactor = 0.028f;
+    static constexpr f32 k_LerpFactor = 0.02f;
 
     glm::mat4 BuildViewMatrix() {
         auto view = glm::mat4(1.f);

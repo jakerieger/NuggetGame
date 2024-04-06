@@ -23,7 +23,9 @@ namespace Graphics {
     bool g_IsFullscreen = false;
     bool g_EnableVsync  = false;
 
-    GLFWwindow* GetWindow() { return g_Window.get(); }
+    GLFWwindow* GetWindow() {
+        return g_Window.get();
+    }
 
     void UpdateFrameTime() {
         const auto currentFrame = static_cast<float>(glfwGetTime());
@@ -31,15 +33,25 @@ namespace Graphics {
         g_LastFrame             = currentFrame;
     }
 
-    float GetDeltaTime() { return g_DeltaTime; }
+    float GetDeltaTime() {
+        return g_DeltaTime;
+    }
 
-    void AddDrawCall() { g_DrawCalls++; }
+    void AddDrawCall() {
+        g_DrawCalls++;
+    }
 
-    void ResetDrawCalls() { g_DrawCalls = 0; }
+    void ResetDrawCalls() {
+        g_DrawCalls = 0;
+    }
 
-    u32 GetDrawCalls() { return g_DrawCalls; }
+    u32 GetDrawCalls() {
+        return g_DrawCalls;
+    }
 
-    float GetFrameRate() { return 1.f / GetDeltaTime(); }
+    float GetFrameRate() {
+        return 1.f / GetDeltaTime();
+    }
 
     void ToggleWireframe() {
         if (g_IsWireframe) {
@@ -91,7 +103,9 @@ namespace Graphics {
         g_EnableVsync = !g_EnableVsync;
     }
 
-    void MarkWindowForClose() { glfwSetWindowShouldClose(GetWindow(), true); }
+    void MarkWindowForClose() {
+        glfwSetWindowShouldClose(GetWindow(), true);
+    }
 
     std::array<int32_t, 2> GetWindowSize() {
         return {
@@ -149,7 +163,7 @@ namespace Graphics {
 
         GL::FramebufferCallback(g_Window.get(), width, height);
         glfwSetFramebufferSizeCallback(GetWindow(), GL::FramebufferCallback);
-        glfwSwapInterval(1);
+        glfwSwapInterval(0);
         glfwSetInputMode(g_Window.get(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         Logger::LogInfo(Logger::Subsystems::GRAPHICS, "Graphics subsystem initialized.");

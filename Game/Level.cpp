@@ -4,6 +4,7 @@
 
 #include "Level.h"
 #include "Logger.h"
+#include "Engine/PhysicsContext.h"
 
 static constexpr f32 k_TileSize = 2.f;
 
@@ -44,6 +45,14 @@ Level::Level(const std::string& name, const FLevel& levelData) : IGameObject(nam
             // 0 is the empty tile, we can ignore it to save memory
             if (id != 0) {
                 m_TilePositions[id].emplace_back(xPos, yPos);
+
+                // Create the colliders
+                b2BodyDef bodyDef;
+                bodyDef.position.Set(xPos, yPos + 0.5f);
+                const auto body = Physics::GetWorld()->CreateBody(&bodyDef);
+                b2PolygonShape bodyShape;
+                bodyShape.SetAsBox(2.f, 2.f);
+                body->CreateFixture(&bodyShape, 0.f);
             }
         }
     }
