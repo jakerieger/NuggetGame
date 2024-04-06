@@ -126,8 +126,6 @@ add_executable(NuggetGame
         Game/Res/resource.h
         Game/Nugget.cpp
         Game/Nugget.h
-        Game/Floor.cpp
-        Game/Floor.h
         Game/Level.cpp
         Game/Level.h
         Game/Levels.h

@@ -8,6 +8,7 @@
 #include "Components/Tilemap.h"
 #include "Interfaces/GameObject.h"
 #include "Interfaces/Drawable.h"
+#include "Engine/Resources.h"
 
 struct FLevel {
     std::vector<i32> Tiles;
@@ -30,5 +31,7 @@ public:
 private:
     // std::unordered_map<i32, ATilemap*> m_Tilemaps;
     std::vector<std::vector<i32>> m_TileIds;
-    std::unordered_map<i32, std::vector<glm::vec2>> m_TilemapPositions;
+    std::unordered_map<i32, std::vector<glm::vec2>> m_TilePositions;
+    std::vector<ATilemap*> m_Tilemaps;
+    std::unordered_map<i32, Packer::Schemas::Sprite*> m_SpriteMap;
 };

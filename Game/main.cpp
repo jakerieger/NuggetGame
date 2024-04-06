@@ -1,4 +1,3 @@
-#include "Floor.h"
 #include "Engine/GameApp.h"
 #include "Engine/InputCodes.h"
 #include "Nugget.h"
@@ -37,10 +36,10 @@ private:
 void NuggetGame::Startup() {
     auto testScene = Scene::Create("Test");
     auto nugget    = GameObject::Create<Nugget>("nugget");
-    auto floor     = GameObject::Create<Floor>("floor");
+    auto level     = std::make_unique<Level>("Test", Levels::LvlTest);
 
-    testScene->AddGameObject<Nugget>(nugget);
-    testScene->AddGameObject<Floor>(floor);
+    testScene->AddGameObject(nugget);
+    testScene->AddGameObject(level);
 
     AddScene(testScene);
     LoadScene("Test");
@@ -48,8 +47,6 @@ void NuggetGame::Startup() {
     const auto bgMusicPath =
       Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "gameplay.wav");
     Audio::PlayLoop(bgMusicPath.string(), 0.33f);
-
-    Level testLevel("test", Levels::LvlTest);
 }
 
 void NuggetGame::Cleanup() {}
