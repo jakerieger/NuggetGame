@@ -12,10 +12,12 @@
 #include <glm/vec2.hpp>
 
 namespace Physics {
-    static constexpr float GRAVITY = -9.8f;
-    b2World g_World({0.f, GRAVITY});
+    static constexpr float DEFAULT_GRAVITY = -9.8f;
+    b2World g_World({0.f, DEFAULT_GRAVITY});
 
-    void Initialize() {
+    void Initialize(const b2Vec2& gravity) {
+        g_World.SetGravity(gravity);
+
         // Floor
         {
             b2BodyDef groundbodyDef;
@@ -31,26 +33,26 @@ namespace Physics {
 
         // Right wall
         {
-            b2BodyDef rWallDef;
-            rWallDef.position.Set(45.f, 0.f);
-
-            const auto rWallBody = g_World.CreateBody(&rWallDef);
-            b2PolygonShape rWallBox;
-            rWallBox.SetAsBox(1.f, 100.f);
-
-            rWallBody->CreateFixture(&rWallBox, 0.f);
+            // b2BodyDef rWallDef;
+            // rWallDef.position.Set(45.f, 0.f);
+            //
+            // const auto rWallBody = g_World.CreateBody(&rWallDef);
+            // b2PolygonShape rWallBox;
+            // rWallBox.SetAsBox(1.f, 100.f);
+            //
+            // rWallBody->CreateFixture(&rWallBox, 0.f);
         }
 
         // Left wall
         {
-            b2BodyDef lWallDef;
-            lWallDef.position.Set(-45.f, 0.f);
-
-            const auto lWallBody = g_World.CreateBody(&lWallDef);
-            b2PolygonShape lWallBox;
-            lWallBox.SetAsBox(1.f, 100.f);
-
-            lWallBody->CreateFixture(&lWallBox, 0.f);
+            // b2BodyDef lWallDef;
+            // lWallDef.position.Set(-45.f, 0.f);
+            //
+            // const auto lWallBody = g_World.CreateBody(&lWallDef);
+            // b2PolygonShape lWallBox;
+            // lWallBox.SetAsBox(1.f, 100.f);
+            //
+            // lWallBody->CreateFixture(&lWallBox, 0.f);
         }
 
         Logger::LogInfo(Logger::Subsystems::PHYSICS, "Physics subsystem initialized.");
@@ -62,7 +64,9 @@ namespace Physics {
         g_World.Step(timeStep, VELOCITY_ITERS, POSITION_ITERS);
     }
 
-    b2World* GetWorld() { return &g_World; }
+    b2World* GetWorld() {
+        return &g_World;
+    }
 
     void Shutdown() {}
 }  // namespace Physics

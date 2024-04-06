@@ -8,6 +8,8 @@
 #include "Engine/GraphicsContext.h"
 #include "Engine/Resources.h"
 #include "GameObject.h"
+#include "Level.h"
+#include "Levels.h"
 #include "Logger.h"
 #include "Engine/AudioContext.h"
 #include "Engine/GameUI.h"
@@ -46,6 +48,8 @@ void NuggetGame::Startup() {
     const auto bgMusicPath =
       Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "gameplay.wav");
     Audio::PlayLoop(bgMusicPath.string(), 0.33f);
+
+    Level testLevel("test", Levels::LvlTest);
 }
 
 void NuggetGame::Cleanup() {}

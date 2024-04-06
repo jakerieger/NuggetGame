@@ -16,7 +16,10 @@ class ASprite {
 public:
     ASprite() = default;
     void Init();
-    void Draw(u32 texture, const glm::mat4& projection, const glm::mat4& model) const;
+    void Draw(u32 texture,
+              const glm::mat4& view,
+              const glm::mat4& projection,
+              const glm::mat4& model) const;
     void Cleanup() const;
 
 private:
@@ -42,10 +45,13 @@ inline void ASprite::Init() {
     m_Shader->SetInt("u_Sprite", 0);
 }
 
-inline void
-ASprite::Draw(const u32 texture, const glm::mat4& projection, const glm::mat4& model) const {
+inline void ASprite::Draw(const u32 texture,
+                          const glm::mat4& view,
+                          const glm::mat4& projection,
+                          const glm::mat4& model) const {
     m_Shader->Use();
     m_Shader->SetMat4("u_Projection", projection);
+    m_Shader->SetMat4("u_View", view);
     m_Shader->SetMat4("u_Model", model);
 
     glActiveTexture(GL_TEXTURE0);

@@ -43,7 +43,10 @@ void ATilemap::Update(float deltaTime, FSceneContext& sceneContext) {
 }
 
 void ATilemap::Draw(FSceneContext& sceneContext) const {
-    m_SpriteBatch->Draw(m_Sprite, Camera::BuildProjectionMatrix(0.f), m_ModelMatrices.size());
+    m_SpriteBatch->Draw(m_Sprite,
+                        Camera::BuildViewMatrix(),
+                        Camera::BuildProjectionMatrix(0.f),
+                        m_ModelMatrices.size());
 }
 
 void ATilemap::Destroyed(FSceneContext& sceneContext) {

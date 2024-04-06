@@ -31,7 +31,10 @@ void ASpriteRenderer::Update(float deltaTime, FSceneContext& sceneContext) {
 }
 
 void ASpriteRenderer::Draw(FSceneContext& sceneContext, const ATransform* transform) const {
-    m_Sprite->Draw(m_SpriteId, Camera::BuildProjectionMatrix(0.f), transform->GetModelMatrix());
+    m_Sprite->Draw(m_SpriteId,
+                   Camera::BuildViewMatrix(),
+                   Camera::BuildProjectionMatrix(0.f),
+                   transform->GetModelMatrix());
 }
 
 void ASpriteRenderer::Destroyed(FSceneContext& sceneContext) {

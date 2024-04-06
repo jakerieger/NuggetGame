@@ -20,7 +20,9 @@ namespace Application {
     static constexpr float ADJUSTMENT     = 4.f;
     AColor g_ClearColor(0xFF9eb9df);
 
-    bool IsRunning() { return !glfwWindowShouldClose(Graphics::GetWindow()); }
+    bool IsRunning() {
+        return !glfwWindowShouldClose(Graphics::GetWindow());
+    }
 
     static void Shutdown() {
 #ifndef NDEBUG
@@ -148,7 +150,9 @@ namespace Application {
     }
 }  // namespace Application
 
-void IGameApp::AddScene(std::unique_ptr<AScene>& scene) { m_Scenes.push_back(std::move(scene)); }
+void IGameApp::AddScene(std::unique_ptr<AScene>& scene) {
+    m_Scenes.push_back(std::move(scene));
+}
 
 void IGameApp::LoadScene(const std::string& name) {
     const auto scene = GetScene(name);
@@ -177,4 +181,6 @@ void IGameApp::UnloadScene(AScene* scene) {
     scene->SetActive(false);
 }
 
-void IGameApp::SetPaused(const bool paused) { m_Paused = paused; }
+void IGameApp::SetPaused(const bool paused) {
+    m_Paused = paused;
+}

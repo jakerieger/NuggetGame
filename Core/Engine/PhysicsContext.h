@@ -7,7 +7,7 @@
 #include <box2d/box2d.h>
 
 namespace Physics {
-    void Initialize();
+    void Initialize(const b2Vec2& gravity = {0.f, -9.8f});
     void Tick(float timeStep);
     b2World* GetWorld();
     void Shutdown();

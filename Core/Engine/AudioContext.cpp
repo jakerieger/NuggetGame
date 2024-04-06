@@ -137,6 +137,9 @@ namespace Audio {
             samples = Utilities::InterleaveVectors(oneShot.samples.at(0), oneShot.samples.at(1));
         }
 
+        // OpenAL requires that the number of samples be a multiple of the data type size in bytes
+        // (float in this case) * the number of channels. If it's not, this line adds additional
+        // silence at the end of the buffer to make it a multiple.
         samples.resize(
           Utilities::MakeMultiple(static_cast<i32>(samples.size()),
                                   static_cast<i32>(sizeof(f32)) * oneShot.getNumChannels()),

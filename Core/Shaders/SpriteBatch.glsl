@@ -5,11 +5,12 @@ layout(location = 0) in vec4 aVertex;
 layout (location = 1) in mat4 aModel;
 
 uniform mat4 u_Projection;
+uniform mat4 u_View;
 
 out vec2 TexCoord;
 
 void main() {
-    gl_Position = u_Projection * aModel * vec4(aVertex.xy, 0.0, 1.0);
+    gl_Position = u_Projection * u_View * aModel * vec4(aVertex.xy, 0.0, 1.0);
     TexCoord = aVertex.zw;
 }
 

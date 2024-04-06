@@ -11,7 +11,7 @@ Floor::Floor(const std::string& name) : IGameObject(name) {
     static constexpr f32 TILE_SIZE = 2;
     std::vector<glm::vec2> tiles;
 
-    for (auto i = -12; i < 12; i++) {
+    for (auto i = -6; i < 18; i++) {
         tiles.emplace_back(i * 4, 2);
     }
 
@@ -31,7 +31,9 @@ void Floor::Update(const float deltaTime, FSceneContext& sceneContext) {
     m_Tilemap->Update(deltaTime, sceneContext);
 }
 
-void Floor::Draw(FSceneContext& sceneContext) { m_Tilemap->Draw(sceneContext); }
+void Floor::Draw(FSceneContext& sceneContext) {
+    m_Tilemap->Draw(sceneContext);
+}
 
 void Floor::Destroyed(FSceneContext& sceneContext) {
     IGameObject::Destroyed(sceneContext);

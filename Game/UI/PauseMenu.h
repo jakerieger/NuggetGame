@@ -40,13 +40,17 @@ namespace PauseMenu {
         h1 {
             font-size: 50dp;
         }
+
+        .highlight {
+            color: #FF3366;
+        }
 	</style>
 </head>
 <body class="window">
     <div class="background"/>
     <div class="container">
         <h1>PAUSED</h1>
-        <p>Press <b>[ESC]</b> to resume</p>
+        <p>Press <b class="highlight">[ESC]</b> to resume</p>
     </div>
 </body>
 </rml>)"";

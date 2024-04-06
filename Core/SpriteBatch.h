@@ -17,7 +17,7 @@ public:
     ASpriteBatch() = default;
     void Init(const std::vector<glm::mat4>& modelMatrices);
     void UpdateInstances(const std::vector<glm::mat4>& modelMatrices) const;
-    void Draw(u32 texture, const glm::mat4& projection, u32 count) const;
+    void Draw(u32 texture, const glm::mat4& view, const glm::mat4& projection, u32 count) const;
     void Cleanup() const;
 
 private:
@@ -86,8 +86,12 @@ inline void ASpriteBatch::UpdateInstances(const std::vector<glm::mat4>& modelMat
                     modelMatrices.data());
 }
 
-inline void ASpriteBatch::Draw(const u32 texture, const glm::mat4& projection, u32 count) const {
+inline void ASpriteBatch::Draw(const u32 texture,
+                               const glm::mat4& view,
+                               const glm::mat4& projection,
+                               u32 count) const {
     m_Shader->Use();
+    m_Shader->SetMat4("u_View", view);
     m_Shader->SetMat4("u_Projection", projection);
 
     glActiveTexture(GL_TEXTURE0);

@@ -4,6 +4,7 @@
 
 #include "Nugget.h"
 
+#include "Camera.h"
 #include "Utilities.inl"
 #include "Engine/AudioContext.h"
 #include "Engine/InputCodes.h"
@@ -34,6 +35,8 @@ void Nugget::Start(FSceneContext& sceneContext) {
     IGameObject::Start(sceneContext);
     m_SpriteRenderer->Start(sceneContext);
     m_Rigidbody->Start(sceneContext);
+
+    Camera::Follow(this);
 }
 
 void Nugget::Update(float deltaTime, FSceneContext& sceneContext) {
