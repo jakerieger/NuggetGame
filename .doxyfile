@@ -4,7 +4,7 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
-PROJECT_NAME           = Nugget Game
+PROJECT_NAME           = Nugget Engine
 PROJECT_NUMBER         = 0.0.1
 PROJECT_BRIEF          = "Open source 2D game engine"
 PROJECT_LOGO           = Assets/sprites/nugget.png
@@ -15,7 +15,7 @@ ALLOW_UNICODE_NAMES    = NO
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
 REPEAT_BRIEF           = YES
-USE_MDFILE_AS_MAINPAGE = YES
+USE_MDFILE_AS_MAINPAGE = NO
 ABBREVIATE_BRIEF       = "The $name class" \
                          "The $name widget" \
                          "The $name file" \
@@ -123,8 +123,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # Configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = ./ \
-                         README.md
+INPUT                  = ./Core
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                          *.cc \
@@ -173,6 +172,8 @@ FILE_PATTERNS          = *.c \
 RECURSIVE              = YES
 EXCLUDE                = Assets \
                          Lib \
+                         Game \
+                         Packer \
                          imgui \
                          build \ 
                          .github \

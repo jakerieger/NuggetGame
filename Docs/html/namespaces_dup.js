@@ -41,11 +41,8 @@ var namespaces_dup =
     [ "Graphics", "namespace_graphics.html", "namespace_graphics" ],
     [ "Input", "namespace_input.html", "namespace_input" ],
     [ "KeyCode", "namespace_key_code.html", null ],
-    [ "Levels", "namespace_levels.html", null ],
     [ "Logger", "namespace_logger.html", "namespace_logger" ],
     [ "MouseButton", "namespace_mouse_button.html", null ],
-    [ "Packer", "namespace_packer.html", "namespace_packer" ],
-    [ "PauseMenu", "namespace_pause_menu.html", null ],
     [ "Physics", "namespace_physics.html", [
       [ "g_World", "namespace_physics.html#aa2abc7c2a60c6ad9cb12801ff40617e3", null ],
       [ "GetWorld", "namespace_physics.html#a596a1d30898c1233d3726b3232489218", null ],
@@ -98,9 +95,6 @@ var namespaces_dup =
       [ "g_Context", "namespace_u_i.html#a021ab0176e874d534a63669790a7329b", null ],
       [ "g_RenderInterface", "namespace_u_i.html#ad7c50660ea90eccbce852bf3436a8a3d", null ],
       [ "g_SysInterface", "namespace_u_i.html#af2aa3b5b9343f0e5c9f710423f76593a", null ]
-    ] ],
-    [ "Unpacker", "namespace_unpacker.html", [
-      [ "UnpackSprites", "namespace_unpacker.html#a7019ffb28a43181490f70ceefba498aa", null ]
     ] ],
     [ "Utilities", "namespace_utilities.html", [
       [ "BitCompare", "namespace_utilities.html#a907802c924d421bc2167858697fcf460", null ],

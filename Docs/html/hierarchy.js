@@ -7,25 +7,16 @@ var hierarchy =
     [ "Graphics::GL::FDestroyWindow", "struct_graphics_1_1_g_l_1_1_f_destroy_window.html", null ],
     [ "FKeyEvent", "struct_f_key_event.html", null ],
     [ "Input::FKeyState", "struct_input_1_1_f_key_state.html", null ],
-    [ "FLevel", "struct_f_level.html", null ],
     [ "Logger::FLogEntry", "struct_logger_1_1_f_log_entry.html", null ],
     [ "FMouseEvent", "struct_f_mouse_event.html", null ],
     [ "FMouseMoveEvent", "struct_f_mouse_move_event.html", null ],
     [ "FSceneContext", "struct_f_scene_context.html", null ],
     [ "FScrollEvent", "struct_f_scroll_event.html", null ],
     [ "FShaderSource", "struct_f_shader_source.html", null ],
-    [ "IDrawable", "class_i_drawable.html", [
-      [ "Level", "class_level.html", null ],
-      [ "Nugget", "class_nugget.html", null ]
-    ] ],
+    [ "IDrawable", "class_i_drawable.html", null ],
     [ "IInputListener", "class_i_input_listener.html", [
-      [ "IGameApp", "class_i_game_app.html", [
-        [ "NuggetGame", "class_nugget_game.html", null ]
-      ] ],
-      [ "IGameObject", "class_i_game_object.html", [
-        [ "Level", "class_level.html", null ],
-        [ "Nugget", "class_nugget.html", null ]
-      ] ]
+      [ "IGameApp", "class_i_game_app.html", null ],
+      [ "IGameObject", "class_i_game_object.html", null ]
     ] ],
     [ "ILifetime", "class_i_lifetime.html", [
       [ "AScene", "class_a_scene.html", null ],
@@ -37,6 +28,5 @@ var hierarchy =
       ] ],
       [ "IGameObject", "class_i_game_object.html", null ]
     ] ],
-    [ "IRenderPass", "class_i_render_pass.html", null ],
-    [ "Packer::Schemas::Sprite", "struct_packer_1_1_schemas_1_1_sprite.html", null ]
+    [ "IRenderPass", "class_i_render_pass.html", null ]
 ];

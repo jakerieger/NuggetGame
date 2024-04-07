@@ -24,12 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "Nugget Game", "index.html", [
-    [ "<img src=\"Assets/sprites/nugget.png\" /> Nugget Game", "md__r_e_a_d_m_e.html", [
-      [ "🏗️ Structure", "md__r_e_a_d_m_e.html#autotoc_md1", null ],
-      [ "📚 Dependencies", "md__r_e_a_d_m_e.html#autotoc_md2", null ],
-      [ "ℹ️ Contributions", "md__r_e_a_d_m_e.html#autotoc_md3", null ]
-    ] ],
+  [ "Nugget Engine", "index.html", [
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -45,7 +40,7 @@ var NAVTREE =
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
-        [ "All", "functions.html", "functions_dup" ],
+        [ "All", "functions.html", null ],
         [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", null ]
       ] ]
@@ -54,7 +49,6 @@ var NAVTREE =
       [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
-        [ "Functions", "globals_func.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
         [ "Macros", "globals_defs.html", null ]
@@ -66,9 +60,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_audio_context_8cpp.html",
-"_logger_8h.html#a7f49c4e199ab68db3e5278cdee352b7aa0eaadb4fcb48a0a0ed7bc9868be9fbaa",
-"class_a_sprite_renderer.html#a1bd22f11822f7f5ce05a031131297ee2",
-"namespace_input.html#a1a8b4929df6922c6a04f33a1d46dd7da"
+"_logger_8h.html#aeafc71e1ad0aa62cc06acba1336dcee9",
+"class_i_component.html",
+"namespace_utilities.html#a8d982d926dbcc718049f29e774495601"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
