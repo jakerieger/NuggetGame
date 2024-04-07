@@ -6,6 +6,10 @@
 #include "Logger.h"
 #include "Engine/PhysicsContext.h"
 
+#ifndef _WIN32
+    #include <bits/ranges_algo.h>
+#endif
+
 using Packer::Schemas::Sprite;
 
 static constexpr f32 k_TileSize = 2.f;
@@ -29,6 +33,7 @@ static void LoadSpriteMap() {
 static void LoadColliderMap() {
     g_BoxCollider.SetAsBox(2.f, 2.f);
 
+    // TODO: Figure out why this doesn't appear to be the right shape
     b2Vec2 v1(0.f, 0.f);
     b2Vec2 v2(2.f, 2.f);
 
