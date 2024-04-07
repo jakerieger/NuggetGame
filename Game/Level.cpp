@@ -6,21 +6,40 @@
 #include "Logger.h"
 #include "Engine/PhysicsContext.h"
 
+using Packer::Schemas::Sprite;
+
 static constexpr f32 k_TileSize = 2.f;
+static std::unordered_map<i32, Sprite*> g_SpriteMap;
+static b2PolygonShape g_BoxCollider;
+static b2EdgeShape g_RampLeftCollider;
+static b2EdgeShape g_RampRightCollider;
+
+static void LoadSpriteMap() {
+    g_SpriteMap[1] = &Resources::GetResource<Sprite>(Resources::ResourceType::Sprite, "floor.png");
+    g_SpriteMap[2] =
+      &Resources::GetResource<Sprite>(Resources::ResourceType::Sprite, "ramp_left.png");
+    g_SpriteMap[3] =
+      &Resources::GetResource<Sprite>(Resources::ResourceType::Sprite, "ramp_right.png");
+    g_SpriteMap[4] =
+      &Resources::GetResource<Sprite>(Resources::ResourceType::Sprite, "button_unpressed.png");
+    g_SpriteMap[5] =
+      &Resources::GetResource<Sprite>(Resources::ResourceType::Sprite, "button_pressed.png");
+}
+
+static void LoadColliderMap() {
+    g_BoxCollider.SetAsBox(2.f, 2.f);
+
+    b2Vec2 v1(0.f, 0.f);
+    b2Vec2 v2(2.f, 2.f);
+
+    g_RampLeftCollider.SetTwoSided(v1, v2);
+}
 
 Level::Level(const std::string& name, const FLevel& levelData) : IGameObject(name) {
-    using Packer::Schemas::Sprite;
     assert(levelData.Tiles.size() == levelData.Columns * levelData.Rows);
 
-    m_SpriteMap[1] = &Resources::GetResource<Sprite>(Resources::ResourceType::Sprite, "floor.png");
-    m_SpriteMap[2] =
-      &Resources::GetResource<Sprite>(Resources::ResourceType::Sprite, "ramp_left.png");
-    m_SpriteMap[3] =
-      &Resources::GetResource<Sprite>(Resources::ResourceType::Sprite, "ramp_right.png");
-    m_SpriteMap[4] =
-      &Resources::GetResource<Sprite>(Resources::ResourceType::Sprite, "button_unpressed.png");
-    m_SpriteMap[5] =
-      &Resources::GetResource<Sprite>(Resources::ResourceType::Sprite, "button_pressed.png");
+    LoadSpriteMap();
+    LoadColliderMap();
 
     for (auto i = 0; i < levelData.Rows; ++i) {
         std::vector<i32> row;
@@ -50,16 +69,20 @@ Level::Level(const std::string& name, const FLevel& levelData) : IGameObject(nam
                 b2BodyDef bodyDef;
                 bodyDef.position.Set(xPos, yPos + 0.5f);
                 const auto body = Physics::GetWorld()->CreateBody(&bodyDef);
-                b2PolygonShape bodyShape;
-                bodyShape.SetAsBox(2.f, 2.f);
-                body->CreateFixture(&bodyShape, 0.f);
+                if (id == 1) {
+                    body->CreateFixture(&g_BoxCollider, 0.f);
+                } else if (id == 2) {
+                    body->CreateFixture(&g_RampRightCollider, 0.f);
+                } else if (id == 3) {
+                    body->CreateFixture(&g_RampLeftCollider, 0.f);
+                }
             }
         }
     }
 
     // Create a tilemap for each tile
     for (auto& [id, positions] : m_TilePositions) {
-        auto tilemap = new ATilemap(*m_SpriteMap[id], positions, k_TileSize);
+        auto tilemap = new ATilemap(*g_SpriteMap[id], positions, k_TileSize);
         m_Tilemaps.push_back(tilemap);
     }
 }

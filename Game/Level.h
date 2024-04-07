@@ -33,5 +33,4 @@ private:
     std::vector<std::vector<i32>> m_TileIds;
     std::unordered_map<i32, std::vector<glm::vec2>> m_TilePositions;
     std::vector<ATilemap*> m_Tilemaps;
-    std::unordered_map<i32, Packer::Schemas::Sprite*> m_SpriteMap;
 };
