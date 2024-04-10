@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['acolor_0',['AColor',['../class_a_color.html#a38f38702ac2edde8ff2898bd66af4c59',1,'AColor::AColor()'],['../class_a_color.html#aebba2cfc416e315056719f4fd1fc5f51',1,'AColor::AColor(f32 r, f32 g, f32 b, f32 a=1.0)'],['../class_a_color.html#a2f033fe48db69ce609f4bfc29101759a',1,'AColor::AColor(u32 color)']]],
+  ['acolor_0',['AColor',['../class_a_color.html#aebba2cfc416e315056719f4fd1fc5f51',1,'AColor::AColor(f32 r, f32 g, f32 b, f32 a=1.0)'],['../class_a_color.html#a2f033fe48db69ce609f4bfc29101759a',1,'AColor::AColor(u32 color)'],['../class_a_color.html#a38f38702ac2edde8ff2898bd66af4c59',1,'AColor::AColor()']]],
   ['adddrawcall_1',['AddDrawCall',['../namespace_graphics.html#a0137664d419450c50716cfc3ee73d977',1,'Graphics']]],
   ['addgameobject_2',['AddGameObject',['../class_a_scene.html#a79fd4efd31db6d4b85b8b6975afbed5b',1,'AScene']]],
   ['addimpulse_3',['AddImpulse',['../class_a_rigidbody.html#af4bfae502e9bd7d087473392be623af4',1,'ARigidbody']]],

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['isrunning_0',['IsRunning',['../namespace_profiler.html#a82ed6c7f69593b0403efc8cd764984ee',1,'Profiler']]]
+  ['level_0',['Level',['../struct_logger_1_1_f_log_entry.html#a25fe227bac4a8431c46c3dd3e336a66f',1,'Logger::FLogEntry']]]
 ];

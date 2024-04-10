@@ -11,11 +11,6 @@ var annotated_dup =
     [ "Logger", "namespace_logger.html", [
       [ "FLogEntry", "struct_logger_1_1_f_log_entry.html", "struct_logger_1_1_f_log_entry" ]
     ] ],
-    [ "Packer", "namespace_packer.html", [
-      [ "Schemas", "namespace_packer_1_1_schemas.html", [
-        [ "Sprite", "struct_packer_1_1_schemas_1_1_sprite.html", "struct_packer_1_1_schemas_1_1_sprite" ]
-      ] ]
-    ] ],
     [ "AColor", "class_a_color.html", "class_a_color" ],
     [ "ARigidbody", "class_a_rigidbody.html", "class_a_rigidbody" ],
     [ "AScene", "class_a_scene.html", "class_a_scene" ],
@@ -26,7 +21,6 @@ var annotated_dup =
     [ "ATilemap", "class_a_tilemap.html", "class_a_tilemap" ],
     [ "ATransform", "class_a_transform.html", "class_a_transform" ],
     [ "FKeyEvent", "struct_f_key_event.html", "struct_f_key_event" ],
-    [ "FLevel", "struct_f_level.html", "struct_f_level" ],
     [ "FMouseEvent", "struct_f_mouse_event.html", "struct_f_mouse_event" ],
     [ "FMouseMoveEvent", "struct_f_mouse_move_event.html", "struct_f_mouse_move_event" ],
     [ "FSceneContext", "struct_f_scene_context.html", "struct_f_scene_context" ],
@@ -38,8 +32,5 @@ var annotated_dup =
     [ "IGameObject", "class_i_game_object.html", "class_i_game_object" ],
     [ "IInputListener", "class_i_input_listener.html", "class_i_input_listener" ],
     [ "ILifetime", "class_i_lifetime.html", "class_i_lifetime" ],
-    [ "IRenderPass", "class_i_render_pass.html", "class_i_render_pass" ],
-    [ "Level", "class_level.html", "class_level" ],
-    [ "Nugget", "class_nugget.html", "class_nugget" ],
-    [ "NuggetGame", "class_nugget_game.html", "class_nugget_game" ]
+    [ "IRenderPass", "class_i_render_pass.html", "class_i_render_pass" ]
 ];
