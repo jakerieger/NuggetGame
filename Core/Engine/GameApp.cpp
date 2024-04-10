@@ -8,6 +8,7 @@
 #include "GraphicsContext.h"
 #include "Color.h"
 #include "DebugUI.h"
+#include "EngineSettings.h"
 #include "GameUI.h"
 #include "GraphicsError.h"
 #include "PhysicsContext.h"
@@ -36,15 +37,15 @@ namespace Application {
         Audio::Shutdown();
     }
 
-    void InitializeApp(IGameApp& app,
-                       const int width,
-                       const int height,
-                       const char* title,
-                       const bool launchFullscreen) {
+    void InitializeApp(IGameApp& app, const char* title) {
+        if (!Settings::ReadSettings()) {
+            return;
+        }
+
         // Initialize engine subsytems
         {
-            Graphics::Initialize(width, height, title);
-            if (launchFullscreen) {
+            Graphics::Initialize(title);
+            if (Settings::GetSettings().Fullscreen) {
                 Graphics::ToggleFullscreen();
             }
             Camera::Initialize();

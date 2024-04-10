@@ -3,16 +3,18 @@
 //
 
 #include "GraphicsContext.h"
+
+#include "EngineSettings.h"
 #include "GraphicsError.h"
 #include "Logger.h"
 
 namespace Graphics {
     // Window vars
     GL::TWindow g_Window;
-    int32_t g_InitWindowWidth;
-    int32_t g_InitWindowHeight;
-    int32_t g_CurrentWindowWidth;
-    int32_t g_CurrentWindowHeight;
+    i32 g_InitWindowWidth;
+    i32 g_InitWindowHeight;
+    i32 g_CurrentWindowWidth;
+    i32 g_CurrentWindowHeight;
     const char* g_WindowTitle;
     float g_DeltaTime = 0.f;
     u32 g_DrawCalls   = 0;
@@ -133,7 +135,9 @@ namespace Graphics {
                 static_cast<float>(g_CurrentWindowHeight));
     }
 
-    bool Initialize(const int width, const int height, const char* title) {
+    bool Initialize(const char* title) {
+        const auto width   = static_cast<i32>(Settings::GetSettings().ResolutionX);
+        const auto height  = static_cast<i32>(Settings::GetSettings().ResolutionY);
         g_InitWindowWidth  = width;
         g_InitWindowHeight = height;
         g_WindowTitle      = title;
@@ -163,7 +167,9 @@ namespace Graphics {
 
         GL::FramebufferCallback(g_Window.get(), width, height);
         glfwSetFramebufferSizeCallback(GetWindow(), GL::FramebufferCallback);
-        glfwSwapInterval(0);
+
+        glfwSwapInterval(Settings::GetSettings().Vsync ? 1 : 0);
+
         glfwSetInputMode(g_Window.get(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         Logger::LogInfo(Logger::Subsystems::GRAPHICS, "Graphics subsystem initialized.");

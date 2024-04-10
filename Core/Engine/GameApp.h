@@ -46,7 +46,7 @@ private:
 
 namespace Application {
     void
-    InitializeApp(IGameApp& app, int width, int height, const char* title, bool launchFullscreen);
+    InitializeApp(IGameApp& app, const char* title);
     void RunApp(IGameApp& app);
     bool IsRunning();
 }  // namespace Application

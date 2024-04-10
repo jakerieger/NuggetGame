@@ -86,6 +86,8 @@ add_library(Core STATIC
         Core/Engine/AudioContext.cpp
         Core/Engine/AudioContext.h
         Game/UI/PauseMenu.h
+        Core/Engine/EngineSettings.h
+        Core/Engine/EngineSettings.cpp
 )
 
 # ============[ PACKAGES ]============ #
@@ -143,3 +145,6 @@ target_link_libraries(NuggetGame PRIVATE
 add_custom_command(TARGET Packer PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/Assets ${CMAKE_BINARY_DIR}/Assets)
+add_custom_command(TARGET NuggetGame PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/config.ini ${CMAKE_BINARY_DIR}/config.ini)

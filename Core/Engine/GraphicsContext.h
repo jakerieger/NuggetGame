@@ -26,7 +26,7 @@ namespace Graphics {
     void AddDrawCall();
     u32 GetDrawCalls();
     void ResetDrawCalls();
-    bool Initialize(int width, int height, const char* title);
+    bool Initialize(const char* title);
     void Shutdown();
 
     glm::vec2 GetWindowSizeGLM();
