@@ -88,6 +88,10 @@ add_library(Core STATIC
         Game/UI/PauseMenu.h
         Core/Engine/EngineSettings.h
         Core/Engine/EngineSettings.cpp
+        Core/NativePlatform.h
+        Core/Components/GUI.cpp
+        Core/Components/GUI.h
+        Core/Interfaces/UIDocument.h
 )
 
 # ============[ PACKAGES ]============ #
@@ -96,6 +100,7 @@ find_package(box2d CONFIG REQUIRED)
 find_package(OpenAL CONFIG REQUIRED)
 find_package(RmlUi CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
+find_package(lz4 CONFIG REQUIRED)
 # ============++++++++++++============ #
 
 target_link_libraries(Core PRIVATE
@@ -115,7 +120,6 @@ add_library(Packer STATIC
         Packer/Unpacker.h
         Lib/stb_image.cpp)
 
-find_package(lz4 CONFIG REQUIRED)
 target_link_libraries(Packer PRIVATE lz4::lz4)
 
 add_executable(NugPak Packer/NugPak.cpp)
@@ -131,6 +135,7 @@ add_executable(NuggetGame
         Game/Level.cpp
         Game/Level.h
         Game/Levels.h
+        Game/UI/MainMenu.h
 )
 target_link_libraries(NuggetGame PRIVATE
         Core
@@ -145,6 +150,32 @@ target_link_libraries(NuggetGame PRIVATE
 add_custom_command(TARGET Packer PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/Assets ${CMAKE_BINARY_DIR}/Assets)
-add_custom_command(TARGET NuggetGame PRE_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_SOURCE_DIR}/config.ini ${CMAKE_BINARY_DIR}/config.ini)
+
+# ================================================================================================================== #
+set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/Game/UI)
+set(OUTPUT_DIR ${CMAKE_BINARY_DIR}/Interface)
+
+# Define the file extensions you want to copy
+set(FILE_EXTENSIONS "*.html" "*.css")
+
+# Create a list to hold files to be copied
+set(FILES_TO_COPY)
+
+# Add files matching the extensions to the list
+foreach (EXTENSION ${FILE_EXTENSIONS})
+    file(GLOB FILES "${SOURCE_DIR}/${EXTENSION}")
+    list(APPEND FILES_TO_COPY ${FILES})
+endforeach ()
+
+# Copy files to the output directory
+file(COPY ${FILES_TO_COPY} DESTINATION ${OUTPUT_DIR})
+
+# Make sure to create the output directory
+file(MAKE_DIRECTORY ${OUTPUT_DIR})
+
+# Create a custom target depending on the existence of the output files
+add_custom_target(
+        copy_files_target ALL
+        DEPENDS ${OUTPUT_DIR}
+        COMMENT "Copying files to output directory"
+)

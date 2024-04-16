@@ -61,11 +61,14 @@ namespace Logger {
                                     const char* logLevel,
                                     const char* subsystem,
                                     const char* message) {
-        printf("%s|%s| [%s] (%s)\n  => %s%s\n",
-               colorCode,
+        printf("%s|%s| [%s%s%s] (%s)\n  => %s%s%s\n",
+               RESET_COLOR,
                timestamp,
+               colorCode,
                logLevel,
+               RESET_COLOR,
                subsystem,
+               BOLD_WHITE_COLOR,
                message,
                RESET_COLOR);
     }
@@ -100,20 +103,28 @@ namespace Logger {
 
         switch (entry.Level) {
             case ELogLevel::Info: {
-                PrintColoredMessage(WHITE_COLOR, timestamp.c_str(), logLevel, subsystem, message);
+                PrintColoredMessage(BOLD_WHITE_COLOR,
+                                    timestamp.c_str(),
+                                    logLevel,
+                                    subsystem,
+                                    message);
             } break;
             case ELogLevel::Warning: {
-                PrintColoredMessage(YELLOW_COLOR, timestamp.c_str(), logLevel, subsystem, message);
+                PrintColoredMessage(BOLD_YELLOW_COLOR,
+                                    timestamp.c_str(),
+                                    logLevel,
+                                    subsystem,
+                                    message);
             } break;
             case ELogLevel::Error: {
-                PrintColoredMessage(RED_COLOR, timestamp.c_str(), logLevel, subsystem, message);
-            } break;
-            case ELogLevel::Fatal: {
                 PrintColoredMessage(BOLD_RED_COLOR,
                                     timestamp.c_str(),
                                     logLevel,
                                     subsystem,
                                     message);
+            } break;
+            case ELogLevel::Fatal: {
+                PrintColoredMessage(BG_RED_COLOR, timestamp.c_str(), logLevel, subsystem, message);
             } break;
         }
     }
@@ -172,7 +183,9 @@ namespace Logger {
         va_end(args);
     }
 
-    std::vector<FLogEntry> Dump() { return g_LogEntries; }
+    std::vector<FLogEntry> Dump() {
+        return g_LogEntries;
+    }
 
     void DumpToDisk() {
         namespace fs = std::filesystem;

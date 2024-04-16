@@ -14,6 +14,7 @@ namespace UI {
     void Draw();
     void End();
     void Shutdown();
+    Rml::Context* GetContext();
 
     Rml::ElementDocument* CreateDocument(const std::string& source);
     void CloseDocument(Rml::ElementDocument* document);

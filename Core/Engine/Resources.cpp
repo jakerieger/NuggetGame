@@ -18,7 +18,15 @@ namespace Resources {
         g_Cwd = cwdStr;
     }
 
-    std::filesystem::path GetRoot() { return {g_Cwd}; }
+    std::filesystem::path GetRoot() {
+        return {g_Cwd};
+    }
 
-    std::vector<Packer::Schemas::Sprite>& GetSprites() { return g_Sprites; }
+    std::vector<Packer::Schemas::Sprite>& GetSprites() {
+        return g_Sprites;
+    }
+
+    std::filesystem::path GetConfigFile() {
+        return GetRoot() / "config.ini";
+    }
 }  // namespace Resources

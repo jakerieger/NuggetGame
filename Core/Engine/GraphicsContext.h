@@ -3,7 +3,9 @@
 //
 
 #pragma once
+
 #include "STL.h"
+#include "NativePlatform.h"
 
 #include <array>
 #include <memory>
@@ -29,6 +31,14 @@ namespace Graphics {
     bool Initialize(const char* title);
     void Shutdown();
 
+#ifdef _WIN32
+    HWND GetNativeWindow();
+#elif __linux__
+    Window GetNativeWindow();
+#elif __APPLE__
+    NSWindow GetNativeWindow();
+#endif
+
     glm::vec2 GetWindowSizeGLM();
     ImVec2 GetWindowSizeImGui();
 
@@ -41,7 +51,9 @@ namespace Graphics {
         }
 
         struct FDestroyWindow {
-            void operator()(GLFWwindow* ptr) const noexcept { glfwDestroyWindow(ptr); }
+            void operator()(GLFWwindow* ptr) const noexcept {
+                glfwDestroyWindow(ptr);
+            }
         };
 
         using TWindow = std::unique_ptr<GLFWwindow, FDestroyWindow>;

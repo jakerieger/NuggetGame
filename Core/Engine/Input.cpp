@@ -4,10 +4,12 @@
 
 #include "Input.h"
 #include "GameApp.h"
+#include "GameUI.h"
 #include "Logger.h"
 #include "../Interfaces/InputListener.h"
 
 #include <thread>
+#include <RmlUi/Core/Context.h>
 
 namespace Input {
     std::vector<IInputListener*> g_Listeners;
@@ -78,8 +80,10 @@ namespace Input {
         for (const auto listener : g_Listeners) {
             if (action == GLFW_PRESS && listener) {
                 listener->OnMouseDown(event);
+                UI::GetContext()->ProcessMouseButtonDown(button, 0);
             } else if (action == GLFW_RELEASE && listener) {
                 listener->OnMouseUp(event);
+                UI::GetContext()->ProcessMouseButtonUp(button, 0);
             }
         }
     }
@@ -89,6 +93,7 @@ namespace Input {
         for (const auto listener : g_Listeners) {
             if (listener)
                 listener->OnMouseMove(event);
+            UI::GetContext()->ProcessMouseMove(static_cast<i32>(xPos), static_cast<i32>(yPos), 0);
         }
     }
 
@@ -98,6 +103,7 @@ namespace Input {
         for (const auto listener : g_Listeners) {
             if (listener)
                 listener->OnScroll(event);
+            UI::GetContext()->ProcessMouseWheel(static_cast<f32>(yOffset), 0);
         }
     }
 
@@ -113,7 +119,9 @@ namespace Input {
         Logger::LogInfo(Logger::Subsystems::INPUT, "Input subsystem initialized.");
     }
 
-    void RegisterListener(IInputListener* listener) { g_Listeners.push_back(listener); }
+    void RegisterListener(IInputListener* listener) {
+        g_Listeners.push_back(listener);
+    }
 
     void UnregisterSceneListeners(IInputListener* appListener) {
         // Hack for .clear() not clearing pointers for some reason (I'm probably
@@ -130,6 +138,8 @@ namespace Input {
         RegisterListener(appListener);
     }
 
-    void Shutdown() { g_DispatcherThread.join(); }
+    void Shutdown() {
+        g_DispatcherThread.join();
+    }
 
 }  // namespace Input

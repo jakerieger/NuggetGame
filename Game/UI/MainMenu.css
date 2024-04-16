@@ -1,0 +1,18 @@
+body {
+    font-family: SquareFont;
+    width: 100vw;
+    height: 100vh;
+    margin: auto;
+}
+
+h1 {
+    font-size: 20dp;
+}
+
+.button {
+    width: 200dp;
+    height: 64dp;
+    font-size: 16dp;
+    background-color: red;
+    padding: 10dp;
+}

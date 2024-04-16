@@ -14,11 +14,14 @@
 #include "PhysicsContext.h"
 #include "Profiler.h"
 
+#include <Logger.h>
+
 #define RUNNING Application::IsRunning()
 
 namespace Application {
     static constexpr float FIXED_TIMESTEP = 1.f / 60.f;
     static constexpr float ADJUSTMENT     = 4.f;
+    static IGameApp* g_CurrentApp         = nullptr;
     AColor g_ClearColor(0xFF9eb9df);
 
     bool IsRunning() {
@@ -26,9 +29,10 @@ namespace Application {
     }
 
     static void Shutdown() {
+        g_CurrentApp = nullptr;
 #ifndef NDEBUG
         Profiler::Shutdown();
-        Debug::UI::Shutdown();
+        // Debug::UI::Shutdown();
 #endif
         Input::Shutdown();
         UI::Shutdown();
@@ -38,6 +42,8 @@ namespace Application {
     }
 
     void InitializeApp(IGameApp& app, const char* title) {
+        g_CurrentApp = &app;
+
         if (!Settings::ReadSettings()) {
             return;
         }
@@ -56,12 +62,16 @@ namespace Application {
             Profiler::Initialize();
             Graphics::Error::EnableDebugOutput();
             Profiler::Start();
-            Debug::UI::Initialize();
+            // Debug::UI::Initialize();
 #endif
             Input::Initialize(Graphics::GetWindow());
         }
 
         app.Startup();
+    }
+
+    IGameApp* GetCurrentApp() {
+        return g_CurrentApp;
     }
 
     void Update(IGameApp& app) {
@@ -81,7 +91,7 @@ namespace Application {
 // Update engine analytics
 #ifndef NDEBUG
         Profiler::Update();
-        Debug::UI::Update(frameTime, activeScene);
+        // Debug::UI::Update(frameTime, activeScene);
 #endif
 
         // Clear buffers
@@ -105,7 +115,7 @@ namespace Application {
         UI::End();
 
 #ifndef NDEBUG
-        Debug::UI::Draw();
+// Debug::UI::Draw();
 #endif
 
         // Swap buffers and poll events
@@ -157,6 +167,7 @@ void IGameApp::AddScene(std::unique_ptr<AScene>& scene) {
 
 void IGameApp::LoadScene(const std::string& name) {
     const auto scene = GetScene(name);
+
     if (const auto currentScene = GetActiveScene()) {
         UnloadScene(currentScene);
     }
@@ -168,6 +179,8 @@ void IGameApp::LoadScene(const std::string& name) {
         for (auto& go : scene->GetContext().GameObjects) {
             Input::RegisterListener(go.get());
         }
+    } else {
+        Logger::LogWarning(Logger::Subsystems::RUNTIME, "Scene '%s' does not exist.", name.c_str());
     }
 }
 

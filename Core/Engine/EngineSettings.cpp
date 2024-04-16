@@ -11,11 +11,15 @@
 #include <fmt/format.h>
 
 namespace Settings {
-    static FEngineSettings g_Settings {};
+    static FEngineSettings g_Settings {
+      .Vsync       = true,
+      .Fullscreen  = false,
+      .ResolutionX = 1280,
+      .ResolutionY = 720,
+    };
 
     bool ReadSettings() {
-        const auto configPath = Resources::GetRoot() / "config.ini";
-        mINI::INIFile config(configPath.string());
+        const mINI::INIFile config(Resources::GetConfigFile().string());
         mINI::INIStructure ini;
         if (!config.read(ini)) {
             Logger::LogError(Logger::Subsystems::RUNTIME,
@@ -33,7 +37,6 @@ namespace Settings {
     }
 
     void SaveSettings() {
-        const auto configPath = Resources::GetRoot() / "config.ini";
         std::string configOut = "[Settings]\n";
 
         configOut += fmt::format("Vsync = {}\n", g_Settings.Vsync ? "true" : "false");
@@ -41,9 +44,10 @@ namespace Settings {
         configOut += fmt::format("ResolutionX = {}\n", g_Settings.ResolutionX);
         configOut += fmt::format("ResolutionY = {}\n", g_Settings.ResolutionY);
 
-        if (std::ofstream outStream(configPath); outStream.is_open()) {
+        if (std::ofstream outStream(Resources::GetConfigFile()); outStream.is_open()) {
             outStream << configOut;
             outStream.close();
+            return;
         }
         Logger::LogError(Logger::Subsystems::RUNTIME, "Unable to open file stream for config.ini");
     }

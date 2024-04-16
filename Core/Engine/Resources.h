@@ -18,6 +18,7 @@ namespace Resources {
     void SetCwd(const char* exePath);
     std::filesystem::path GetRoot();
     std::vector<Packer::Schemas::Sprite>& GetSprites();
+    std::filesystem::path GetConfigFile();
 
     template<typename T>
     T& GetResource(const ResourceType type, const char* name) {

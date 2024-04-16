@@ -29,7 +29,6 @@ namespace UI {
         g_RenderInterface = new RenderInterface_GL3();
 
         g_SysInterface->SetWindow(Graphics::GetWindow());
-        g_SysInterface->LogMessage(Rml::Log::LT_INFO, renderMsg);
 
         const auto windowSize = Graphics::GetWindowSize();
         g_RenderInterface->SetViewport(windowSize.at(0), windowSize.at(1));
@@ -67,9 +66,14 @@ namespace UI {
         g_RenderInterface->BeginFrame();
     }
 
-    void Draw() { g_Context->Render(); }
+    void Draw() {
+        // g_RenderInterface->Clear();
+        g_Context->Render();
+    }
 
-    void End() { g_RenderInterface->EndFrame(); }
+    void End() {
+        g_RenderInterface->EndFrame();
+    }
 
     void Shutdown() {
         Rml::Shutdown();
@@ -79,10 +83,16 @@ namespace UI {
         delete g_RenderInterface;
     }
 
+    Rml::Context* GetContext() {
+        return g_Context;
+    }
+
     Rml::ElementDocument* CreateDocument(const std::string& source) {
         Rml::ElementDocument* document = g_Context->LoadDocumentFromMemory(source, "");
         return document;
     }
 
-    void CloseDocument(Rml::ElementDocument* document) { document->Close(); }
+    void CloseDocument(Rml::ElementDocument* document) {
+        document->Close();
+    }
 }  // namespace UI

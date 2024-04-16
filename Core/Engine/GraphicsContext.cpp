@@ -8,6 +8,15 @@
 #include "GraphicsError.h"
 #include "Logger.h"
 
+#ifdef _WIN32
+    #define GLFW_EXPOSE_NATIVE_WIN32
+#elif __APPLE__
+    #define GLFW_EXPOSE_NATIVE_COCOA
+#elif __linux__
+    #define GLFW_EXPOSE_NATIVE_X11
+#endif
+#include <GLFW/glfw3native.h>
+
 namespace Graphics {
     // Window vars
     GL::TWindow g_Window;
@@ -28,6 +37,20 @@ namespace Graphics {
     GLFWwindow* GetWindow() {
         return g_Window.get();
     }
+
+#ifdef _WIN32
+    HWND GetNativeWindow() {
+        return glfwGetWin32Window(g_Window.get());
+    }
+#elif __linux__
+    Window GetNativeWindow() {
+        return glfwGetX11Window(g_Window.get());
+    }
+#elif __APPLE__
+    NSWindow GetNativeWindow() {
+        return glfwGetCocoaWindow(g_Window.get());
+    }
+#endif
 
     void UpdateFrameTime() {
         const auto currentFrame = static_cast<float>(glfwGetTime());
@@ -170,7 +193,7 @@ namespace Graphics {
 
         glfwSwapInterval(Settings::GetSettings().Vsync ? 1 : 0);
 
-        glfwSetInputMode(g_Window.get(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        // glfwSetInputMode(g_Window.get(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         Logger::LogInfo(Logger::Subsystems::GRAPHICS, "Graphics subsystem initialized.");
 

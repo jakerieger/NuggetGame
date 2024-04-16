@@ -9,7 +9,9 @@
 
 class IGameApp : public IInputListener {
 public:
-    IGameApp() { Input::RegisterListener(this); }
+    IGameApp() {
+        Input::RegisterListener(this);
+    }
     virtual void Startup() = 0;
     virtual void Cleanup() = 0;
 
@@ -17,7 +19,9 @@ public:
     void LoadScene(const std::string& name);
     void UnloadScene(AScene* scene);
     void SetPaused(bool paused);
-    bool Paused() const { return m_Paused; }
+    bool Paused() const {
+        return m_Paused;
+    }
 
     AScene* GetActiveScene() {
         for (const auto& scene : m_Scenes) {
@@ -45,18 +49,8 @@ private:
 };
 
 namespace Application {
-    void
-    InitializeApp(IGameApp& app, const char* title);
+    void InitializeApp(IGameApp& app, const char* title);
+    IGameApp* GetCurrentApp();
     void RunApp(IGameApp& app);
     bool IsRunning();
 }  // namespace Application
-
-#define CREATE_AND_RUN(appClass, size, fullscreen)                                                 \
-    int main(int argc, char* argv[]) {                                                             \
-        Resources::SetCwd(argv[0]);                                                                \
-        appClass app;                                                                              \
-        Application::InitializeApp(app, size, #appClass, fullscreen);                              \
-        Utilities::SetWindowIcon(Resources::GetResource(RES_ROOT, "APP_ICON.png").c_str());        \
-        Application::RunApp(app);                                                                  \
-        return 0;                                                                                  \
-    }
