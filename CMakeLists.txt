@@ -92,6 +92,7 @@ add_library(Core STATIC
         Core/Components/GUI.cpp
         Core/Components/GUI.h
         Core/Interfaces/UIDocument.h
+        Core/Interfaces/UIListener.h
 )
 
 # ============[ PACKAGES ]============ #
@@ -136,6 +137,7 @@ add_executable(NuggetGame
         Game/Level.h
         Game/Levels.h
         Game/UI/MainMenu.h
+        Game/UI/MainMenu.cpp
 )
 target_link_libraries(NuggetGame PRIVATE
         Core

@@ -4,16 +4,7 @@
 
 #pragma once
 
-#include <RmlUi/Core/EventListener.h>
-
-class IUIListener : public Rml::EventListener {
-public:
-    void RegisterButton(Rml::Element* element) {
-        element->AddEventListener(Rml::EventId::Mousedown, this);
-    }
-
-    void ProcessEvent(Rml::Event& event) override {}
-};
+#include "UIListener.h"
 
 class IUIDocument {
 public:
@@ -28,5 +19,5 @@ public:
 protected:
     Rml::ElementDocument* m_Document = nullptr;
     IUIListener* m_Listener          = nullptr;
-    std::unordered_map<const char*, Rml::Element*> m_ElementMap;
+    std::unordered_map<const char*, Rml::Element*> m_ElementMap {};
 };

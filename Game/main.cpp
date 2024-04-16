@@ -7,8 +7,6 @@
 #include "Engine/GraphicsContext.h"
 #include "Engine/Resources.h"
 #include "GameObject.h"
-#include "Level.h"
-#include "Levels.h"
 #include "Logger.h"
 #include "Engine/AudioContext.h"
 #include "Engine/EngineSettings.h"
@@ -17,13 +15,7 @@
 #include "UI/PauseMenu.h"
 
 #include <filesystem>
-#include <RmlUi/Core/Context.h>
 #include <fmt/format.h>
-
-#ifdef _WIN32
-    #define WIN32_LEAN_AND_MEAN
-    #include <windows.h>
-#endif
 
 class NuggetGame final : public IGameApp {
 public:
@@ -34,7 +26,6 @@ public:
 
 private:
     Rml::ElementDocument* m_PauseMenu = nullptr;
-    MainMenu* m_MainMenu              = nullptr;
 };
 
 void NuggetGame::Startup() {
@@ -53,15 +44,13 @@ void NuggetGame::Startup() {
     // Audio::PlayLoop(bgMusicPath.string(), 0.1f);
 
     auto mainMenuScene = Scene::Create("MainMenu");
+    auto mainMenu      = GameObject::Create<MainMenu>("MainMenu");
+    mainMenuScene->AddGameObject(mainMenu);
     AddScene(mainMenuScene);
     LoadScene("MainMenu");
-    m_MainMenu = new MainMenu;
-    m_MainMenu->Show();
 }
 
-void NuggetGame::Cleanup() {
-    delete m_MainMenu;
-}
+void NuggetGame::Cleanup() {}
 
 void NuggetGame::OnKeyDown(FKeyEvent& event) {
     IInputListener::OnKeyDown(event);

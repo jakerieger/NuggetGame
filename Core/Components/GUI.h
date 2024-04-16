@@ -4,18 +4,14 @@
 
 #pragma once
 
-#include "Types.h"
 #include "Interfaces/Component.h"
+
+class IUIDocument;
 
 class AGUI final : public IComponent {
 public:
-    AGUI() = default;
-    void Start(FSceneContext& sceneContext) override;
-    void Update(float deltaTime, FSceneContext& sceneContext) override;
-    void Destroyed(FSceneContext& sceneContext) override;
-
-    void ToggleVisibility(bool visible);
+    explicit AGUI(IUIDocument* document);
 
 protected:
-    bool m_Visible = true;
+    IUIDocument* m_Document;
 };
