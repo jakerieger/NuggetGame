@@ -5,14 +5,48 @@ body {
     margin: auto;
 }
 
+.background {
+    background-color: #000000;
+    opacity: 0.5;
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+}
+
+.container .button {
+    margin-bottom: 10dp;
+}
+
 h1 {
-    font-size: 20dp;
+    font-size: 80dp;
+    font-effect: shadow(4px 4px #c0c0c0);
 }
 
 .button {
-    width: 200dp;
-    height: 64dp;
-    font-size: 16dp;
-    background-color: red;
+    width: 400dp;
+    height: 36dp;
+    font-size: 26dp;
     padding: 10dp;
+    text-align: center;
+    border-width: 2px;
+    border-color: #5d767c;
+    background-color: #152428;
+}
+
+.button:hover {
+    opacity: 0.8;
+    border-color: #fff200;
+    font-effect: glow(1px #fff200);
 }

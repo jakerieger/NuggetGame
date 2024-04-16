@@ -10,9 +10,8 @@
 #include "Logger.h"
 #include "Engine/AudioContext.h"
 #include "Engine/EngineSettings.h"
-#include "Engine/GameUI.h"
 #include "UI/MainMenu.h"
-#include "UI/PauseMenu.h"
+#include "Levels.h"
 
 #include <filesystem>
 #include <fmt/format.h>
@@ -23,25 +22,21 @@ public:
     void Startup() override;
     void Cleanup() override;
     void OnKeyDown(FKeyEvent& event) override;
-
-private:
-    Rml::ElementDocument* m_PauseMenu = nullptr;
 };
 
 void NuggetGame::Startup() {
-    // auto testScene = Scene::Create("Test");
-    // auto nugget    = GameObject::Create<Nugget>("nugget");
-    // auto level     = std::make_unique<Level>("Test", Levels::LvlTest);
-    //
-    // testScene->AddGameObject(nugget);
-    // testScene->AddGameObject(level);
-    //
-    // AddScene(testScene);
-    // LoadScene("Test");
-    //
+    auto testScene = Scene::Create("Test");
+    auto nugget    = GameObject::Create<Nugget>("nugget");
+    auto level     = std::make_unique<Level>("Test", Levels::LvlTest);
+
+    testScene->AddGameObject(nugget);
+    testScene->AddGameObject(level);
+
+    AddScene(testScene);
+
     const auto bgMusicPath =
       Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "gameplay.wav");
-    // Audio::PlayLoop(bgMusicPath.string(), 0.1f);
+    Audio::PlayLoop(bgMusicPath.string(), 0.1f);
 
     auto mainMenuScene = Scene::Create("MainMenu");
     auto mainMenu      = GameObject::Create<MainMenu>("MainMenu");
@@ -56,19 +51,6 @@ void NuggetGame::OnKeyDown(FKeyEvent& event) {
     IInputListener::OnKeyDown(event);
 
     if (event.KeyCode == KeyCode::Escape) {
-        return;
-        if (Paused()) {
-            SetPaused(false);
-            if (m_PauseMenu) {
-                UI::CloseDocument(m_PauseMenu);
-            }
-        } else {
-            SetPaused(true);
-            m_PauseMenu = UI::CreateDocument(PauseMenu::Code);
-            if (m_PauseMenu) {
-                m_PauseMenu->Show();
-            }
-        }
         const auto windowTitle = fmt::format("Nugget Game {}", Paused() ? "(Paused)" : "");
         glfwSetWindowTitle(Graphics::GetWindow(), windowTitle.c_str());
     } else if (event.KeyCode == KeyCode::Tab) {

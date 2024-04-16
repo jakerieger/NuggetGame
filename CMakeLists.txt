@@ -89,8 +89,6 @@ add_library(Core STATIC
         Core/Engine/EngineSettings.h
         Core/Engine/EngineSettings.cpp
         Core/NativePlatform.h
-        Core/Components/GUI.cpp
-        Core/Components/GUI.h
         Core/Interfaces/UIDocument.h
         Core/Interfaces/UIListener.h
 )

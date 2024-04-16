@@ -4,11 +4,11 @@
 
 #include "MainMenu.h"
 
-#include <Engine/GameApp.h>
-#include <Engine/GameUI.h>
-#include <Engine/GraphicsContext.h>
-#include <Engine/Resources.h>
-#include <RmlUi/Core/Element.h>
+#include "Engine/GameApp.h"
+#include "Engine/GraphicsContext.h"
+#include "Engine/Resources.h"
+#include "Engine/GameUI.h"
+
 #include <RmlUi/Core/Context.h>
 
 void MainMenuListener::ProcessEvent(Rml::Event& event) {
@@ -16,7 +16,7 @@ void MainMenuListener::ProcessEvent(Rml::Event& event) {
         const auto elementId = event.GetCurrentElement()->GetId();
         if (strcmp(elementId.c_str(), "btn-play") == 0) {
             // Load level select scene
-            Application::GetCurrentApp()->LoadScene("LevelSelect");
+            Application::GetCurrentApp()->LoadScene("Test");
         }
         if (strcmp(elementId.c_str(), "btn-settings") == 0) {
             // Load settings screen
@@ -36,12 +36,17 @@ MainMenuDocument::MainMenuDocument() {
     m_Document              = UI::GetContext()->LoadDocument(documentPath.string());
     assert(m_Document != nullptr);
 
-    m_ElementMap["title"]        = m_Document->GetElementById("title");
-    m_ElementMap["btn-play"]     = m_Document->GetElementById("btn-play");
-    m_ElementMap["btn-settings"] = m_Document->GetElementById("btn-settings");
-    m_ElementMap["btn-quit"]     = m_Document->GetElementById("btn-quit");
+    m_Listener->RegisterButton(m_Document->GetElementById("btn-play"));
+    m_Listener->RegisterButton(m_Document->GetElementById("btn-settings"));
+    m_Listener->RegisterButton(m_Document->GetElementById("btn-quit"));
+}
 
-    m_Listener->RegisterButton(m_ElementMap["btn-play"]);
-    m_Listener->RegisterButton(m_ElementMap["btn-settings"]);
-    m_Listener->RegisterButton(m_ElementMap["btn-quit"]);
+void MainMenu::Start(FSceneContext& sceneContext) {
+    IGameObject::Start(sceneContext);
+    m_Document->Show();
+}
+
+void MainMenu::Destroyed(FSceneContext& sceneContext) {
+    IGameObject::Destroyed(sceneContext);
+    m_Document->Hide();
 }

@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <RmlUi/Core/Element.h>
 #include <RmlUi/Core/EventListener.h>
 
 class IUIListener : public Rml::EventListener {

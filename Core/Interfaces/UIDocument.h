@@ -5,6 +5,8 @@
 #pragma once
 
 #include "UIListener.h"
+#include <RmlUi/Core/ElementDocument.h>
+#include <RmlUi/Core/Element.h>
 
 class IUIDocument {
 public:
@@ -19,5 +21,5 @@ public:
 protected:
     Rml::ElementDocument* m_Document = nullptr;
     IUIListener* m_Listener          = nullptr;
-    std::unordered_map<const char*, Rml::Element*> m_ElementMap {};
+    std::unordered_map<const char*, Rml::Element*> m_ElementMap;
 };

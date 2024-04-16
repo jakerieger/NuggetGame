@@ -4,16 +4,15 @@
 
 #pragma once
 
-#include "Components/GUI.h"
-#include "Interfaces/UIDocument.h"
 #include "Interfaces/GameObject.h"
+#include "Interfaces/UIDocument.h"
 
 class MainMenuListener final : public IUIListener {
 public:
     void ProcessEvent(Rml::Event& event) override;
 };
 
-class MainMenuDocument : public IUIDocument {
+class MainMenuDocument final : public IUIDocument {
 public:
     MainMenuDocument();
 };
@@ -21,9 +20,12 @@ public:
 class MainMenu final : public IGameObject {
 public:
     explicit MainMenu(const std::string& name) : IGameObject(name) {
-        m_GUI = new AGUI(new MainMenuDocument);
+        m_Document = new MainMenuDocument;
     }
 
+    void Start(FSceneContext& sceneContext) override;
+    void Destroyed(FSceneContext& sceneContext) override;
+
 private:
-    AGUI* m_GUI = nullptr;
+    IUIDocument* m_Document = nullptr;
 };
