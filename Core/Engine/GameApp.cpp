@@ -7,12 +7,12 @@
 #include "Camera.h"
 #include "GraphicsContext.h"
 #include "Color.h"
-#include "DebugUI.h"
 #include "EngineSettings.h"
 #include "GameUI.h"
 #include "GraphicsError.h"
 #include "PhysicsContext.h"
 #include "Profiler.h"
+#include "Scene.h"
 
 #include <Logger.h>
 
@@ -22,10 +22,19 @@ namespace Application {
     static constexpr float FIXED_TIMESTEP = 1.f / 60.f;
     static constexpr float ADJUSTMENT     = 4.f;
     static IGameApp* g_CurrentApp         = nullptr;
+    static bool g_IsLoading               = false;
     AColor g_ClearColor(0xFF9eb9df);
 
     bool IsRunning() {
         return !glfwWindowShouldClose(Graphics::GetWindow());
+    }
+
+    void SetLoading(const bool loading) {
+        g_IsLoading = loading;
+    }
+
+    bool IsLoading() {
+        return g_IsLoading;
     }
 
     static void Shutdown() {
@@ -64,7 +73,7 @@ namespace Application {
             Profiler::Start();
             // Debug::UI::Initialize();
 #endif
-            Input::Initialize(Graphics::GetWindow());
+            Input::Initialize(Graphics::GetWindow(), &app);
         }
 
         app.Startup();
@@ -74,7 +83,7 @@ namespace Application {
         return g_CurrentApp;
     }
 
-    void Update(IGameApp& app) {
+    void Update(const IGameApp& app) {
         Graphics::ResetDrawCalls();
         Graphics::UpdateFrameTime();
         Camera::Update();
@@ -128,7 +137,7 @@ namespace Application {
         }
     }
 
-    static void FixedUpdate(IGameApp& app) {
+    static void FixedUpdate(const IGameApp& app) {
         if (!app.Paused()) {
             Physics::Tick(FIXED_TIMESTEP);
             if (const auto activeScene = app.GetActiveScene())
@@ -148,12 +157,17 @@ namespace Application {
             currentTime            = newTime;
             accumulator += frameTime;
             while (accumulator >= dt) {
-                FixedUpdate(app);
+                if (!g_IsLoading) {
+                    FixedUpdate(app);
+                }
+
                 accumulator -= dt;
                 t += dt;
             }
 
-            Update(app);
+            if (!g_IsLoading) {
+                Update(app);
+            }
         }
 
         app.Cleanup();
@@ -166,32 +180,25 @@ void IGameApp::AddScene(std::unique_ptr<AScene>& scene) {
 }
 
 void IGameApp::LoadScene(const std::string& name) {
-    const auto scene = GetScene(name);
+    Application::SetLoading(true);
 
-    if (const auto currentScene = GetActiveScene()) {
-        UnloadScene(currentScene);
+    if (GetActiveScene()) {
+        UnloadScene(GetActiveScene());
     }
 
+    const auto scene = GetScene(name);
     if (scene) {
         scene->SetActive(true);
         scene->Start();
-
-        for (auto& go : scene->GetContext().GameObjects) {
-            Input::RegisterListener(go.get());
-        }
     } else {
         Logger::LogWarning(Logger::Subsystems::RUNTIME, "Scene '%s' does not exist.", name.c_str());
     }
+
+    Application::SetLoading(false);
 }
 
 void IGameApp::UnloadScene(AScene* scene) {
-    Input::UnregisterSceneListeners(this);
-
-    // TODO: Intead of initializing gameobjects in their constructor,
-    // move the logic to the Awake method so that gameobjects
-    // can be reinitialized on scene load and not permanently
-    // destroyed when unloading a scene
-    // scene->Destroyed();
+    scene->Destroyed();
     scene->SetActive(false);
 }
 

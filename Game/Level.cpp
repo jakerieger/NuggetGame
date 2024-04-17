@@ -3,6 +3,8 @@
 //
 
 #include "Level.h"
+
+#include <utility>
 #include "Logger.h"
 #include "Engine/PhysicsContext.h"
 
@@ -40,16 +42,19 @@ static void LoadColliderMap() {
     g_RampLeftCollider.SetTwoSided(v1, v2);
 }
 
-Level::Level(const std::string& name, const FLevel& levelData) : IGameObject(name) {
-    assert(levelData.Tiles.size() == levelData.Columns * levelData.Rows);
+Level::Level(const std::string& name, FLevel levelData)
+    : IGameObject(name), m_LevelData(std::move(levelData)) {}
+
+void Level::Initialize() {
+    assert(m_LevelData.Tiles.size() == m_LevelData.Columns * m_LevelData.Rows);
 
     LoadSpriteMap();
     LoadColliderMap();
 
-    for (auto i = 0; i < levelData.Rows; ++i) {
+    for (auto i = 0; i < m_LevelData.Rows; ++i) {
         std::vector<i32> row;
-        for (auto j = 0; j < levelData.Columns; ++j) {
-            row.push_back(levelData.Tiles.at(i * levelData.Columns + j));
+        for (auto j = 0; j < m_LevelData.Columns; ++j) {
+            row.push_back(m_LevelData.Tiles.at(i * m_LevelData.Columns + j));
         }
         m_TileIds.push_back(row);
     }

@@ -20,13 +20,29 @@ public:
 
     void Render();
 
-    void SetActive(const bool active) { m_Active = active; }
+    void SetActive(const bool active) {
+        m_Active = active;
+    }
 
-    [[nodiscard]] bool GetActive() const { return m_Active; }
+    [[nodiscard]] bool GetActive() const {
+        return m_Active;
+    }
 
-    std::string& GetName() { return m_Name; }
+    std::string& GetName() {
+        return m_Name;
+    }
 
-    FSceneContext& GetContext() { return m_SceneContext; }
+    FSceneContext& GetContext() {
+        return m_SceneContext;
+    }
+
+    [[nodiscard]] bool GetLoading() const {
+        return m_Loading;
+    }
+
+    void SetLoading(const bool loading) {
+        m_Loading = loading;
+    }
 
     template<typename T>
     static std::vector<T*> FindAllGameObjectsOf(FSceneContext& context) {
@@ -64,7 +80,8 @@ public:
 private:
     FSceneContext m_SceneContext;
     std::string m_Name;
-    bool m_Active = false;
+    bool m_Active  = false;
+    bool m_Loading = false;
 
     void DrawMainPass();
 };

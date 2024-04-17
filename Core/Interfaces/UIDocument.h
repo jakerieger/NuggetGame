@@ -18,6 +18,14 @@ public:
         m_Document->Hide();
     }
 
+    Rml::ElementDocument* GetDocument() const {
+        return m_Document;
+    }
+
+    IUIListener* GetListener() const {
+        return m_Listener;
+    }
+
 protected:
     Rml::ElementDocument* m_Document = nullptr;
     IUIListener* m_Listener          = nullptr;

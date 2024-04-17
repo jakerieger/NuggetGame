@@ -13,5 +13,9 @@ public:
         element->AddEventListener(Rml::EventId::Mousedown, this);
     }
 
+    void UnregisterButton(Rml::Element* element) {
+        element->RemoveEventListener("mouse-down", this);
+    }
+
     void ProcessEvent(Rml::Event& event) override {}
 };

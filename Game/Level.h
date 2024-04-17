@@ -21,7 +21,8 @@ struct FLevel {
 class Level final : public IGameObject,
                     public IDrawable {
 public:
-    Level(const std::string& name, const FLevel& levelData);
+    Level(const std::string& name, FLevel levelData);
+    void Initialize() override;
 
     void Start(FSceneContext& sceneContext) override;
     void Update(float deltaTime, FSceneContext& sceneContext) override;
@@ -33,4 +34,5 @@ private:
     std::vector<std::vector<i32>> m_TileIds;
     std::unordered_map<i32, std::vector<glm::vec2>> m_TilePositions;
     std::vector<ATilemap*> m_Tilemaps;
+    FLevel m_LevelData;
 };

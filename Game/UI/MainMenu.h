@@ -19,9 +19,8 @@ public:
 
 class MainMenu final : public IGameObject {
 public:
-    explicit MainMenu(const std::string& name) : IGameObject(name) {
-        m_Document = new MainMenuDocument;
-    }
+    explicit MainMenu(const std::string& name) : IGameObject(name) {}
+    void Initialize() override;
 
     void Start(FSceneContext& sceneContext) override;
     void Destroyed(FSceneContext& sceneContext) override;

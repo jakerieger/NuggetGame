@@ -8,11 +8,13 @@
 #include "Logger.h"
 #include "../Interfaces/InputListener.h"
 
+#include <Utilities.inl>
 #include <thread>
 #include <RmlUi/Core/Context.h>
 
 namespace Input {
-    std::vector<IInputListener*> g_Listeners;
+    static std::vector<IInputListener*> g_Listeners;
+    static IInputListener* g_AppListener = nullptr;
     int g_ConnectedGamepad;
 
     struct FKeyState {
@@ -27,18 +29,20 @@ namespace Input {
     /// GLFW can only register a single key per frame.
     void Dispatcher() {
         while (Application::IsRunning()) {
-            for (const auto& [key, state] : g_KeyStates) {
-                // Check if the key is pressed
-                if (state.Pressed) {
-                    // Dispatch OnKey event to listeners
-                    FKeyEvent event {key, 0};
-                    for (const auto listener : g_Listeners) {
-                        listener->OnKey(event);
+            if (!Application::IsLoading()) {
+                for (const auto& [key, state] : g_KeyStates) {
+                    // Check if the key is pressed
+                    if (state.Pressed) {
+                        // Dispatch OnKey event to listeners
+                        FKeyEvent event {key, 0};
+                        for (const auto listener : g_Listeners) {
+                            listener->OnKey(event);
+                        }
                     }
                 }
+                // Sleep for a short duration (120 FPS) to avoid busy waiting
+                std::this_thread::sleep_for(std::chrono::milliseconds(8));
             }
-            // Sleep for a short duration (120 FPS) to avoid busy waiting
-            std::this_thread::sleep_for(std::chrono::milliseconds(8));
         }
     }
 
@@ -56,12 +60,16 @@ namespace Input {
             g_KeyStates[key].Released = true;
         }
 
-        for (const auto listener : g_Listeners) {
-            if (g_KeyStates[key].Pressed) {
+        if (g_KeyStates[key].Pressed) {
+            for (const auto listener : g_Listeners) {
                 listener->OnKeyDown(event);
-            } else if (g_KeyStates[key].Released) {
+            }
+            g_AppListener->OnKeyDown(event);
+        } else if (g_KeyStates[key].Released) {
+            for (const auto listener : g_Listeners) {
                 listener->OnKeyUp(event);
             }
+            g_AppListener->OnKeyUp(event);
         }
     }
 
@@ -77,14 +85,20 @@ namespace Input {
         const u32 _button = static_cast<u32>(button);
         FMouseEvent event {_button};
 
-        for (const auto listener : g_Listeners) {
-            if (action == GLFW_PRESS && listener) {
+        if (action == GLFW_PRESS) {
+            for (const auto listener : g_Listeners) {
                 listener->OnMouseDown(event);
-                UI::GetContext()->ProcessMouseButtonDown(button, 0);
-            } else if (action == GLFW_RELEASE && listener) {
-                listener->OnMouseUp(event);
-                UI::GetContext()->ProcessMouseButtonUp(button, 0);
             }
+
+            UI::GetContext()->ProcessMouseButtonDown(button, 0);
+            g_AppListener->OnMouseDown(event);
+        } else if (action == GLFW_RELEASE) {
+            for (const auto listener : g_Listeners) {
+                listener->OnMouseUp(event);
+            }
+
+            UI::GetContext()->ProcessMouseButtonUp(button, 0);
+            g_AppListener->OnMouseUp(event);
         }
     }
 
@@ -93,8 +107,9 @@ namespace Input {
         for (const auto listener : g_Listeners) {
             if (listener)
                 listener->OnMouseMove(event);
-            UI::GetContext()->ProcessMouseMove(static_cast<i32>(xPos), static_cast<i32>(yPos), 0);
         }
+        UI::GetContext()->ProcessMouseMove(static_cast<i32>(xPos), static_cast<i32>(yPos), 0);
+        g_AppListener->OnMouseMove(event);
     }
 
     void ScrollCallback(GLFWwindow*, const double xOffset, const double yOffset) {
@@ -103,11 +118,14 @@ namespace Input {
         for (const auto listener : g_Listeners) {
             if (listener)
                 listener->OnScroll(event);
-            UI::GetContext()->ProcessMouseWheel(static_cast<f32>(yOffset), 0);
         }
+        UI::GetContext()->ProcessMouseWheel(static_cast<f32>(yOffset), 0);
+        g_AppListener->OnScroll(event);
     }
 
-    void Initialize(GLFWwindow* window) {
+    void Initialize(GLFWwindow* window, IInputListener* appListener) {
+        g_AppListener = appListener;
+
         glfwSetKeyCallback(window, KeyCallback);
         glfwSetMouseButtonCallback(window, MouseButtonCallback);
         glfwSetCursorPosCallback(window, MouseMovementCallback);
@@ -120,22 +138,21 @@ namespace Input {
     }
 
     void RegisterListener(IInputListener* listener) {
-        g_Listeners.push_back(listener);
+        if (listener)
+            g_Listeners.push_back(listener);
     }
 
-    void UnregisterSceneListeners(IInputListener* appListener) {
-        // Hack for .clear() not clearing pointers for some reason (I'm probably
-        // just dumb). It will leave the pointers in the array and only clear
-        // the memory associated with those pointers leading to 'Invalid
-        // address' errors.
-        for (auto& listener : g_Listeners) {
-            listener = nullptr;
+    void UnregisterListener(const IInputListener* listener) {
+        if (listener) {
+            if (const auto it = std::ranges::find_if(
+                  g_Listeners,
+                  [&](const IInputListener* elem) { return elem == listener; });
+                it != g_Listeners.end()) {
+                const auto idx      = std::distance(g_Listeners.begin(), it);
+                g_Listeners.at(idx) = nullptr;
+                Utilities::RemoveAt(g_Listeners, static_cast<i32>(idx));
+            }
         }
-
-        // Remove all the active input listeners
-        g_Listeners.clear();
-        // Re-register the main app as a listener
-        RegisterListener(appListener);
     }
 
     void Shutdown() {

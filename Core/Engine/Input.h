@@ -9,8 +9,8 @@
 #include <GLFW/glfw3.h>
 
 namespace Input {
-    void Initialize(GLFWwindow* window);
+    void Initialize(GLFWwindow* window, IInputListener* appListener);
     void RegisterListener(IInputListener* listener);
-    void UnregisterSceneListeners(IInputListener* appListener);
+    void UnregisterListener(const IInputListener* listener);
     void Shutdown();
 }  // namespace Input

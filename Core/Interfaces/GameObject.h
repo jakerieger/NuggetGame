@@ -17,23 +17,42 @@ class IGameObject : public ILifetime,
 public:
     explicit IGameObject(const std::string& name) : m_Name(name) {}
 
-    std::string GetName() const { return m_Name; }
+    virtual void Initialize() = 0;
 
-    virtual void Awake(FSceneContext& sceneContext) { m_Transform.Awake(sceneContext); }
+    std::string GetName() const {
+        return m_Name;
+    }
 
-    virtual void Start(FSceneContext& sceneContext) { m_Transform.Start(sceneContext); }
+    virtual void Awake(FSceneContext& sceneContext) {
+        m_Transform.Awake(sceneContext);
+    }
+
+    virtual void Start(FSceneContext& sceneContext) {
+        Initialize();
+        Input::RegisterListener(this);
+        m_Transform.Start(sceneContext);
+    }
 
     virtual void Update(const float deltaTime, FSceneContext& sceneContext) {
         m_Transform.Update(deltaTime, sceneContext);
     }
 
-    virtual void LateUpdate(FSceneContext& sceneContext) { m_Transform.LateUpdate(sceneContext); }
+    virtual void LateUpdate(FSceneContext& sceneContext) {
+        m_Transform.LateUpdate(sceneContext);
+    }
 
-    virtual void FixedUpdate(FSceneContext& sceneContext) { m_Transform.FixedUpdate(sceneContext); }
+    virtual void FixedUpdate(FSceneContext& sceneContext) {
+        m_Transform.FixedUpdate(sceneContext);
+    }
 
-    virtual void Destroyed(FSceneContext& sceneContext) { m_Transform.Destroyed(sceneContext); }
+    virtual void Destroyed(FSceneContext& sceneContext) {
+        m_Transform.Destroyed(sceneContext);
+        // Input::UnregisterListener(this);
+    }
 
-    ATransform* GetTransform() { return &m_Transform; }
+    ATransform* GetTransform() {
+        return &m_Transform;
+    }
 
     template<typename T>
     T* Cast() {

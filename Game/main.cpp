@@ -25,24 +25,25 @@ public:
 };
 
 void NuggetGame::Startup() {
+    IGameApp::Startup();
+
     auto testScene = Scene::Create("Test");
     auto nugget    = GameObject::Create<Nugget>("nugget");
     auto level     = std::make_unique<Level>("Test", Levels::LvlTest);
-
     testScene->AddGameObject(nugget);
     testScene->AddGameObject(level);
-
     AddScene(testScene);
-
-    const auto bgMusicPath =
-      Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "gameplay.wav");
-    Audio::PlayLoop(bgMusicPath.string(), 0.1f);
 
     auto mainMenuScene = Scene::Create("MainMenu");
     auto mainMenu      = GameObject::Create<MainMenu>("MainMenu");
     mainMenuScene->AddGameObject(mainMenu);
     AddScene(mainMenuScene);
+
     LoadScene("MainMenu");
+
+    const auto bgMusicPath =
+      Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "gameplay.wav");
+    Audio::PlayLoop(bgMusicPath.string(), 0.1f);
 }
 
 void NuggetGame::Cleanup() {}
@@ -83,8 +84,8 @@ int main(int argc, char* argv[]) {
     {
         NuggetGame app;
         Application::InitializeApp(app, "Nugget Game");
-        Utilities::SetWindowIcon(
-          Resources::GetResource<Sprite>(Resources::ResourceType::Sprite, "nugget.png"));
+        // Utilities::SetWindowIcon(
+        //   Resources::GetResource<Sprite>(Resources::ResourceType::Sprite, "nugget.png"));
 
 #ifdef _WIN32
         // ::FreeConsole();

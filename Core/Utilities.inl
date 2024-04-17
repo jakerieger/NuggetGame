@@ -223,4 +223,11 @@ namespace Utilities {
         const i32 difference = multiple - remainder;
         return number + difference;
     }
+
+    template<typename T>
+    void RemoveAt(std::vector<T>& vec, i32 idx) {
+        if (idx >= 0 && idx < vec.size()) {
+            vec.erase(vec.begin() + idx);
+        }
+    }
 }  // namespace Utilities

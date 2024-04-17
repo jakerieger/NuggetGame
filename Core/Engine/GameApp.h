@@ -9,10 +9,8 @@
 
 class IGameApp : public IInputListener {
 public:
-    IGameApp() {
-        Input::RegisterListener(this);
-    }
-    virtual void Startup() = 0;
+    IGameApp() = default;
+    virtual void Startup() {}
     virtual void Cleanup() = 0;
 
     void AddScene(std::unique_ptr<AScene>& scene);
@@ -23,7 +21,7 @@ public:
         return m_Paused;
     }
 
-    AScene* GetActiveScene() {
+    AScene* GetActiveScene() const {
         for (const auto& scene : m_Scenes) {
             if (scene->GetActive()) {
                 return scene.get();
@@ -32,7 +30,7 @@ public:
         return nullptr;
     }
 
-    AScene* GetScene(const std::string& name) {
+    AScene* GetScene(const std::string& name) const {
         for (const auto& scene : m_Scenes) {
             if (scene->GetName() == name) {
                 return scene.get();
@@ -53,4 +51,6 @@ namespace Application {
     IGameApp* GetCurrentApp();
     void RunApp(IGameApp& app);
     bool IsRunning();
+    void SetLoading(bool loading);
+    bool IsLoading();
 }  // namespace Application

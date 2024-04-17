@@ -10,11 +10,12 @@
 #include "Engine/InputCodes.h"
 #include "Engine/Resources.h"
 
-Nugget::Nugget(const std::string& name) : IGameObject(name) {
-    const auto nuggetSprite =
-      Resources::GetResource<Packer::Schemas::Sprite>(Resources::ResourceType::Sprite,
-                                                      "nugget.png");
-    m_SpriteRenderer = new ASpriteRenderer(nuggetSprite);
+Nugget::Nugget(const std::string& name) : IGameObject(name) {}
+
+void Nugget::Initialize() {
+    auto m_Sprite = Resources::GetResource<Packer::Schemas::Sprite>(Resources::ResourceType::Sprite,
+                                                                    "nugget.png");
+    m_SpriteRenderer = new ASpriteRenderer(m_Sprite);
     m_SpriteRenderer->SetParent(this);
 
     m_Rigidbody = new ARigidbody(100.f, 1.f, ColliderShape::Circle);

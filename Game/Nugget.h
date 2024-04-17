@@ -13,6 +13,7 @@ class Nugget final : public IGameObject,
                      public IDrawable {
 public:
     explicit Nugget(const std::string& name);
+    void Initialize() override;
 
     void Draw(FSceneContext& sceneContext) override;
     void Start(FSceneContext& sceneContext) override;
@@ -23,8 +24,8 @@ public:
     void OnKeyDown(FKeyEvent& event) override;
     void OnKey(FKeyEvent& event) override;
 
-    ASpriteRenderer* m_SpriteRenderer;
-    ARigidbody* m_Rigidbody;
+    ASpriteRenderer* m_SpriteRenderer = nullptr;
+    ARigidbody* m_Rigidbody           = nullptr;
 
 private:
     bool m_Falling = false;

@@ -16,13 +16,16 @@ void MainMenuListener::ProcessEvent(Rml::Event& event) {
         const auto elementId = event.GetCurrentElement()->GetId();
         if (strcmp(elementId.c_str(), "btn-play") == 0) {
             // Load level select scene
+            event.StopImmediatePropagation();
             Application::GetCurrentApp()->LoadScene("Test");
         }
         if (strcmp(elementId.c_str(), "btn-settings") == 0) {
             // Load settings screen
+            event.StopImmediatePropagation();
             Application::GetCurrentApp()->LoadScene("Settings");
         }
         if (strcmp(elementId.c_str(), "btn-quit") == 0) {
+            event.StopImmediatePropagation();
             Graphics::MarkWindowForClose();
         }
     }
@@ -41,6 +44,10 @@ MainMenuDocument::MainMenuDocument() {
     m_Listener->RegisterButton(m_Document->GetElementById("btn-quit"));
 }
 
+void MainMenu::Initialize() {
+    m_Document = new MainMenuDocument;
+}
+
 void MainMenu::Start(FSceneContext& sceneContext) {
     IGameObject::Start(sceneContext);
     m_Document->Show();
@@ -48,5 +55,11 @@ void MainMenu::Start(FSceneContext& sceneContext) {
 
 void MainMenu::Destroyed(FSceneContext& sceneContext) {
     IGameObject::Destroyed(sceneContext);
+    const auto document = m_Document->GetDocument();
+    const auto listener = m_Document->GetListener();
+    listener->UnregisterButton(document->GetElementById("btn-play"));
+    listener->UnregisterButton(document->GetElementById("btn-settings"));
+    listener->UnregisterButton(document->GetElementById("btn-quit"));
     m_Document->Hide();
+    delete m_Document;
 }
