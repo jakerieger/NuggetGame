@@ -1,0 +1,87 @@
+body {
+    font-family: SquareFont;
+    width: 100vw;
+    height: 100vh;
+    margin: auto;
+}
+
+.background {
+    background-color: #000000;
+    opacity: 0.5;
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.container {
+    position: fixed;
+    top: 20vh;
+    left: 20vw;
+    right: 20vw;
+    bottom: 20vh;
+    height: 100%;
+    max-height: 60vh;
+}
+
+.container .button {
+    margin-bottom: 10dp;
+}
+
+h1 {
+    font-size: 60dp;
+}
+
+.button {
+    width: 400dp;
+    height: 36dp;
+    font-size: 26dp;
+    padding: 10dp;
+    text-align: center;
+    border-width: 2px;
+    border-color: #5d767c;
+    background-color: #152428;
+}
+
+.button:hover {
+    opacity: 0.8;
+    border-color: #fff200;
+    font-effect: glow(1px #fff200);
+}
+
+.button:active {
+    opacity: 0.6;
+}
+
+table {
+    box-sizing: border-box;
+    display: table;
+    height: 50vh;
+}
+
+tr {
+    box-sizing: border-box;
+    display: table-row;
+    height: 100dp;
+}
+
+td {
+    box-sizing: border-box;
+    display: table-cell;
+}
+
+col {
+    box-sizing: border-box;
+    display: table-column;
+}
+
+colgroup {
+    display: table-column-group;
+}
+
+thead, tbody, tfoot {
+    display: table-row-group;
+}

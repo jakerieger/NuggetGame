@@ -14,6 +14,7 @@
 #include "Levels.h"
 
 #include <filesystem>
+#include <UI/SettingsMenu.h>
 #include <fmt/format.h>
 
 class NuggetGame final : public IGameApp {
@@ -38,6 +39,11 @@ void NuggetGame::Startup() {
     auto mainMenu      = GameObject::Create<MainMenu>("MainMenu");
     mainMenuScene->AddGameObject(mainMenu);
     AddScene(mainMenuScene);
+
+    auto settingsScene = Scene::Create("Settings");
+    auto settingsMenu  = GameObject::Create<SettingsMenu>("SettingsMenu");
+    settingsScene->AddGameObject(settingsMenu);
+    AddScene(settingsScene);
 
     LoadScene("MainMenu");
 

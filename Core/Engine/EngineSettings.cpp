@@ -13,7 +13,7 @@
 namespace Settings {
     static FEngineSettings g_Settings {
       .Vsync       = true,
-      .Fullscreen  = false,
+      .Fullscreen  = true,
       .ResolutionX = 1280,
       .ResolutionY = 720,
     };

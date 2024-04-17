@@ -85,7 +85,6 @@ add_library(Core STATIC
         Core/Logger.h
         Core/Engine/AudioContext.cpp
         Core/Engine/AudioContext.h
-        Game/UI/PauseMenu.h
         Core/Engine/EngineSettings.h
         Core/Engine/EngineSettings.cpp
         Core/NativePlatform.h
@@ -136,6 +135,8 @@ add_executable(NuggetGame
         Game/Levels.h
         Game/UI/MainMenu.h
         Game/UI/MainMenu.cpp
+        Game/UI/SettingsMenu.h
+        Game/UI/SettingsMenu.cpp
 )
 target_link_libraries(NuggetGame PRIVATE
         Core

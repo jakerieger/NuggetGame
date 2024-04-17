@@ -16,6 +16,7 @@ namespace Audio {
     ALCdevice* g_Device;
     ALCcontext* g_Context;
     ALCboolean g_ContextCurrent = false;
+    static std::vector<std::pair<u32, u32>> g_Mixer;
 
     static bool CheckALErrors() {
         if (const ALenum error = alGetError(); error != AL_NO_ERROR) {
@@ -185,9 +186,16 @@ namespace Audio {
         const std::tuple<u32, u32> result = PlaySoundFile(filename, true, gain);
         const auto source                 = std::get<0>(result);
         const auto buffer                 = std::get<1>(result);
+        g_Mixer.emplace_back(source, buffer);
     }
 
     void Shutdown() {
+        for (auto& [source, buffer] : g_Mixer) {
+            alDeleteSources(1, &source);
+            alDeleteBuffers(1, &buffer);
+        }
+        g_Mixer.clear();
+
         g_Context = alcGetCurrentContext();
         g_Device  = alcGetContextsDevice(g_Context);
         alcMakeContextCurrent(nullptr);
