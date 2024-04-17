@@ -92,6 +92,7 @@ add_library(Core STATIC
         Core/Interfaces/UIListener.h
         Core/Cursor.h
         Core/Cursor.cpp
+        Core/Interfaces/Serializable.h
 )
 
 # ============[ PACKAGES ]============ #
