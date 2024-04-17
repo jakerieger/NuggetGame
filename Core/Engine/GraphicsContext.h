@@ -34,7 +34,7 @@ namespace Graphics {
 #ifdef _WIN32
     HWND GetNativeWindow();
 #elif __linux__
-    Window GetNativeWindow();
+    void* GetNativeWindow();
 #elif __APPLE__
     NSWindow GetNativeWindow();
 #endif

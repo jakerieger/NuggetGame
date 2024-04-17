@@ -7,4 +7,4 @@
 namespace Cursor {
     void Hide();
     void Show();
-}
+}  // namespace Cursor

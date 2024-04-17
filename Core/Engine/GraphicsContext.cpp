@@ -45,8 +45,8 @@ namespace Graphics {
         return glfwGetWin32Window(g_Window.get());
     }
 #elif __linux__
-    Window GetNativeWindow() {
-        return glfwGetX11Window(g_Window.get());
+    void* GetNativeWindow() {
+        return (void*)glfwGetX11Window(g_Window.get());
     }
 #elif __APPLE__
     NSWindow GetNativeWindow() {
