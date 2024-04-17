@@ -7,10 +7,18 @@
 #include "STL.h"
 
 struct FEngineSettings {
-    bool Vsync;
-    bool Fullscreen;
-    u32 ResolutionX;
-    u32 ResolutionY;
+    struct Graphics {
+        bool Vsync;
+        bool Fullscreen;
+        u32 ResolutionX;
+        u32 ResolutionY;
+    } Graphics;
+    struct Audio {
+        f32 VolumeMaster;
+        f32 VolumeUI;
+        f32 VolumeFX;
+        f32 VolumeMusic;
+    } Audio;
 };
 
 namespace Settings {

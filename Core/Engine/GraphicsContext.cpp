@@ -15,6 +15,8 @@
 #elif __linux__
     #define GLFW_EXPOSE_NATIVE_X11
 #endif
+#include "AudioContext.h"
+
 #include <GLFW/glfw3native.h>
 
 namespace Graphics {
@@ -159,8 +161,8 @@ namespace Graphics {
     }
 
     bool Initialize(const char* title) {
-        const auto width   = static_cast<i32>(Settings::GetSettings().ResolutionX);
-        const auto height  = static_cast<i32>(Settings::GetSettings().ResolutionY);
+        const auto width   = static_cast<i32>(Settings::GetSettings().Graphics.ResolutionX);
+        const auto height  = static_cast<i32>(Settings::GetSettings().Graphics.ResolutionY);
         g_InitWindowWidth  = width;
         g_InitWindowHeight = height;
         g_WindowTitle      = title;
@@ -191,7 +193,7 @@ namespace Graphics {
         GL::FramebufferCallback(g_Window.get(), width, height);
         glfwSetFramebufferSizeCallback(GetWindow(), GL::FramebufferCallback);
 
-        glfwSwapInterval(Settings::GetSettings().Vsync ? 1 : 0);
+        glfwSwapInterval(Settings::GetSettings().Graphics.Vsync ? 1 : 0);
 
         // glfwSetInputMode(g_Window.get(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 

@@ -6,10 +6,15 @@
 
 #include "SceneContext.h"
 #include "STL.h"
+#include "Interfaces/Serializable.h"
 
-class AScene final : public ILifetime {
+class AScene final : public ILifetime,
+                     public ISerializable {
 public:
     explicit AScene(std::string name);
+
+    void Serialize() override {}
+    void Deserialize() override {}
 
     void Awake() override;
     void Start() override;

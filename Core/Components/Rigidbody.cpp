@@ -73,7 +73,7 @@ void ARigidbody::AddForce(const b2Vec2& force) const {
 }
 
 bool ARigidbody::IsGrounded() const {
-    static constexpr f32 TOLERANCE = 0.1f;
+    static constexpr f32 TOLERANCE = 0.05f;
     if (m_Body->GetLinearVelocity().y < -TOLERANCE || m_Body->GetLinearVelocity().y > TOLERANCE)
         return false;
 

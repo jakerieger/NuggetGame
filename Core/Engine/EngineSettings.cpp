@@ -12,10 +12,18 @@
 
 namespace Settings {
     static FEngineSettings g_Settings {
-      .Vsync       = true,
-      .Fullscreen  = false,
-      .ResolutionX = 1280,
-      .ResolutionY = 720,
+      .Graphics {
+        .Vsync       = true,
+        .Fullscreen  = false,
+        .ResolutionX = 1280,
+        .ResolutionY = 720,
+      },
+      .Audio {
+        .VolumeMaster = 1.f,
+        .VolumeUI     = 0.8f,
+        .VolumeFX     = 1.f,
+        .VolumeMusic  = 0.4f,
+      },
     };
 
     bool ReadSettings() {
@@ -27,22 +35,34 @@ namespace Settings {
             return false;
         }
 
-        g_Settings.Vsync       = ini["Settings"]["Vsync"] == "true";
-        g_Settings.Fullscreen  = ini["Settings"]["Fullscreen"] == "true";
-        g_Settings.ResolutionX = std::stoi(ini["Settings"]["ResolutionX"]);
-        g_Settings.ResolutionY = std::stoi(ini["Settings"]["ResolutionY"]);
+        g_Settings.Graphics.Vsync       = ini["Graphics"]["Vsync"] == "true";
+        g_Settings.Graphics.Fullscreen  = ini["Graphics"]["Fullscreen"] == "true";
+        g_Settings.Graphics.ResolutionX = std::stoi(ini["Graphics"]["ResolutionX"]);
+        g_Settings.Graphics.ResolutionY = std::stoi(ini["Graphics"]["ResolutionY"]);
+
+        g_Settings.Audio.VolumeMaster = std::stof(ini["Audio"]["VolumeMaster"]);
+        g_Settings.Audio.VolumeUI     = std::stof(ini["Audio"]["VolumeUI"]);
+        g_Settings.Audio.VolumeFX     = std::stof(ini["Audio"]["VolumeFX"]);
+        g_Settings.Audio.VolumeMusic  = std::stof(ini["Audio"]["VolumeMusic"]);
 
         Logger::LogInfo(Logger::Subsystems::RUNTIME, "Loaded game settings from config.ini");
         return true;
     }
 
     void SaveSettings() {
-        std::string configOut = "[Settings]\n";
+        std::string configOut = "[Graphics]\n";
 
-        configOut += fmt::format("Vsync = {}\n", g_Settings.Vsync ? "true" : "false");
-        configOut += fmt::format("Fullscreen = {}\n", g_Settings.Fullscreen ? "true" : "false");
-        configOut += fmt::format("ResolutionX = {}\n", g_Settings.ResolutionX);
-        configOut += fmt::format("ResolutionY = {}\n", g_Settings.ResolutionY);
+        configOut += fmt::format("Vsync = {}\n", g_Settings.Graphics.Vsync ? "true" : "false");
+        configOut +=
+          fmt::format("Fullscreen = {}\n", g_Settings.Graphics.Fullscreen ? "true" : "false");
+        configOut += fmt::format("ResolutionX = {}\n", g_Settings.Graphics.ResolutionX);
+        configOut += fmt::format("ResolutionY = {}\n", g_Settings.Graphics.ResolutionY);
+
+        configOut += "\n[Audio]\n";
+        configOut += fmt::format("VolumeMaster = {}\n", g_Settings.Audio.VolumeMaster);
+        configOut += fmt::format("VolumeUI = {}\n", g_Settings.Audio.VolumeUI);
+        configOut += fmt::format("VolumeFX = {}\n", g_Settings.Audio.VolumeFX);
+        configOut += fmt::format("VolumeMusic = {}\n", g_Settings.Audio.VolumeMusic);
 
         if (std::ofstream outStream(Resources::GetConfigFile()); outStream.is_open()) {
             outStream << configOut;

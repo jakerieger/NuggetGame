@@ -60,7 +60,7 @@ namespace Application {
         // Initialize engine subsytems
         {
             Graphics::Initialize(title);
-            if (Settings::GetSettings().Fullscreen) {
+            if (Settings::GetSettings().Graphics.Fullscreen) {
                 Graphics::ToggleFullscreen();
             }
             Camera::Initialize();

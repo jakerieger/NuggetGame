@@ -4,6 +4,7 @@
 
 #include "AudioContext.h"
 
+#include "EngineSettings.h"
 #include "Logger.h"
 #include "Utilities.inl"
 
@@ -17,6 +18,7 @@ namespace Audio {
     ALCcontext* g_Context;
     ALCboolean g_ContextCurrent = false;
     static std::vector<std::pair<u32, u32>> g_Mixer;
+    static constexpr f32 TARGET_PEAK = 0.99f;
 
     static bool CheckALErrors() {
         if (const ALenum error = alGetError(); error != AL_NO_ERROR) {
@@ -110,8 +112,24 @@ namespace Audio {
         Logger::LogInfo(Logger::Subsystems::AUDIO, "Audio subsystem initialized.");
     }
 
-    static std::tuple<u32, u32>
-    PlaySoundFile(const std::string& filename, const bool loop = false, const f32 gain = 1.f) {
+    static void Normalize(std::vector<f32>& samples) {
+        if (samples.empty())
+            return;
+
+        f32 maxAbsValue = 0.f;
+        for (const f32 sample : samples) {
+            maxAbsValue = std::max(maxAbsValue, std::abs(sample));
+        }
+        const f32 scale = TARGET_PEAK / maxAbsValue;
+        for (f32& sample : samples) {
+            sample *= scale;
+        }
+    }
+
+    static std::tuple<u32, u32> PlaySoundFile(const std::string& filename,
+                                              EAudioTag tag,
+                                              const bool loop = false,
+                                              const f32 gain  = 1.f) {
         AudioFile<f32> oneShot;
         oneShot.shouldLogErrorsToConsole(false);
         if (!oneShot.load(filename)) {
@@ -146,6 +164,24 @@ namespace Audio {
                                   static_cast<i32>(sizeof(f32)) * oneShot.getNumChannels()),
           0.f);
 
+        Normalize(samples);
+
+        auto finalVolume = gain * Settings::GetSettings().Audio.VolumeMaster;
+        switch (tag) {
+            case EAudioTag::Music: {
+                finalVolume *= Settings::GetSettings().Audio.VolumeMusic;
+                break;
+            }
+            case EAudioTag::UI: {
+                finalVolume *= Settings::GetSettings().Audio.VolumeUI;
+                break;
+            }
+            case EAudioTag::FX: {
+                finalVolume *= Settings::GetSettings().Audio.VolumeFX;
+                break;
+            }
+        }
+
         alGenSources(1, &alSource);
         alGenBuffers(1, &alSampleSet);
         alBufferData(alSampleSet,
@@ -155,7 +191,7 @@ namespace Audio {
                      static_cast<ALsizei>(oneShot.getSampleRate()));
         alSourcei(alSource, AL_BUFFER, static_cast<ALint>(alSampleSet));
         alSourcei(alSource, AL_LOOPING, loop);
-        alSourcef(alSource, AL_GAIN, gain);
+        alSourcef(alSource, AL_GAIN, finalVolume);
 
         oneShot.samples.clear();
 
@@ -164,26 +200,15 @@ namespace Audio {
         return std::make_tuple(alSource, alSampleSet);
     }
 
-    static void Cleanup(const u32 source, const u32 buffer) {
-        ALint sourceState;
-        do {
-            alGetSourcei(source, AL_SOURCE_STATE, &sourceState);
-        } while (sourceState == AL_PLAYING);
-        alDeleteSources(1, &source);
-        alDeleteBuffers(1, &buffer);
-    }
-
-    void PlayOneShot(const std::string& filename, const f32 gain) {
-        const std::tuple<u32, u32> result = PlaySoundFile(filename, false, gain);
+    void PlayOneShot(const std::string& filename, const EAudioTag tag, const f32 gain) {
+        const std::tuple<u32, u32> result = PlaySoundFile(filename, tag, false, gain);
         const auto source                 = std::get<0>(result);
         const auto buffer                 = std::get<1>(result);
-
-        auto cleanupThread = std::thread(Cleanup, source, buffer);
-        cleanupThread.detach();
+        g_Mixer.emplace_back(source, buffer);
     }
 
-    void PlayLoop(const std::string& filename, const f32 gain) {
-        const std::tuple<u32, u32> result = PlaySoundFile(filename, true, gain);
+    void PlayLoop(const std::string& filename, const EAudioTag tag, const f32 gain) {
+        const std::tuple<u32, u32> result = PlaySoundFile(filename, tag, true, gain);
         const auto source                 = std::get<0>(result);
         const auto buffer                 = std::get<1>(result);
         g_Mixer.emplace_back(source, buffer);

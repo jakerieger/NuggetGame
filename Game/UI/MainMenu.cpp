@@ -10,10 +10,14 @@
 #include "Engine/GameUI.h"
 
 #include <Cursor.h>
+#include <Utilities.inl>
+#include <Engine/AudioContext.h>
 #include <RmlUi/Core/Context.h>
 
 void MainMenuListener::ProcessEvent(Rml::Event& event) {
     if (event.GetId() == Rml::EventId::Mousedown) {
+        Audio::PlayOneShot(
+          Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "click_2.wav").string(), Audio::EAudioTag::UI);
         const auto elementId = event.GetCurrentElement()->GetId();
         if (strcmp(elementId.c_str(), "btn-play") == 0) {
             // Load level select scene
