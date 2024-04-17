@@ -47,7 +47,7 @@ public:
 
     virtual void Destroyed(FSceneContext& sceneContext) {
         m_Transform.Destroyed(sceneContext);
-        // Input::UnregisterListener(this);
+        Input::UnregisterListener(this);
     }
 
     ATransform* GetTransform() {
