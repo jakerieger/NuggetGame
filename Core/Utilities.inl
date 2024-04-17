@@ -4,6 +4,7 @@
 #include "Engine/GraphicsContext.h"
 #include "Types.h"
 #include "STL.h"
+#include "Logger.h"
 
 #include <optional>
 #include <stb_image.h>
@@ -67,11 +68,20 @@ namespace Utilities {
         return {};
     }
 
-    inline void SetWindowIcon(const Packer::Schemas::Sprite& iconSprite) {
+    inline void SetWindowIcon(const fs::path& filename) {
         GLFWimage appIcon;
-        appIcon.pixels = iconSprite.data;
-        appIcon.width  = static_cast<int>(iconSprite.width);
-        appIcon.height = static_cast<int>(iconSprite.height);
+
+        i32 width, height, _;
+        u8* data = stbi_load(filename.string().c_str(), &width, &height, &_, 0);
+        if (!data) {
+            Logger::LogError(Logger::Subsystems::RUNTIME, "Failed to load window icon file");
+            return;
+        }
+
+        appIcon.pixels = data;
+        appIcon.width  = width;
+        appIcon.height = height;
+
         glfwSetWindowIcon(Graphics::GetWindow(), 1, &appIcon);
         stbi_image_free(appIcon.pixels);
     }

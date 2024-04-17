@@ -9,6 +9,7 @@
 #include "Engine/Resources.h"
 #include "Engine/GameUI.h"
 
+#include <Cursor.h>
 #include <RmlUi/Core/Context.h>
 
 void MainMenuListener::ProcessEvent(Rml::Event& event) {
@@ -51,6 +52,7 @@ void MainMenu::Initialize() {
 void MainMenu::Start(FSceneContext& sceneContext) {
     IGameObject::Start(sceneContext);
     m_Document->Show();
+    Cursor::Show();
 }
 
 void MainMenu::Destroyed(FSceneContext& sceneContext) {

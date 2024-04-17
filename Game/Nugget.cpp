@@ -3,12 +3,12 @@
 //
 
 #include "Nugget.h"
-
 #include "Camera.h"
 #include "Utilities.inl"
 #include "Engine/AudioContext.h"
 #include "Engine/InputCodes.h"
 #include "Engine/Resources.h"
+#include "Cursor.h"
 
 Nugget::Nugget(const std::string& name) : IGameObject(name) {}
 
@@ -38,6 +38,7 @@ void Nugget::Start(FSceneContext& sceneContext) {
     m_Rigidbody->Start(sceneContext);
 
     Camera::Follow(this);
+    Cursor::Hide();
 }
 
 void Nugget::Update(float deltaTime, FSceneContext& sceneContext) {
@@ -85,11 +86,11 @@ void Nugget::OnKeyDown(FKeyEvent& event) {
 void Nugget::OnKey(FKeyEvent& event) {
     IGameObject::OnKey(event);
 
-    if (event.KeyCode == KeyCode::D) {
-        m_Rigidbody->AddTorque(-2000.f);
+    if (event.KeyCode == KeyCode::D || event.KeyCode == KeyCode::Right) {
+        m_Rigidbody->AddForce({2000.f, 0.f});
     }
 
-    if (event.KeyCode == KeyCode::A) {
-        m_Rigidbody->AddTorque(2000.f);
+    if (event.KeyCode == KeyCode::A || event.KeyCode == KeyCode::Left) {
+        m_Rigidbody->AddForce({-2000.f, 0.f});
     }
 }

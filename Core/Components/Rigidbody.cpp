@@ -64,10 +64,16 @@ void ARigidbody::AddImpulse(glm::vec2 impulse) const {
     m_Body->ApplyLinearImpulse({impulse.x, impulse.y}, {position.x, position.y}, true);
 }
 
-void ARigidbody::AddTorque(const float torque) const { m_Body->ApplyTorque(torque, true); }
+void ARigidbody::AddTorque(const float torque) const {
+    m_Body->ApplyTorque(torque, true);
+}
+
+void ARigidbody::AddForce(const b2Vec2& force) const {
+    m_Body->ApplyForceToCenter(force, true);
+}
 
 bool ARigidbody::IsGrounded() const {
-    static constexpr f32 TOLERANCE = 0.01f;
+    static constexpr f32 TOLERANCE = 0.1f;
     if (m_Body->GetLinearVelocity().y < -TOLERANCE || m_Body->GetLinearVelocity().y > TOLERANCE)
         return false;
 

@@ -90,6 +90,8 @@ add_library(Core STATIC
         Core/NativePlatform.h
         Core/Interfaces/UIDocument.h
         Core/Interfaces/UIListener.h
+        Core/Cursor.h
+        Core/Cursor.cpp
 )
 
 # ============[ PACKAGES ]============ #
@@ -151,6 +153,10 @@ target_link_libraries(NuggetGame PRIVATE
 add_custom_command(TARGET Packer PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/Assets ${CMAKE_BINARY_DIR}/Assets)
+
+add_custom_command(TARGET Packer PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/Assets/sprites/nugget.png ${CMAKE_BINARY_DIR}/icon.png)
 
 # ================================================================================================================== #
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/Game/UI)

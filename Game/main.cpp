@@ -65,7 +65,7 @@ void NuggetGame::OnKeyDown(FKeyEvent& event) {
     } else if (event.KeyCode == KeyCode::F11) {
         Graphics::ToggleFullscreen();
     } else if (event.KeyCode == KeyCode::R) {
-        // LoadScene("Test");
+        LoadScene("Test");
     }
 }
 
@@ -90,8 +90,7 @@ int main(int argc, char* argv[]) {
     {
         NuggetGame app;
         Application::InitializeApp(app, "Nugget Game");
-        // Utilities::SetWindowIcon(
-        //   Resources::GetResource<Sprite>(Resources::ResourceType::Sprite, "nugget.png"));
+        Utilities::SetWindowIcon(Resources::GetRoot() / "icon.png");
 
 #ifdef _WIN32
         // ::FreeConsole();

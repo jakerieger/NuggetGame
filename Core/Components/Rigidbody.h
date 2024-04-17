@@ -23,6 +23,7 @@ public:
 
     void AddImpulse(glm::vec2 impulse) const;
     void AddTorque(float torque) const;
+    void AddForce(const b2Vec2& force) const;
 
     bool IsGrounded() const;
 
