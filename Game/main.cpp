@@ -49,7 +49,7 @@ void NuggetGame::Startup() {
 
     const auto bgMusicPath =
       Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "gameplay.wav");
-    Audio::PlayLoop(bgMusicPath.string(), Audio::EAudioTag::Music);
+    Audio::PlayLoop(bgMusicPath.string(), Audio::EAudioTag::Music, 0.1f);
 }
 
 void NuggetGame::Cleanup() {}

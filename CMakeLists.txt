@@ -164,7 +164,7 @@ set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/Game/UI)
 set(OUTPUT_DIR ${CMAKE_BINARY_DIR}/Interface)
 
 # Define the file extensions you want to copy
-set(FILE_EXTENSIONS "*.html" "*.css")
+set(FILE_EXTENSIONS "*.html" "*.css" "*.tga")
 
 # Create a list to hold files to be copied
 set(FILES_TO_COPY)

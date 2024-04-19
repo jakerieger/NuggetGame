@@ -1,3 +1,9 @@
+@spritesheet theme {
+    src: ui_elements.tga;
+    checkbox-unchecked: 4px 28px 28px 4px;
+    checkbox-checked: 28px 4px 32px 56px;
+}
+
 body {
     font-family: SquareFont;
     width: 100vw;
@@ -56,21 +62,27 @@ h1 {
     opacity: 0.6;
 }
 
+.button:disabled {
+    opacity: 0.3;
+}
+
 table {
     box-sizing: border-box;
     display: table;
     height: 50vh;
+    margin-top: 28dp;
 }
 
 tr {
     box-sizing: border-box;
     display: table-row;
-    height: 100dp;
+    height: 48dp;
 }
 
 td {
     box-sizing: border-box;
     display: table-cell;
+    font-size: 20dp;
 }
 
 col {
@@ -84,4 +96,18 @@ colgroup {
 
 thead, tbody, tfoot {
     display: table-row-group;
+}
+
+/*input[type="checkbox"] {*/
+/*    width: 24dp;*/
+/*    height: 24dp;*/
+/*    background-color: #152428;*/
+/*}*/
+
+input.checkbox {
+    decorator: image(checkbox-unchecked);
+}
+
+input.checkbox:checked {
+    decorator: image(checkbox-checked);
 }
