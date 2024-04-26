@@ -89,6 +89,8 @@ add_library(Core STATIC
         Core/Interfaces/Serializable.h
         Core/Movie.cpp
         Core/Movie.h
+        Core/AssetDescriptor.cpp
+        Core/AssetDescriptor.h
 )
 
 # ============[ PACKAGES ]============ #
