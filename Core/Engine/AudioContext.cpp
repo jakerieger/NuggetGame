@@ -14,10 +14,17 @@
 #include <future>
 
 namespace Audio {
+    struct FAudioChannel {
+        u32 Source;
+        u32 Buffer;
+        std::string Name;
+    };
+
     ALCdevice* g_Device;
     ALCcontext* g_Context;
     ALCboolean g_ContextCurrent = false;
-    static std::vector<std::pair<u32, u32>> g_Mixer;
+    static std::vector<FAudioChannel> g_Mixer;
+    // Amplitude target for normalization
     static constexpr f32 TARGET_PEAK = 0.99f;
 
     static bool CheckALErrors() {
@@ -200,22 +207,43 @@ namespace Audio {
         return std::make_tuple(alSource, alSampleSet);
     }
 
-    void PlayOneShot(const std::string& filename, const EAudioTag tag, const f32 gain) {
+    void PlayOneShot(const std::string& filename,
+                     const std::string& channelName,
+                     const EAudioTag tag,
+                     const f32 gain) {
         const std::tuple<u32, u32> result = PlaySoundFile(filename, tag, false, gain);
         const auto source                 = std::get<0>(result);
         const auto buffer                 = std::get<1>(result);
-        g_Mixer.emplace_back(source, buffer);
+        g_Mixer.emplace_back(source, buffer, channelName);
     }
 
-    void PlayLoop(const std::string& filename, const EAudioTag tag, const f32 gain) {
+    void PlayLoop(const std::string& filename,
+                  const std::string& channelName,
+                  const EAudioTag tag,
+                  const f32 gain) {
         const std::tuple<u32, u32> result = PlaySoundFile(filename, tag, true, gain);
         const auto source                 = std::get<0>(result);
         const auto buffer                 = std::get<1>(result);
-        g_Mixer.emplace_back(source, buffer);
+        g_Mixer.emplace_back(source, buffer, channelName);
+    }
+
+    void StopLoop(const std::string& channelName) {
+        const auto it = std::ranges::find_if(g_Mixer, [&](const FAudioChannel& channel) {
+            return channel.Name == channelName;
+        });
+
+        if (it == g_Mixer.end()) {
+            return;
+        }
+
+        auto [source, buffer, _] = *it;
+        alDeleteSources(1, &source);
+        alDeleteBuffers(1, &buffer);
+        g_Mixer.erase(it);
     }
 
     void Shutdown() {
-        for (auto& [source, buffer] : g_Mixer) {
+        for (auto& [source, buffer, _] : g_Mixer) {
             alDeleteSources(1, &source);
             alDeleteBuffers(1, &buffer);
         }

@@ -27,11 +27,13 @@ public:
                 Audio::PlayOneShot(
                   Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "negative_2.wav")
                     .string(),
+                  "Negative",
                   Audio::EAudioTag::UI);
             } else {
                 Audio::PlayOneShot(
                   Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "click_2.wav")
                     .string(),
+                  "Click",
                   Audio::EAudioTag::UI);
             }
         }
