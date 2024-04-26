@@ -1,5 +1,13 @@
 var annotated_dup =
 [
+    [ "Audio", "namespace_audio.html", [
+      [ "FAudioChannel", "struct_audio_1_1_f_audio_channel.html", "struct_audio_1_1_f_audio_channel" ]
+    ] ],
+    [ "Debug", "namespace_debug.html", [
+      [ "Physics", "namespace_debug_1_1_physics.html", [
+        [ "ADebugDraw", "class_debug_1_1_physics_1_1_a_debug_draw.html", "class_debug_1_1_physics_1_1_a_debug_draw" ]
+      ] ]
+    ] ],
     [ "Graphics", "namespace_graphics.html", [
       [ "GL", "namespace_graphics_1_1_g_l.html", [
         [ "FDestroyWindow", "struct_graphics_1_1_g_l_1_1_f_destroy_window.html", "struct_graphics_1_1_g_l_1_1_f_destroy_window" ]
@@ -20,6 +28,7 @@ var annotated_dup =
     [ "ASpriteRenderer", "class_a_sprite_renderer.html", "class_a_sprite_renderer" ],
     [ "ATilemap", "class_a_tilemap.html", "class_a_tilemap" ],
     [ "ATransform", "class_a_transform.html", "class_a_transform" ],
+    [ "FEngineSettings", "struct_f_engine_settings.html", "struct_f_engine_settings" ],
     [ "FKeyEvent", "struct_f_key_event.html", "struct_f_key_event" ],
     [ "FMouseEvent", "struct_f_mouse_event.html", "struct_f_mouse_event" ],
     [ "FMouseMoveEvent", "struct_f_mouse_move_event.html", "struct_f_mouse_move_event" ],
@@ -32,5 +41,8 @@ var annotated_dup =
     [ "IGameObject", "class_i_game_object.html", "class_i_game_object" ],
     [ "IInputListener", "class_i_input_listener.html", "class_i_input_listener" ],
     [ "ILifetime", "class_i_lifetime.html", "class_i_lifetime" ],
-    [ "IRenderPass", "class_i_render_pass.html", "class_i_render_pass" ]
+    [ "IRenderPass", "class_i_render_pass.html", "class_i_render_pass" ],
+    [ "ISerializable", "class_i_serializable.html", "class_i_serializable" ],
+    [ "IUIDocument", "class_i_u_i_document.html", "class_i_u_i_document" ],
+    [ "IUIListener", "class_i_u_i_listener.html", "class_i_u_i_listener" ]
 ];

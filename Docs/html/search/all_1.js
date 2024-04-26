@@ -22,9 +22,10 @@ var searchData=
   ['bold_5fwhite_5fcolor_19',['BOLD_WHITE_COLOR',['../_logger_8cpp.html#ab2deab882d93b4e522a1c071e87e65a3',1,'Logger.cpp']]],
   ['bold_5fyellow_5fcolor_20',['BOLD_YELLOW_COLOR',['../_logger_8cpp.html#a2dcab4f40539d8f429751f02708f56e7',1,'Logger.cpp']]],
   ['box_21',['Box',['../_rigidbody_8h.html#a5a3cd3de83175e8380824161cd703fb3a3cfce651e667ab85486dd42a8185f98a',1,'Rigidbody.h']]],
-  ['buildprojectionmatrix_22',['BuildProjectionMatrix',['../namespace_camera.html#a233bb5a72f34f4aedab6e493103a3c53',1,'Camera']]],
-  ['buildviewmatrix_23',['BuildViewMatrix',['../namespace_camera.html#a79f6413aa3c7e834413b31f4383da08c',1,'Camera']]],
-  ['builtinshaders_24',['BuiltinShaders',['../namespace_builtin_shaders.html',1,'']]],
-  ['button_25',['Button',['../struct_f_mouse_event.html#a1a2646e4ad882cc7c741808f64e6c436',1,'FMouseEvent']]],
-  ['byte_26',['byte',['../_types_8h.html#aa7eee893e2fa0a3bee587db800891c92',1,'Types.h']]]
+  ['buffer_22',['Buffer',['../struct_audio_1_1_f_audio_channel.html#a2e50c9d9b859640b9851b1f4802a824a',1,'Audio::FAudioChannel']]],
+  ['buildprojectionmatrix_23',['BuildProjectionMatrix',['../namespace_camera.html#a233bb5a72f34f4aedab6e493103a3c53',1,'Camera']]],
+  ['buildviewmatrix_24',['BuildViewMatrix',['../namespace_camera.html#a79f6413aa3c7e834413b31f4383da08c',1,'Camera']]],
+  ['builtinshaders_25',['BuiltinShaders',['../namespace_builtin_shaders.html',1,'']]],
+  ['button_26',['Button',['../struct_f_mouse_event.html#a1a2646e4ad882cc7c741808f64e6c436',1,'FMouseEvent']]],
+  ['byte_27',['byte',['../_types_8h.html#aa7eee893e2fa0a3bee587db800891c92',1,'Types.h']]]
 ];

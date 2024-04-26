@@ -1,6 +1,6 @@
 var namespace_debug =
 [
-    [ "Physics", "namespace_debug_1_1_physics.html", null ],
+    [ "Physics", "namespace_debug_1_1_physics.html", "namespace_debug_1_1_physics" ],
     [ "UI", "namespace_debug_1_1_u_i.html", [
       [ "Draw", "namespace_debug_1_1_u_i.html#a262cfc70a89edd68a47aa986054a235e", null ],
       [ "Initialize", "namespace_debug_1_1_u_i.html#a09117afafe7e8229cd9d7a72ab1b51f4", null ],

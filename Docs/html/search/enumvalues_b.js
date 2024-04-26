@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['y_0',['Y',['../_transform_8h.html#ac15bb5899605742d63e278f7f469044ca57cec4137b614c87cb4e24a3d003a3e0',1,'Transform.h']]]
+  ['warning_0',['Warning',['../namespace_logger.html#a7f49c4e199ab68db3e5278cdee352b7aa0eaadb4fcb48a0a0ed7bc9868be9fbaa',1,'Logger']]]
 ];

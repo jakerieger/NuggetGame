@@ -12,6 +12,7 @@ var _utilities_8inl =
     [ "LoadTextureFromFile", "_utilities_8inl.html#a513d55270d4d156b75de49f1980a04cd", null ],
     [ "MakeMultiple", "_utilities_8inl.html#a56d52b81f72cef1b1845ba16327d8540", null ],
     [ "ReadFileToString", "_utilities_8inl.html#a46f1684f900d6e37bffa45d9eaaa86e4", null ],
+    [ "RemoveAt", "_utilities_8inl.html#a00326b0b1c6bf8f304a75e76fb6e0f14", null ],
     [ "RGBAToHex", "_utilities_8inl.html#a41ead534dd9a36e2c6c68c07cc3aa51d", null ],
-    [ "SetWindowIcon", "_utilities_8inl.html#aac700a084002a8ed96c96ca0d176e85b", null ]
+    [ "SetWindowIcon", "_utilities_8inl.html#a81f2518eae741a2da72d94b99ea96fd3", null ]
 ];

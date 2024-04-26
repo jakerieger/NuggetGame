@@ -8,6 +8,7 @@ var class_i_game_object =
     [ "GetComponent", "class_i_game_object.html#a5b2592e0cc68443f8d103b8676717eaf", null ],
     [ "GetName", "class_i_game_object.html#a3f42c0e119dc8fa46d719fd74cfc36a9", null ],
     [ "GetTransform", "class_i_game_object.html#a10f43b86d0005f7d08074e793476ae71", null ],
+    [ "Initialize", "class_i_game_object.html#aa16e2d9555d5c613e104f1169b0de267", null ],
     [ "LateUpdate", "class_i_game_object.html#ae86e017e06fe6b99df0b13473212ea94", null ],
     [ "RegisterComponent", "class_i_game_object.html#a65ea66b3ebc6945222030ec980aaebb4", null ],
     [ "Start", "class_i_game_object.html#ae4f4244f116a88f4f692ee23d8b58b7f", null ],

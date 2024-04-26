@@ -1,7 +1,7 @@
 var _graphics_context_8h =
 [
     [ "Graphics::GL::FDestroyWindow", "struct_graphics_1_1_g_l_1_1_f_destroy_window.html", "struct_graphics_1_1_g_l_1_1_f_destroy_window" ],
-    [ "TWindow", "_graphics_context_8h.html#ad6ebd8b7f6d9d386460c525432965c35", null ],
+    [ "TWindow", "_graphics_context_8h.html#a86d2cb63acfd2c2c9c0b3d9a8d130fee", null ],
     [ "AddDrawCall", "_graphics_context_8h.html#a0137664d419450c50716cfc3ee73d977", null ],
     [ "FramebufferCallback", "_graphics_context_8h.html#a1ec9e815d3e2f8374c8071206c2ed300", null ],
     [ "GetDeltaTime", "_graphics_context_8h.html#a1861aec9aa8e894b8b08ba428d79a588", null ],
@@ -12,7 +12,7 @@ var _graphics_context_8h =
     [ "GetWindowSize", "_graphics_context_8h.html#affe63f03f839f455542df8001d7ddc5b", null ],
     [ "GetWindowSizeGLM", "_graphics_context_8h.html#a1af86ed82eac92b8e1712f00be8bd2cf", null ],
     [ "GetWindowSizeImGui", "_graphics_context_8h.html#a8d803ccf71db4db4802371586af13f0c", null ],
-    [ "Initialize", "_graphics_context_8h.html#a59d2178f9deba06a7a0d473c2e708fd1", null ],
+    [ "Initialize", "_graphics_context_8h.html#a664bc316e58a45f8bfcaaddc8dc75932", null ],
     [ "MarkWindowForClose", "_graphics_context_8h.html#ac62ece42050539c4763cea06c4760b78", null ],
     [ "ResetDrawCalls", "_graphics_context_8h.html#ab811a614bed8e9cabd946f2d06beb87c", null ],
     [ "Shutdown", "_graphics_context_8h.html#ae5add0a9c849c286b979ff87d023b764", null ],

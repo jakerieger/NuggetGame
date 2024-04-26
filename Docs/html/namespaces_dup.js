@@ -1,21 +1,16 @@
 var namespaces_dup =
 [
     [ "Application", "namespace_application.html", [
-      [ "InitializeApp", "namespace_application.html#a417b3e2426a70c2e0288fef657c7be14", null ],
+      [ "GetCurrentApp", "namespace_application.html#ae77c78983c0ea59debf0c77eedda5716", null ],
+      [ "InitializeApp", "namespace_application.html#acca8dd0ad19b0af937a1af109fdaeb0b", null ],
+      [ "IsLoading", "namespace_application.html#a64aa5463a88672d0761fc0a7788bf985", null ],
       [ "IsRunning", "namespace_application.html#a44b83c17e5f46cf637450962e5fbdabb", null ],
       [ "RunApp", "namespace_application.html#a747e0f1ee4d4749e414265050b6aeaa5", null ],
-      [ "Update", "namespace_application.html#a5242e3cc73c49974be12103ac276caa4", null ],
+      [ "SetLoading", "namespace_application.html#a487a07c3729bf56f85421543965d2166", null ],
+      [ "Update", "namespace_application.html#a31d8b6d8bd9436418d8a3881937fec83", null ],
       [ "g_ClearColor", "namespace_application.html#a1ad2566398cc831581eeb0de39851668", null ]
     ] ],
-    [ "Audio", "namespace_audio.html", [
-      [ "Initialize", "namespace_audio.html#a8d7f6a57c5c356d8d7f081131f6847ed", null ],
-      [ "PlayLoop", "namespace_audio.html#a10046e1c3d2432806c639a828a0edd52", null ],
-      [ "PlayOneShot", "namespace_audio.html#a69e0944e45713a08e5d2053348089e44", null ],
-      [ "Shutdown", "namespace_audio.html#a1f43436527ee10fd1570ad330efafd20", null ],
-      [ "g_Context", "namespace_audio.html#a1be6144c96d8645e89901b4adce5465f", null ],
-      [ "g_ContextCurrent", "namespace_audio.html#a3cf81b76dcf62d83e8481799786a0c2b", null ],
-      [ "g_Device", "namespace_audio.html#a55fd4b855ab5596fdab11e588482eac5", null ]
-    ] ],
+    [ "Audio", "namespace_audio.html", "namespace_audio" ],
     [ "BuiltinShaders", "namespace_builtin_shaders.html", [
       [ "Sprite", "namespace_builtin_shaders.html#a97a3430136379ed74a2b80264ed1dcf4", null ],
       [ "SpriteBatch", "namespace_builtin_shaders.html#ae9891b1deb0388d8ff5752a8810de9ea", null ]
@@ -36,6 +31,11 @@ var namespaces_dup =
       [ "g_Width", "namespace_camera.html#a7c7bddf4bed55f8425a19e3cd7ee609c", null ],
       [ "g_Zoom", "namespace_camera.html#a9f69720b3d9e3e2869e36ec3f0db8166", null ]
     ] ],
+    [ "Cursor", "namespace_cursor.html", [
+      [ "Hide", "namespace_cursor.html#a8edb212414abf08e3d06f88e5b97610b", null ],
+      [ "Show", "namespace_cursor.html#a1fc9046e0afc51f44c18586d57260ee0", null ],
+      [ "g_Visible", "namespace_cursor.html#a98395d61af708f89d28b33a73f397f9f", null ]
+    ] ],
     [ "Debug", "namespace_debug.html", "namespace_debug" ],
     [ "GameObject", "namespace_game_object.html", null ],
     [ "Graphics", "namespace_graphics.html", "namespace_graphics" ],
@@ -43,6 +43,9 @@ var namespaces_dup =
     [ "KeyCode", "namespace_key_code.html", null ],
     [ "Logger", "namespace_logger.html", "namespace_logger" ],
     [ "MouseButton", "namespace_mouse_button.html", null ],
+    [ "Movie", "namespace_movie.html", [
+      [ "PlayFile", "namespace_movie.html#a346f6cdbc337700f5ec3c28f9149b879", null ]
+    ] ],
     [ "Physics", "namespace_physics.html", [
       [ "g_World", "namespace_physics.html#aa2abc7c2a60c6ad9cb12801ff40617e3", null ],
       [ "GetWorld", "namespace_physics.html#a596a1d30898c1233d3726b3232489218", null ],
@@ -76,6 +79,7 @@ var namespaces_dup =
         [ "Level", "namespace_resources.html#a64d44ad801bd726657983714496796c8aa0db49ba470c1c9ae2128c3470339153", null ],
         [ "ParticleEffect", "namespace_resources.html#a64d44ad801bd726657983714496796c8a2f26c1d581b3d996da11d4d07046348d", null ]
       ] ],
+      [ "GetConfigFile", "namespace_resources.html#a470414db9b37da73771e3627f204d0e2", null ],
       [ "GetResource", "namespace_resources.html#a6f219f183077bb7343bad97c2798b9c3", null ],
       [ "GetRoot", "namespace_resources.html#a5033b43ea5e589da9f8fffb10d60830e", null ],
       [ "GetSprites", "namespace_resources.html#a6433b5f2cacdc7d49aa610d3de6f5abc", null ],
@@ -84,12 +88,18 @@ var namespaces_dup =
       [ "g_Sprites", "namespace_resources.html#a7b1e27f4bab47167eab93fb262b30e27", null ]
     ] ],
     [ "Scene", "namespace_scene.html", null ],
+    [ "Settings", "namespace_settings.html", [
+      [ "GetSettings", "namespace_settings.html#a6cf7cc406a4086e10b72cdf819cc9386", null ],
+      [ "ReadSettings", "namespace_settings.html#a7af1d901ffd3383ca44ec235f02047af", null ],
+      [ "SaveSettings", "namespace_settings.html#a19d1e2e2df8600f7e2cd1c64363fe60f", null ]
+    ] ],
     [ "UI", "namespace_u_i.html", [
       [ "Begin", "namespace_u_i.html#a720d656fb46a35350b8e7603e9e9c016", null ],
       [ "CloseDocument", "namespace_u_i.html#a5599dab77091b7d671936cd5ab71154d", null ],
       [ "CreateDocument", "namespace_u_i.html#a15d7e91a87c578964c8467b5432c5063", null ],
       [ "Draw", "namespace_u_i.html#adb4cbcd5c39529f361c6543471e939a7", null ],
       [ "End", "namespace_u_i.html#a422ccd214012f32f0e41550b123936c1", null ],
+      [ "GetContext", "namespace_u_i.html#a3a4d4f8c9bd9478c4598481b34835652", null ],
       [ "Initialize", "namespace_u_i.html#af5dc08a91f264c6558644576137ee1a3", null ],
       [ "Shutdown", "namespace_u_i.html#ace80dd0b1e6b12ab9de012725bb13590", null ],
       [ "g_Context", "namespace_u_i.html#a021ab0176e874d534a63669790a7329b", null ],
@@ -109,7 +119,8 @@ var namespaces_dup =
       [ "LoadTextureFromFile", "namespace_utilities.html#a513d55270d4d156b75de49f1980a04cd", null ],
       [ "MakeMultiple", "namespace_utilities.html#a56d52b81f72cef1b1845ba16327d8540", null ],
       [ "ReadFileToString", "namespace_utilities.html#a46f1684f900d6e37bffa45d9eaaa86e4", null ],
+      [ "RemoveAt", "namespace_utilities.html#a00326b0b1c6bf8f304a75e76fb6e0f14", null ],
       [ "RGBAToHex", "namespace_utilities.html#a41ead534dd9a36e2c6c68c07cc3aa51d", null ],
-      [ "SetWindowIcon", "namespace_utilities.html#aac700a084002a8ed96c96ca0d176e85b", null ]
+      [ "SetWindowIcon", "namespace_utilities.html#a81f2518eae741a2da72d94b99ea96fd3", null ]
     ] ]
 ];

@@ -5,6 +5,7 @@ var _game_u_i_8cpp =
     [ "CreateDocument", "_game_u_i_8cpp.html#a15d7e91a87c578964c8467b5432c5063", null ],
     [ "Draw", "_game_u_i_8cpp.html#adb4cbcd5c39529f361c6543471e939a7", null ],
     [ "End", "_game_u_i_8cpp.html#a422ccd214012f32f0e41550b123936c1", null ],
+    [ "GetContext", "_game_u_i_8cpp.html#a3a4d4f8c9bd9478c4598481b34835652", null ],
     [ "Initialize", "_game_u_i_8cpp.html#af5dc08a91f264c6558644576137ee1a3", null ],
     [ "Shutdown", "_game_u_i_8cpp.html#ace80dd0b1e6b12ab9de012725bb13590", null ],
     [ "g_Context", "_game_u_i_8cpp.html#a021ab0176e874d534a63669790a7329b", null ],
