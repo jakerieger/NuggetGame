@@ -11,7 +11,6 @@
 #include <memory>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <imgui.h>
 #include <glm/vec2.hpp>
 
 namespace Graphics {
@@ -40,7 +39,6 @@ namespace Graphics {
 #endif
 
     glm::vec2 GetWindowSizeGLM();
-    ImVec2 GetWindowSizeImGui();
 
     namespace GL {
         void UpdateWindowSize(int width, int height);

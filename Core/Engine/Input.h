@@ -5,7 +5,7 @@
 #pragma once
 #include "../Interfaces/InputListener.h"
 #include "../STL.h"
-#include <../../Lib/glad/glad.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace Input {

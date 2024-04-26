@@ -11,11 +11,11 @@
 #include "Engine/Resources.h"
 
 struct FLevel {
-    std::vector<i32> Tiles;
     u32 Rows;
     u32 Columns;
     glm::vec2 PlayerStart;
     glm::vec2 ObjectivePosition;
+    std::vector<i32> Tiles;
 };
 
 class Level final : public IGameObject,

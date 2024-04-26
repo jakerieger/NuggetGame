@@ -9,8 +9,6 @@ include_directories(
         Lib
         Game
         Packer
-        imgui
-        imgui/backends
 )
 
 add_definitions(
@@ -18,18 +16,12 @@ add_definitions(
         -D_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 )
 
-file(GLOB IMGUI_SRCS imgui/*.cpp imgui/backends/imgui_impl_opengl3.cpp imgui/backends/imgui_impl_glfw.cpp)
-file(GLOB RMLUI_SRCS Lib/RmlUi/*.cpp)
-
 add_library(Core STATIC
         Lib/glad.c
         Lib/stb_image.cpp
-        ${IMGUI_SRCS}
         ${RMLUI_SRCS}
         Core/Engine/Profiler.cpp
         Core/Engine/Profiler.h
-        Core/Engine/DebugUI.cpp
-        Core/Engine/DebugUI.h
         Core/Shader.cpp
         Core/Engine/GameApp.cpp
         Core/Engine/GameApp.h
@@ -104,6 +96,7 @@ find_package(OpenAL CONFIG REQUIRED)
 find_package(RmlUi CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(lz4 CONFIG REQUIRED)
+find_package(RapidJSON CONFIG REQUIRED)
 # ============++++++++++++============ #
 
 target_link_libraries(Core PRIVATE
@@ -123,7 +116,7 @@ add_library(Packer STATIC
         Packer/Unpacker.h
         Lib/stb_image.cpp)
 
-target_link_libraries(Packer PRIVATE lz4::lz4)
+target_link_libraries(Packer PRIVATE lz4::lz4 rapidjson)
 
 add_executable(NugPak Packer/NugPak.cpp)
 target_link_libraries(NugPak PRIVATE Packer lz4::lz4)

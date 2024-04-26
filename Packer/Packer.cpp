@@ -10,6 +10,7 @@
 #include <cassert>
 #include <cstring>
 #include <fstream>
+#include <lz4.h>
 
 #ifdef _WIN32
     #include <algorithm>
@@ -34,6 +35,16 @@ namespace Packer {
             data          = new unsigned char[width * height * 4];  // Assumes RGBA format
             memcpy(data, _data, width * height * 4);
             dataLen = width * height * 4;
+        }
+
+        Level::Level(const u32 rows,
+                     const u32 cols,
+                     const Vec2D start,
+                     const Vec2D obj,
+                     const std::vector<i32>& tileData)
+            : mapRows(rows), mapColumns(cols), playerStart(start), objectivePosition(obj),
+              tileData(tileData) {
+            tileCount = rows * cols;
         }
     }  // namespace Schemas
 

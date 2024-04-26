@@ -7,7 +7,6 @@
 #include "Camera.h"
 #include "GraphicsContext.h"
 #include "Color.h"
-#include "DebugPhysics.h"
 #include "EngineSettings.h"
 #include "GameUI.h"
 #include "GraphicsError.h"
@@ -42,7 +41,6 @@ namespace Application {
         g_CurrentApp = nullptr;
 #ifndef NDEBUG
         Profiler::Shutdown();
-        // Debug::UI::Shutdown();
 #endif
         Input::Shutdown();
         UI::Shutdown();
@@ -72,7 +70,6 @@ namespace Application {
             Profiler::Initialize();
             Graphics::Error::EnableDebugOutput();
             Profiler::Start();
-            // Debug::UI::Initialize();
 #endif
             Input::Initialize(Graphics::GetWindow(), &app);
         }
@@ -101,7 +98,6 @@ namespace Application {
 // Update engine analytics
 #ifndef NDEBUG
         Profiler::Update();
-        // Debug::UI::Update(frameTime, activeScene);
 #endif
 
         // Clear buffers
@@ -125,7 +121,6 @@ namespace Application {
         UI::End();
 
 #ifndef NDEBUG
-// Debug::UI::Draw();
 #endif
 
         // Swap buffers and poll events

@@ -148,13 +148,6 @@ namespace Graphics {
         };
     }
 
-    ImVec2 GetWindowSizeImGui() {
-        return {
-          static_cast<f32>(g_CurrentWindowWidth),
-          static_cast<f32>(g_CurrentWindowHeight),
-        };
-    }
-
     float GetWindowAspect() {
         return (static_cast<float>(g_CurrentWindowWidth) /
                 static_cast<float>(g_CurrentWindowHeight));

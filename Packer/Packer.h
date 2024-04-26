@@ -4,8 +4,9 @@
 
 #pragma once
 
+#include "Types.h"
+
 #include <iostream>
-#include <lz4.h>
 #include <optional>
 #include <filesystem>
 
@@ -27,6 +28,20 @@ namespace Packer {
                    unsigned int _height,
                    unsigned int _channels,
                    const unsigned char* _data);
+        };
+
+        struct Level {
+            u32 mapRows;
+            u32 mapColumns;
+            struct Vec2D {
+                float x;
+                float y;
+            } playerStart;
+            Vec2D objectivePosition;
+            size_t tileCount;
+            std::vector<i32> tileData;
+
+            Level(u32 rows, u32 cols, Vec2D start, Vec2D obj, const std::vector<i32>& tileData);
         };
     }  // namespace Schemas
 
