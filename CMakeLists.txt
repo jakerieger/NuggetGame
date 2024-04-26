@@ -16,6 +16,8 @@ add_definitions(
         -D_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 )
 
+file(GLOB RMLUI_SRCS Lib/RmlUi/*.cpp)
+
 add_library(Core STATIC
         Lib/glad.c
         Lib/stb_image.cpp
