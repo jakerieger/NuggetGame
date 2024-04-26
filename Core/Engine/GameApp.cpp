@@ -203,6 +203,10 @@ void IGameApp::UnloadScene(AScene* scene) {
     scene->SetActive(false);
 }
 
+void IGameApp::TogglePause() {
+    m_Paused = !m_Paused;
+}
+
 void IGameApp::SetPaused(const bool paused) {
     m_Paused = paused;
 }

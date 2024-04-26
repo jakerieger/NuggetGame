@@ -63,6 +63,7 @@ void NuggetGame::OnKeyDown(FKeyEvent& event) {
     if (event.KeyCode == KeyCode::Escape) {
         const auto windowTitle = fmt::format("Nugget Game {}", Paused() ? "(Paused)" : "");
         glfwSetWindowTitle(Graphics::GetWindow(), windowTitle.c_str());
+        TogglePause();
     } else if (event.KeyCode == KeyCode::Tab) {
         Graphics::ToggleWireframe();
     } else if (event.KeyCode == KeyCode::F11) {

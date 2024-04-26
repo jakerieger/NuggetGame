@@ -16,6 +16,7 @@ public:
     void AddScene(std::unique_ptr<AScene>& scene);
     void LoadScene(const std::string& name);
     void UnloadScene(AScene* scene);
+    void TogglePause();
     void SetPaused(bool paused);
     bool Paused() const {
         return m_Paused;

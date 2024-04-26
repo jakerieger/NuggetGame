@@ -120,12 +120,12 @@ namespace Camera {
             targetX                    = lerpedX;
 
             const auto lerpedY = g_PreviousTargetPosition.y +
-                                 (k_LerpFactor / 6.f) * (targetPos.y - g_PreviousTargetPosition.y);
+                                 (k_LerpFactor / 3.f) * (targetPos.y - g_PreviousTargetPosition.y);
             g_PreviousTargetPosition.y = lerpedY;
-            // targetY                    = lerpedY + k_OffsetY;
+            targetY                    = lerpedY + k_OffsetY;
         }
         // TODO: Handle Y following differently from simply lerping to target Y
-        view = glm::translate(view, {-targetX, -targetY, 0.f});
+        view = glm::translate(view, {-targetX, -targetY + 10.f, 0.f});
 
         return view;
     }
