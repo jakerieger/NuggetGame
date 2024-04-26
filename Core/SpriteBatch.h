@@ -14,11 +14,13 @@
 
 class ASpriteBatch {
 public:
-    ASpriteBatch() = default;
+    ASpriteBatch() {
+        m_Shader = std::make_unique<AShader>(BuiltinShaders::SpriteBatch);
+    }
     void Init(const std::vector<glm::mat4>& modelMatrices);
     void UpdateInstances(const std::vector<glm::mat4>& modelMatrices) const;
     void Draw(u32 texture, const glm::mat4& view, const glm::mat4& projection, u32 count) const;
-    void Cleanup() const;
+    void Cleanup();
 
 private:
     u32 m_VBO         = 0;
@@ -28,7 +30,6 @@ private:
 };
 
 inline void ASpriteBatch::Init(const std::vector<glm::mat4>& modelMatrices) {
-    m_Shader                   = std::make_unique<AShader>(BuiltinShaders::SpriteBatch);
     const size_t instanceCount = modelMatrices.size();
 
     glGenVertexArrays(1, &m_VAO);
@@ -103,7 +104,8 @@ inline void ASpriteBatch::Draw(const u32 texture,
     glBindVertexArray(0);
 }
 
-inline void ASpriteBatch::Cleanup() const {
+inline void ASpriteBatch::Cleanup() {
     glDeleteVertexArrays(1, &m_VAO);
     glDeleteBuffers(1, &m_VBO);
+    glDeleteBuffers(1, &m_InstanceVBO);
 }

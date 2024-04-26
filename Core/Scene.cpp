@@ -60,7 +60,9 @@ void AScene::DrawMainPass() {
     }
 }
 
-void AScene::Render() { DrawMainPass(); }
+void AScene::Render() {
+    DrawMainPass();
+}
 
 IGameObject* AScene::FindGameObject(FSceneContext& context, const std::string& name) {
     for (const auto& go : context.GameObjects) {

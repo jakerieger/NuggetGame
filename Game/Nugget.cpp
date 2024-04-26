@@ -65,6 +65,7 @@ void Nugget::Destroyed(FSceneContext& sceneContext) {
     m_SpriteRenderer->Destroyed(sceneContext);
     m_Rigidbody->Destroyed(sceneContext);
     delete m_SpriteRenderer;
+    delete m_Rigidbody;
 }
 
 void Nugget::OnKeyDown(FKeyEvent& event) {
@@ -91,10 +92,18 @@ void Nugget::OnKey(FKeyEvent& event) {
     IGameObject::OnKey(event);
 
     if (event.KeyCode == KeyCode::D || event.KeyCode == KeyCode::Right) {
-        m_Rigidbody->AddForce({2000.f, 0.f});
+        if (m_Rigidbody->IsGrounded()) {
+            m_Rigidbody->AddForce({2000.f, 0.f});
+        } else {
+            m_Rigidbody->AddForce({1000.f, 0.f});
+        }
     }
 
     if (event.KeyCode == KeyCode::A || event.KeyCode == KeyCode::Left) {
-        m_Rigidbody->AddForce({-2000.f, 0.f});
+        if (m_Rigidbody->IsGrounded()) {
+            m_Rigidbody->AddForce({-2000.f, 0.f});
+        } else {
+            m_Rigidbody->AddForce({-1000.f, 0.f});
+        }
     }
 }

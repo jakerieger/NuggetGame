@@ -59,6 +59,12 @@ public:
         return dynamic_cast<T*>(this);
     }
 
+    /**
+     * @brief Registers a component on an inherited class with the base GameObject class.
+     *
+     * @tparam T Class that implements IComponent
+     * @param component Component to register
+     */
     template<typename T>
     void RegisterComponent(T* component) {
         static_assert(std::is_base_of_v<IComponent, T>, "T must be a subclass of IComponent");
@@ -66,6 +72,9 @@ public:
         m_Components.push_back(component);
     }
 
+    /**
+     * @brief Returns a pointer to a registered component of type T
+     */
     template<typename T>
     T* GetComponent() {
         static_assert(std::is_base_of_v<IComponent, T>, "T must be a subclass of IComponent");

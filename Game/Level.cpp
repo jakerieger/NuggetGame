@@ -99,6 +99,7 @@ void Level::Initialize() {
 
 void Level::Start(FSceneContext& sceneContext) {
     IGameObject::Start(sceneContext);
+    Initialize();
     for (const auto tile : m_Tilemaps) {
         tile->Start(sceneContext);
     }
@@ -124,4 +125,6 @@ void Level::Destroyed(FSceneContext& sceneContext) {
         tile->Destroyed(sceneContext);
         delete tile;
     }
+
+    m_Tilemaps.clear();
 }

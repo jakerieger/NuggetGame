@@ -68,7 +68,8 @@ void NuggetGame::OnKeyDown(FKeyEvent& event) {
     } else if (event.KeyCode == KeyCode::F11) {
         Graphics::ToggleFullscreen();
     } else if (event.KeyCode == KeyCode::R) {
-        LoadScene("MainMenu");
+        const auto sceneName = GetActiveScene()->GetName();
+        LoadScene(sceneName);
     }
 }
 
