@@ -11,7 +11,6 @@
 #include <AL/al.h>
 #include <AL/alext.h>
 #include <AudioFile.h>
-#include <future>
 
 namespace Audio {
     struct FAudioChannel {
@@ -214,7 +213,8 @@ namespace Audio {
         const std::tuple<u32, u32> result = PlaySoundFile(filename, tag, false, gain);
         const auto source                 = std::get<0>(result);
         const auto buffer                 = std::get<1>(result);
-        g_Mixer.emplace_back(source, buffer, channelName);
+        const FAudioChannel channel = {source, buffer, channelName};
+        g_Mixer.push_back(channel);
     }
 
     void PlayLoop(const std::string& filename,
@@ -224,7 +224,8 @@ namespace Audio {
         const std::tuple<u32, u32> result = PlaySoundFile(filename, tag, true, gain);
         const auto source                 = std::get<0>(result);
         const auto buffer                 = std::get<1>(result);
-        g_Mixer.emplace_back(source, buffer, channelName);
+        const FAudioChannel channel = {source, buffer, channelName};
+        g_Mixer.push_back(channel);
     }
 
     void StopLoop(const std::string& channelName) {

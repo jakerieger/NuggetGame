@@ -9,6 +9,7 @@
 #include <iostream>
 #include <optional>
 #include <filesystem>
+#include <vector>
 
 namespace Packer {
     static constexpr int MAX_STR_LEN = 64;
