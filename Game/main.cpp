@@ -23,14 +23,17 @@ public:
     void Startup() override;
     void Cleanup() override;
     void OnKeyDown(FKeyEvent& event) override;
+
+private:
+    FLevel m_CurrentLevel = Levels::LvlUpAndUp;
 };
 
 void NuggetGame::Startup() {
     IGameApp::Startup();
 
     auto testScene = Scene::Create("Test");
-    auto nugget    = GameObject::Create<Nugget>("nugget");
-    auto level     = std::make_unique<Level>("Test", Levels::LvlTest);
+    auto nugget    = std::make_unique<Nugget>("Player", m_CurrentLevel.PlayerStart);
+    auto level     = std::make_unique<Level>("UpAndUp", m_CurrentLevel);
     testScene->AddGameObject(nugget);
     testScene->AddGameObject(level);
     AddScene(testScene);

@@ -15,8 +15,8 @@ namespace Settings {
       .Graphics {
         .Vsync       = true,
         .Fullscreen  = false,
-        .ResolutionX = 1280,
-        .ResolutionY = 720,
+        .ResolutionX = 1600,
+        .ResolutionY = 900,
       },
       .Audio {
         .VolumeMaster = 1.f,

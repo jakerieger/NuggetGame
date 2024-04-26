@@ -12,7 +12,7 @@
 class Nugget final : public IGameObject,
                      public IDrawable {
 public:
-    explicit Nugget(const std::string& name);
+    explicit Nugget(const std::string& name, const glm::vec2& startPosition);
     void Initialize() override;
 
     void Draw(FSceneContext& sceneContext) override;
@@ -29,4 +29,6 @@ public:
 
 private:
     bool m_Falling = false;
+    glm::vec2 m_StartPosition;
+    u32 m_JumpCount = 0;
 };

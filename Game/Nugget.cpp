@@ -10,7 +10,8 @@
 #include "Engine/Resources.h"
 #include "Cursor.h"
 
-Nugget::Nugget(const std::string& name) : IGameObject(name) {}
+Nugget::Nugget(const std::string& name, const glm::vec2& startPosition)
+    : IGameObject(name), m_StartPosition(startPosition) {}
 
 void Nugget::Initialize() {
     auto m_Sprite = Resources::GetResource<Packer::Schemas::Sprite>(Resources::ResourceType::Sprite,
@@ -22,7 +23,7 @@ void Nugget::Initialize() {
     m_Rigidbody->SetParent(this);
 
     m_Transform.SetScale(2.f, 2.f);
-    m_Transform.SetPosition(0.f, 6.f);
+    m_Transform.SetPosition(m_StartPosition.x, m_StartPosition.y);
 
     RegisterComponent(m_SpriteRenderer);
     RegisterComponent(m_Rigidbody);
@@ -46,7 +47,8 @@ void Nugget::Update(float deltaTime, FSceneContext& sceneContext) {
     m_SpriteRenderer->Update(deltaTime, sceneContext);
 
     if (m_Rigidbody->IsGrounded() && m_Falling) {
-        m_Falling = false;
+        m_Falling   = false;
+        m_JumpCount = 0;
         Audio::PlayOneShot(
           (Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "land.wav")).string(),
           Audio::EAudioTag::FX);
@@ -69,9 +71,10 @@ void Nugget::OnKeyDown(FKeyEvent& event) {
     IGameObject::OnKeyDown(event);
 
     if (event.KeyCode == KeyCode::Space) {
-        if (m_Rigidbody->IsGrounded()) {
+        if (m_Rigidbody->IsGrounded() || m_JumpCount < 2) {
             m_Rigidbody->AddImpulse({0.f, 5000.f});
             m_Falling = true;
+            m_JumpCount++;
             // Play jump sound effect
             const auto sfxPath =
               Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "jump.wav");

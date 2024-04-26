@@ -7,6 +7,7 @@
 #include "Camera.h"
 #include "GraphicsContext.h"
 #include "Color.h"
+#include "DebugPhysics.h"
 #include "EngineSettings.h"
 #include "GameUI.h"
 #include "GraphicsError.h"

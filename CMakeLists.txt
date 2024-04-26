@@ -93,6 +93,8 @@ add_library(Core STATIC
         Core/Cursor.h
         Core/Cursor.cpp
         Core/Interfaces/Serializable.h
+        Core/Movie.cpp
+        Core/Movie.h
 )
 
 # ============[ PACKAGES ]============ #
