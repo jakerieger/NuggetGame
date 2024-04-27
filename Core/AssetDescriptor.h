@@ -7,4 +7,12 @@
 #include <cpp-base64/base64.h>
 #include <rapidjson/rapidjson.h>
 
+enum class EAssetType {
+    Sprite,
+    Audio,
+    Level,
+    Font,
+    Movie,
+};
+
 class AssetDescriptor {};

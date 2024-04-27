@@ -3,3 +3,6 @@ build/
 make-build/
 push.sh
 Distributables/
+AssetTool/bin/
+AssetTool/obj/
+AssetTool/.idea/
