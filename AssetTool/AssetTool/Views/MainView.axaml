@@ -17,7 +17,7 @@
                 <MenuItem Header="Open ADF" />
                 <MenuItem Header="Save ADF" />
                 <MenuItem Header="Save ADF As..." />
-                <MenuItem Header="Exit" />
+                <MenuItem Header="Exit" x:Name="MenuBtnExit" Click="MenuBtnExit_OnClick" />
             </MenuItem>
             <MenuItem Header="Tools">
                 <MenuItem Header="Validate ADF" />
@@ -41,7 +41,7 @@
                         <ListBoxItem>Asset Two</ListBoxItem>
                         <ListBoxItem>Asset Three</ListBoxItem>
                     </ListBox>
-                    <Button>Export Pak File</Button>
+                    <Button x:Name="BtnExportPak" Click="BtnExportPak_OnClick">Export Pak File</Button>
                 </StackPanel>
             </TabItem>
         </TabControl>
