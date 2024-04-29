@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
-namespace AssetTool
-{
-    public enum AssetType
-    {
+namespace AssetTool {
+    public enum AssetType {
         Sprite = 0,
         Font = 1,
         Audio = 2,
@@ -16,40 +9,34 @@ namespace AssetTool
         Movie = 4
     }
 
-    public abstract class IProperties
-    {
+    public abstract class IProperties {
         public abstract uint GetSize();
         public abstract List<byte> Serialize();
         public abstract IProperties Deserialize(byte[] data);
     }
 
-    public class SpriteProperties : IProperties
-    {
+    public class SpriteProperties : IProperties {
         public uint Width;
         public uint Height;
         public bool IsAlpha;
 
         public override uint GetSize() => (sizeof(uint) * 2) + sizeof(bool);
 
-        public override List<byte> Serialize()
-        {
+        public override List<byte> Serialize() {
             return [
                 .. BitConverter.GetBytes(Width),
                 .. BitConverter.GetBytes(Height),
                 .. BitConverter.GetBytes(IsAlpha),
-            ]; ;
+            ];
         }
 
-        public override IProperties Deserialize(byte[] data)
-        {
+        public override IProperties Deserialize(byte[] data) {
             return new SpriteProperties();
         }
     }
 
-    public abstract class IAssetDescriptor
-    {
-        public IAssetDescriptor()
-        {
+    public abstract class IAssetDescriptor {
+        public IAssetDescriptor() {
             _name = string.Empty;
             _data = new byte[0];
             _nameLen = 0;
@@ -73,18 +60,15 @@ namespace AssetTool
         public abstract IAssetDescriptor Deserialize(byte[] data);
     }
 
-    public class SpriteDescriptor : IAssetDescriptor
-    {
-        public SpriteDescriptor()
-        {
+    public class SpriteDescriptor : IAssetDescriptor {
+        public SpriteDescriptor() {
             Properties = new SpriteProperties();
             _propertiesLen = Properties.GetSize();
         }
 
         private readonly uint _propertiesLen;
 
-        public override List<byte> Serialize()
-        {
+        public override List<byte> Serialize() {
             List<byte> bytes = [];
 
             bytes.Add(BitConverter.GetBytes((uint)AssetType)[0]);
@@ -92,8 +76,7 @@ namespace AssetTool
             bytes.AddRange(BitConverter.GetBytes(_nameLen));
             bytes.AddRange(Encoding.UTF8.GetBytes(Name));
             bytes.AddRange(BitConverter.GetBytes(_propertiesLen));
-            if (Properties != null)
-            {
+            if (Properties != null) {
                 bytes.AddRange(Properties.Serialize());
             }
             bytes.AddRange(BitConverter.GetBytes(_dataLen));
@@ -102,10 +85,8 @@ namespace AssetTool
             return bytes;
         }
 
-        public override IAssetDescriptor Deserialize(byte[] data)
-        {
-            if (data == null)
-            {
+        public override IAssetDescriptor Deserialize(byte[] data) {
+            if (data == null) {
                 throw new Exception("Provided data is empty");
             }
 
