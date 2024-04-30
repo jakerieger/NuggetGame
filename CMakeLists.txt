@@ -89,8 +89,6 @@ add_library(Core STATIC
         Core/Interfaces/Serializable.h
         Core/Movie.cpp
         Core/Movie.h
-        Core/AssetDescriptor.cpp
-        Core/AssetDescriptor.h
 )
 
 # ============[ PACKAGES ]============ #
@@ -149,6 +147,8 @@ target_link_libraries(NuggetGame PRIVATE
         RmlDebugger
         fmt::fmt
 )
+
+add_subdirectory(AssetTool)
 
 add_custom_command(TARGET Packer PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
