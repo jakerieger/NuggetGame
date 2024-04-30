@@ -82,6 +82,10 @@ namespace AssetTool {
         IAssetDescriptor* Deserialize(const std::vector<unsigned char>& data) override {
             return this;
         }
+
+        [[nodiscard]] SpriteProperties* GetProperties() const {
+            return dynamic_cast<SpriteProperties*>(m_Properties);
+        }
     };
 
     class FontDescriptor final : public IAssetDescriptor {};
