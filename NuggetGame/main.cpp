@@ -1,8 +1,6 @@
 #include "Engine/GameApp.h"
 #include "Engine/InputCodes.h"
 #include "Nugget.h"
-#include "Packer.h"
-#include "Unpacker.h"
 #include "Utilities.inl"
 #include "Engine/GraphicsContext.h"
 #include "Engine/Resources.h"
@@ -76,7 +74,6 @@ void NuggetGame::OnKeyDown(FKeyEvent& event) {
 
 int main(int argc, char* argv[]) {
     Resources::SetCwd(argv[0]);
-    using namespace Packer::Schemas;
 
     // Check if config file exists and create it if not
     if (!exists(Resources::GetConfigFile())) {
@@ -84,12 +81,7 @@ int main(int argc, char* argv[]) {
     }
 
     // Unpack game assets
-    {
-        const auto dataRoot = Resources::GetRoot() / "Data";
-        Unpacker::UnpackSprites(dataRoot, Resources::GetSprites());
-
-        Logger::LogInfo(Logger::Subsystems::RUNTIME, "Unpacked game asset");
-    }
+    { const auto dataRoot = Resources::GetRoot() / "Data"; }
 
     // Run game
     {

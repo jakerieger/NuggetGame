@@ -15,10 +15,10 @@ ASpriteRenderer::ASpriteRenderer(const char* resource) {
     m_SpriteId = Utilities::LoadTextureFromFile(resource);
 }
 
-ASpriteRenderer::ASpriteRenderer(const Packer::Schemas::Sprite& sprite) {
-    m_Sprite = std::make_unique<ASprite>();
-    m_SpriteId =
-      Utilities::LoadTextureFromData(sprite.data, sprite.width, sprite.height, sprite.channels);
+ASpriteRenderer::ASpriteRenderer(void* sprite) {
+    // m_Sprite = std::make_unique<ASprite>();
+    // m_SpriteId =
+    //   Utilities::LoadTextureFromData(sprite.data, sprite.width, sprite.height, sprite.channels);
 }
 
 void ASpriteRenderer::Start(FSceneContext& sceneContext) {

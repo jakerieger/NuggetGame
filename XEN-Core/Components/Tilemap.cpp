@@ -20,16 +20,14 @@ static void UpdateModelMatrices(const std::vector<glm::vec2>& tiles,
     }
 }
 
-ATilemap::ATilemap(const Packer::Schemas::Sprite& sprite,
-                   const std::vector<glm::vec2>& tiles,
-                   const float tileSize)
+ATilemap::ATilemap(void* sprite, const std::vector<glm::vec2>& tiles, const float tileSize)
     : m_TileSize(tileSize), m_Tiles(tiles) {
-    m_SpriteBatch = new ASpriteBatch();
-    UpdateModelMatrices(tiles, tileSize, m_ModelMatrices);
-
-    m_Sprite =
-      Utilities::LoadTextureFromData(sprite.data, sprite.width, sprite.height, sprite.channels);
-    assert(m_Sprite != 0);
+    // m_SpriteBatch = new ASpriteBatch();
+    // UpdateModelMatrices(tiles, tileSize, m_ModelMatrices);
+    //
+    // m_Sprite =
+    //   Utilities::LoadTextureFromData(sprite.data, sprite.width, sprite.height, sprite.channels);
+    // assert(m_Sprite != 0);
 }
 
 void ATilemap::Start(FSceneContext& sceneContext) {

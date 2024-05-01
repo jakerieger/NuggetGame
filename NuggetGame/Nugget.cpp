@@ -14,9 +14,7 @@ Nugget::Nugget(const std::string& name, const glm::vec2& startPosition)
     : IGameObject(name), m_StartPosition(startPosition) {}
 
 void Nugget::Initialize() {
-    auto m_Sprite = Resources::GetResource<Packer::Schemas::Sprite>(Resources::ResourceType::Sprite,
-                                                                    "nugget.png");
-    m_SpriteRenderer = new ASpriteRenderer(m_Sprite);
+    m_SpriteRenderer = new ASpriteRenderer(this);
     m_SpriteRenderer->SetParent(this);
 
     m_Rigidbody = new ARigidbody(100.f, 1.f, ColliderShape::Circle);

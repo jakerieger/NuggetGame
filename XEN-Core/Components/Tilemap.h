@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "Packer.h"
 #include "STL.h"
 #include "SpriteBatch.h"
 #include "Interfaces/Component.h"
@@ -13,9 +12,7 @@
 
 class ATilemap final : public IComponent {
 public:
-    explicit ATilemap(const Packer::Schemas::Sprite& sprite,
-                      const std::vector<glm::vec2>& tiles,
-                      float tileSize);
+    explicit ATilemap(void* sprite, const std::vector<glm::vec2>& tiles, float tileSize);
 
     void Start(FSceneContext& sceneContext) override;
     void Update(float deltaTime, FSceneContext& sceneContext) override;

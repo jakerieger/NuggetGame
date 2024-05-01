@@ -4,7 +4,6 @@
 
 namespace Resources {
     std::string g_Cwd;
-    std::vector<Packer::Schemas::Sprite> g_Sprites = {};
 
     namespace fs = std::filesystem;
 
@@ -20,10 +19,6 @@ namespace Resources {
 
     std::filesystem::path GetRoot() {
         return {g_Cwd};
-    }
-
-    std::vector<Packer::Schemas::Sprite>& GetSprites() {
-        return g_Sprites;
     }
 
     std::filesystem::path GetConfigFile() {
