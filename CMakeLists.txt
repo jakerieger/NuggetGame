@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.20...3.28)
 project(NuggetGame)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -30,29 +30,21 @@ add_subdirectory(NuggetGame)
 
 # ================================================================================================================== #
 set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/Game/UI)
-set(OUTPUT_DIR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Interface)
+set(OUTPUT_DIR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/NuggetGame/Interface)
 
-# Define the file extensions you want to copy
 set(FILE_EXTENSIONS "*.html" "*.css" "*.tga")
-
-# Create a list to hold files to be copied
 set(FILES_TO_COPY)
 
-# Add files matching the extensions to the list
 foreach (EXTENSION ${FILE_EXTENSIONS})
     file(GLOB FILES "${SOURCE_DIR}/${EXTENSION}")
     list(APPEND FILES_TO_COPY ${FILES})
 endforeach ()
 
-# Copy files to the output directory
 file(COPY ${FILES_TO_COPY} DESTINATION ${OUTPUT_DIR})
-
-# Make sure to create the output directory
 file(MAKE_DIRECTORY ${OUTPUT_DIR})
 
-# Create a custom target depending on the existence of the output files
 add_custom_target(
-        copy_files_target ALL
+        CopyUiFiles ALL
         DEPENDS ${OUTPUT_DIR}
         COMMENT "Copying files to output directory"
 )

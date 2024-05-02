@@ -78,10 +78,6 @@ void NuggetGame::OnKeyDown(FKeyEvent& event) {
 int main(int argc, char* argv[]) {
     Resources::SetCwd(argv[0]);
 
-    using namespace PlatformTools;
-
-    return 0;
-
     // Check if config file exists and create it if not
     if (!exists(Resources::GetConfigFile())) {
         Settings::SaveSettings();

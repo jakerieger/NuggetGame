@@ -7,7 +7,7 @@
 #include <fstream>
 
 namespace PlatformTools::IO {
-    std::optional<std::string> Read(const fs::path& filename) {
+    std::optional<std::string> Read(const FileSystem::path& filename) {
         if (!exists(filename) || is_directory(filename)) {
             return std::nullopt;
         }
@@ -23,7 +23,7 @@ namespace PlatformTools::IO {
         return content;
     }
 
-    std::optional<std::vector<u8>> ReadAllBytes(const fs::path& filename) {
+    std::optional<std::vector<u8>> ReadAllBytes(const FileSystem::path& filename) {
         if (!exists(filename) || is_directory(filename)) {
             return std::nullopt;
         }
@@ -39,7 +39,7 @@ namespace PlatformTools::IO {
         return bytes;
     }
 
-    std::optional<std::vector<std::string>> ReadAllLines(const fs::path& filename) {
+    std::optional<std::vector<std::string>> ReadAllLines(const FileSystem::path& filename) {
         if (!exists(filename) || is_directory(filename)) {
             return std::nullopt;
         }
@@ -60,7 +60,7 @@ namespace PlatformTools::IO {
         return lines;
     }
 
-    bool Write(const fs::path& filename, const std::string& content) {
+    bool Write(const FileSystem::path& filename, const std::string& content) {
         std::ofstream outfile(filename);
         if (!outfile.is_open()) {
             return false;
@@ -72,7 +72,7 @@ namespace PlatformTools::IO {
         return true;
     }
 
-    bool WriteAllBytes(const fs::path& filename, const std::vector<u8>& bytes) {
+    bool WriteAllBytes(const FileSystem::path& filename, const std::vector<u8>& bytes) {
         std::ofstream outfile(filename, std::ios::binary);
         if (!outfile.is_open()) {
             return false;
@@ -84,7 +84,7 @@ namespace PlatformTools::IO {
         return true;
     }
 
-    bool WriteAllLines(const fs::path& filename, const std::vector<std::string>& lines) {
+    bool WriteAllLines(const FileSystem::path& filename, const std::vector<std::string>& lines) {
         std::ofstream outfile(filename);
         if (!outfile.is_open()) {
             return false;

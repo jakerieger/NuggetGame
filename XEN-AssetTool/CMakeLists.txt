@@ -1,7 +1,15 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.20...3.28)
 
 project(AssetTool)
 
-add_library(XEN-AssetCore STATIC AssetDescriptor.cpp AssetDescriptor.h)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/AssetTool)
+
+add_library(XEN-AssetCore STATIC AssetDescriptor.cpp AssetDescriptor.h
+        AssetManifest.cpp
+        AssetManifest.h)
 add_executable(AssetTool main.cpp)
-target_link_libraries(AssetTool PRIVATE XEN-AssetCore)
+target_link_libraries(AssetTool PRIVATE XEN-AssetCore rapidjson)
+
+add_custom_command(TARGET AssetTool PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/XEN-AssetTool/Sprites.manifest ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Sprites.manifest)

@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "filename": "sprites.adf",
+  "assets": [
+    {
+      "name": "Nugget",
+      "type": "sprite",
+      "filename": "C:\\Users\\conta\\Code\\CPP\\NuggetGame\\Assets\\sprites\\nugget.png",
+      "properties": {
+        "width": 32,
+        "height": 32,
+        "alpha": true
+      }
+    },
+    {
+      "name": "ButtonUnpressed",
+      "type": "sprite",
+      "filename": "C:\\Users\\conta\\Code\\CPP\\NuggetGame\\Assets\\sprites\\button_unpressed.png",
+      "properties": {
+        "width": 32,
+        "height": 32,
+        "alpha": true
+      }
+    },
+    {
+      "name": "ButtonPressed",
+      "type": "sprite",
+      "filename": "C:\\Users\\conta\\Code\\CPP\\NuggetGame\\Assets\\sprites\\button_pressed.png",
+      "properties": {
+        "width": 32,
+        "height": 32,
+        "alpha": true
+      }
+    },
+    {
+      "name": "Floor",
+      "type": "sprite",
+      "filename": "C:\\Users\\conta\\Code\\CPP\\NuggetGame\\Assets\\sprites\\floor.png",
+      "properties": {
+        "width": 32,
+        "height": 32,
+        "alpha": true
+      }
+    },
+    {
+      "name": "RampLeft",
+      "type": "sprite",
+      "filename": "C:\\Users\\conta\\Code\\CPP\\NuggetGame\\Assets\\sprites\\ramp_left.png",
+      "properties": {
+        "width": 32,
+        "height": 32,
+        "alpha": true
+      }
+    },
+    {
+      "name": "RampRight",
+      "type": "sprite",
+      "filename": "C:\\Users\\conta\\Code\\CPP\\NuggetGame\\Assets\\sprites\\ramp_right.png",
+      "properties": {
+        "width": 32,
+        "height": 32,
+        "alpha": true
+      }
+    },
+    {
+      "name": "Sauce",
+      "type": "sprite",
+      "filename": "C:\\Users\\conta\\Code\\CPP\\NuggetGame\\Assets\\sprites\\sauce.png",
+      "properties": {
+        "width": 32,
+        "height": 32,
+        "alpha": true
+      }
+    }
+  ]
+}

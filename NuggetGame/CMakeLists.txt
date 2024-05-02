@@ -1,9 +1,11 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.20...3.28)
 
 project(NuggetGame)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/NuggetGame)
 
 include_directories(
         ../XEN-Core
@@ -37,7 +39,7 @@ add_executable(NuggetGame
 )
 target_link_libraries(NuggetGame PRIVATE
         XEN-Core
-        XEN-PlatformTools
+        XEN-PlatformCore
         XEN-AssetCore
         glfw
         lz4::lz4
@@ -48,4 +50,4 @@ target_link_libraries(NuggetGame PRIVATE
 
 add_custom_command(TARGET NuggetGame PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_SOURCE_DIR}/Assets/sprites/source_imgs/nugget.png ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/icon.png)
+        ${CMAKE_SOURCE_DIR}/Assets/sprites/nugget.png ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/icon.png)
