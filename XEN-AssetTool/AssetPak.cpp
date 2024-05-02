@@ -3,10 +3,9 @@
 //
 
 #include "AssetPak.h"
-
 #include "IO.h"
 
-#include <lz4.h>
+#include <lzma.h>
 #include <numeric>
 
 namespace AssetTool {
@@ -40,25 +39,42 @@ namespace AssetTool {
             offset += manifest->GetSize();
         }
 
+        printf("\nCreating asset pak. This might take a minute...\n");
+
         const u8* sourceBytes   = pakBytes.data();
         const size_t sourceSize = pakBytes.size();
-        const size_t maxDstSize = LZ4_compressBound((int)sourceSize);
 
-        const auto compressedBytes = new char[maxDstSize];
-        const size_t compressedSize =
-          LZ4_compress_default(reinterpret_cast<const char*>(sourceBytes),
-                               compressedBytes,
-                               (int)sourceSize,
-                               (int)maxDstSize);
+        lzma_stream strm = LZMA_STREAM_INIT;
+        lzma_ret ret     = lzma_easy_encoder(&strm, LZMA_PRESET_DEFAULT, LZMA_CHECK_CRC64);
 
-        std::vector<u8> compressedBytesVec;
-        compressedBytesVec.resize(compressedSize);
-        memcpy(compressedBytesVec.data(), reinterpret_cast<u8*>(compressedBytes), compressedSize);
-        delete compressedBytes;
+        if (ret != LZMA_OK) {
+            throw std::runtime_error("Error initializing the LZMA encoder.");
+        }
 
-        pakMetadata.CompressedSize = compressedSize;
+        strm.avail_in = sourceSize;
+        strm.next_in  = sourceBytes;
 
-        PlatformTools::IO::WriteAllBytes("data0.nugpak", compressedBytesVec);
+        std::vector<u8> compressed;
+        compressed.resize(sourceSize);
+
+        strm.avail_out = sourceSize;
+        strm.next_out  = compressed.data();
+
+        ret = lzma_code(&strm, LZMA_FINISH);
+
+        if (ret != LZMA_OK && ret != LZMA_STREAM_END) {
+            lzma_end(&strm);
+            throw std::runtime_error("Error compressing data.");
+        }
+
+        compressed.resize(compressed.size() - strm.avail_out);
+        lzma_end(&strm);
+        PlatformTools::IO::WriteAllBytes("data0.nugpak", compressed);
+
+        printf("\nDone. Created pak file => '%s'\n", "data0.nugpak");
+        printf("Compression ratio: %.02f%%\n",
+               ((float)compressed.size() / (float)sourceSize) * 100.f);
+        printf("Compression size: %d bytes => %d bytes\n", (int)sourceSize, (int)compressed.size());
     }
 
     std::optional<AssetManifest> UnPacker::Unpack(const std::filesystem::path& pakFile,

@@ -16,9 +16,9 @@ add_library(XEN-AssetCore STATIC AssetDescriptor.cpp AssetDescriptor.h
         AssetManifest.h
         AssetPak.cpp
         AssetPak.h)
-target_link_libraries(XEN-AssetCore PRIVATE XEN-PlatformCore rapidjson lz4::lz4)
+target_link_libraries(XEN-AssetCore PRIVATE XEN-PlatformCore rapidjson liblzma::liblzma)
 add_executable(AssetTool main.cpp)
-target_link_libraries(AssetTool PRIVATE XEN-AssetCore rapidjson lz4::lz4)
+target_link_libraries(AssetTool PRIVATE XEN-AssetCore rapidjson liblzma::liblzma)
 
 add_custom_command(TARGET AssetTool PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy

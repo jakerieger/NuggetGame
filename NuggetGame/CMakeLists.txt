@@ -42,7 +42,7 @@ target_link_libraries(NuggetGame PRIVATE
         XEN-PlatformCore
         XEN-AssetCore
         glfw
-        lz4::lz4
+        liblzma::liblzma
         RmlCore
         RmlDebugger
         fmt::fmt

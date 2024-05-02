@@ -19,8 +19,8 @@ find_package(box2d CONFIG REQUIRED)
 find_package(OpenAL CONFIG REQUIRED)
 find_package(RmlUi CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
-find_package(lz4 CONFIG REQUIRED)
 find_package(RapidJSON CONFIG REQUIRED)
+find_package(liblzma CONFIG REQUIRED)
 # ============++++++++++++============ #
 
 add_subdirectory(XEN-Core)
