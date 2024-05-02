@@ -8,6 +8,7 @@
 #include <map>
 #include <chrono>
 #include <filesystem>
+#include <optional>
 
 #include "Types.h"
 
