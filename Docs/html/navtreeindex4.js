@@ -1,15 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"namespace_logger.html#a8f42d2ec9f51ebed29fa9e0080dc7294":[0,0,11,10],
-"namespace_logger.html#acff03cae01cadc6c3c74ff7c96e58976":[0,0,11,8],
-"namespace_logger.html#ad617fc4b9ef1941597a41a740ca65eab":[0,0,11,4],
-"namespace_logger.html#aeafc71e1ad0aa62cc06acba1336dcee9":[0,0,11,6],
-"namespace_logger_1_1_subsystems.html":[0,0,11,0],
-"namespace_mouse_button.html":[0,0,12],
-"namespace_movie.html":[0,0,13],
-"namespace_movie.html#a346f6cdbc337700f5ec3c28f9149b879":[0,0,13,0],
-"namespace_physics.html":[0,0,14],
-"namespace_physics.html#a596a1d30898c1233d3726b3232489218":[0,0,14,1],
 "namespace_physics.html#a79bd849bf18758745128b5ea93f7adb2":[0,0,14,2],
 "namespace_physics.html#a9b91e148d3ee13979baab28ad7961454":[0,0,14,4],
 "namespace_physics.html#aa2abc7c2a60c6ad9cb12801ff40617e3":[0,0,14,0],

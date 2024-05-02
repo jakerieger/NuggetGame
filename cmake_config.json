@@ -1,4 +1,13 @@
 {
   "vcpkg_root": "/home/jr/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake",
-  "generator": "Ninja"
+  "generator": "Ninja",
+  "packages": [
+    "glfw3",
+    "box2d",
+    "openal-soft",
+    "rmlui",
+    "fmt",
+    "rapidjson",
+    "liblzma"
+  ]
 }

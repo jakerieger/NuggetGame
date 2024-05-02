@@ -77,7 +77,14 @@ namespace AssetTool {
         IProperties* m_Properties {};
 
         std::vector<u8> Serialize();
-        virtual IAssetDescriptor* Deserialize(const std::vector<u8>& data) = 0;
+
+        template <typename T>
+        static T* Deserialize(const std::vector<u8>& data) {
+            static_assert(std::is_base_of_v<IAssetDescriptor, T>, "T must be subclass of IAssetDescriptor");
+
+            return nullptr;
+        }
+
         [[nodiscard]] size_t GetSize() const;
         virtual ~IAssetDescriptor();
     };
@@ -85,28 +92,24 @@ namespace AssetTool {
     class SpriteDescriptor final : public IAssetDescriptor {
     public:
         SpriteDescriptor();
-        IAssetDescriptor* Deserialize(const std::vector<u8>& data) override;
         [[nodiscard]] SpriteProperties* GetProperties() const;
     };
 
     class FontDescriptor final : public IAssetDescriptor {
     public:
         FontDescriptor();
-        IAssetDescriptor* Deserialize(const std::vector<u8>& data) override;
         [[nodiscard]] FontProperties* GetProperties() const;
     };
 
     class AudioDescriptor final : public IAssetDescriptor {
     public:
         AudioDescriptor();
-        IAssetDescriptor* Deserialize(const std::vector<u8>& data) override;
         [[nodiscard]] AudioProperties* GetProperties() const;
     };
 
     class LevelDescriptor final : public IAssetDescriptor {
     public:
         LevelDescriptor();
-        IAssetDescriptor* Deserialize(const std::vector<u8>& data) override;
         [[nodiscard]] LevelProperties* GetProperties() const;
     };
 }  // namespace AssetTool

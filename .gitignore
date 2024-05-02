@@ -6,3 +6,4 @@ Distributables/
 AssetTool/bin/
 AssetTool/obj/
 AssetTool/.idea/
+vcpkg/

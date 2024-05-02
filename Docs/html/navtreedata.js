@@ -63,8 +63,8 @@ var NAVTREEINDEX =
 "_asset_descriptor_8cpp.html",
 "_logger_8cpp.html#a0e6acb3fd319bfbcd40ac90a442cb541",
 "class_a_scene.html#ad4ff9c4afaddb6b7b8d788b11b8a51f1",
-"class_i_game_app.html",
-"namespace_logger.html#a8f42d2ec9f51ebed29fa9e0080dc7294"
+"class_i_game_app.html#aa9920ffc2c5c14dc5402ab97da02aa60",
+"namespace_physics.html#a79bd849bf18758745128b5ea93f7adb2"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

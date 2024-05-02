@@ -2,6 +2,16 @@ import json
 import os
 import shutil
 
+print("This script will automate the following:")
+print("  - Configuring CMake project")
+print("  - Set CMake Toolchain File")
+print("  - Set CMake Generator")
+proceed = input("Continue? (Y/n) ")
+
+if proceed == "n":
+    print("Exiting...")
+    exit(0)
+
 configFile = open("cmake_config.json")
 config = json.load(configFile)
 configFile.close()

@@ -87,9 +87,10 @@ $(document).ready(function(){initNavTree('class_asset_tool_1_1_i_asset_descripto
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_asset_tool_1_1_i_asset_descriptor-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">AssetTool::IAssetDescriptor Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
+  <div class="headertitle"><div class="title">AssetTool::IAssetDescriptor Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -111,12 +112,16 @@ Inheritance diagram for AssetTool::IAssetDescriptor:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ac45c8af410d17826b38a8244a3ef084c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="_types_8h.html#a987e4d6cf789cb59dbb390728271e4d6">u8</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_asset_tool_1_1_i_asset_descriptor.html#ac45c8af410d17826b38a8244a3ef084c">Serialize</a> ()</td></tr>
 <tr class="separator:ac45c8af410d17826b38a8244a3ef084c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f47f62458a56f1bb238a6632eb9c869"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_asset_tool_1_1_i_asset_descriptor.html">IAssetDescriptor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_asset_tool_1_1_i_asset_descriptor.html#a0f47f62458a56f1bb238a6632eb9c869">Deserialize</a> (const std::vector&lt; <a class="el" href="_types_8h.html#a987e4d6cf789cb59dbb390728271e4d6">u8</a> &gt; &amp;data)=0</td></tr>
-<tr class="separator:a0f47f62458a56f1bb238a6632eb9c869"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba1711a59c0e9ccb5a7f6b95f2143106"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_asset_tool_1_1_i_asset_descriptor.html#aba1711a59c0e9ccb5a7f6b95f2143106">GetSize</a> () const</td></tr>
 <tr class="separator:aba1711a59c0e9ccb5a7f6b95f2143106"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71603d7251ba141d958402dce838e726"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_asset_tool_1_1_i_asset_descriptor.html#a71603d7251ba141d958402dce838e726">~IAssetDescriptor</a> ()</td></tr>
 <tr class="separator:a71603d7251ba141d958402dce838e726"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:adf9a34011b73cd8cc92d996a8c534abf"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:adf9a34011b73cd8cc92d996a8c534abf"><td class="memTemplItemLeft" align="right" valign="top">static T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_asset_tool_1_1_i_asset_descriptor.html#adf9a34011b73cd8cc92d996a8c534abf">Deserialize</a> (const std::vector&lt; <a class="el" href="_types_8h.html#a987e4d6cf789cb59dbb390728271e4d6">u8</a> &gt; &amp;data)</td></tr>
+<tr class="separator:adf9a34011b73cd8cc92d996a8c534abf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -163,17 +168,19 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0f47f62458a56f1bb238a6632eb9c869" name="a0f47f62458a56f1bb238a6632eb9c869"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f47f62458a56f1bb238a6632eb9c869">&#9670;&nbsp;</a></span>Deserialize()</h2>
+<a id="adf9a34011b73cd8cc92d996a8c534abf" name="adf9a34011b73cd8cc92d996a8c534abf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf9a34011b73cd8cc92d996a8c534abf">&#9670;&nbsp;</a></span>Deserialize()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="class_asset_tool_1_1_i_asset_descriptor.html">IAssetDescriptor</a> * AssetTool::IAssetDescriptor::Deserialize </td>
+          <td class="memname">static T * AssetTool::IAssetDescriptor::Deserialize </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; <a class="el" href="_types_8h.html#a987e4d6cf789cb59dbb390728271e4d6">u8</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>data</em></td><td>)</td>
@@ -182,12 +189,12 @@ Public Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_asset_tool_1_1_sprite_descriptor.html#ac317977faef98a71d24b1c2f398a2d05">AssetTool::SpriteDescriptor</a>, <a class="el" href="class_asset_tool_1_1_font_descriptor.html#a984bb46d889f787fba44acee67580f2a">AssetTool::FontDescriptor</a>, <a class="el" href="class_asset_tool_1_1_audio_descriptor.html#ab3fd86cc98bf399ed0ee650aeba2a9cc">AssetTool::AudioDescriptor</a>, and <a class="el" href="class_asset_tool_1_1_level_descriptor.html#a67902f3767f7c3702d94c7075f1e2450">AssetTool::LevelDescriptor</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_asset_descriptor_8h_source.html#l00082">82</a> of file <a class="el" href="_asset_descriptor_8h_source.html">AssetDescriptor.h</a>.</p>
 
 </div>
 </div>
@@ -225,7 +232,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_asset_descriptor_8cpp_source.html#l00162">162</a> of file <a class="el" href="_asset_descriptor_8cpp_source.html">AssetDescriptor.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_asset_descriptor_8cpp_source.html#l00146">146</a> of file <a class="el" href="_asset_descriptor_8cpp_source.html">AssetDescriptor.cpp</a>.</p>
 
 </div>
 </div>

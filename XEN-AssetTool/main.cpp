@@ -12,6 +12,9 @@ using namespace PlatformTools;
 using namespace rapidjson;
 
 int main(int argc, char* argv[]) {
+    IAssetDescriptor::Deserialize<SpriteDescriptor>({});
+
+
     IO::FileSystem::path manifestsPath = "manifests.json";
 
     if (argc == 2) {

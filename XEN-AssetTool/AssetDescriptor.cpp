@@ -78,10 +78,6 @@ namespace AssetTool {
         this->m_Type       = AssetType::Sprite;
     }
 
-    IAssetDescriptor* SpriteDescriptor::Deserialize(const std::vector<u8>& data) {
-        return nullptr;
-    }
-
     SpriteProperties* SpriteDescriptor::GetProperties() const {
         return dynamic_cast<SpriteProperties*>(m_Properties);
     }
@@ -89,10 +85,6 @@ namespace AssetTool {
     FontDescriptor::FontDescriptor() {
         this->m_Properties = new FontProperties;
         this->m_Type       = AssetType::Font;
-    }
-
-    IAssetDescriptor* FontDescriptor::Deserialize(const std::vector<u8>& data) {
-        return nullptr;
     }
 
     FontProperties* FontDescriptor::GetProperties() const {
@@ -104,10 +96,6 @@ namespace AssetTool {
         this->m_Type       = AssetType::Audio;
     }
 
-    IAssetDescriptor* AudioDescriptor::Deserialize(const std::vector<u8>& data) {
-        return nullptr;
-    }
-
     AudioProperties* AudioDescriptor::GetProperties() const {
         return dynamic_cast<AudioProperties*>(m_Properties);
     }
@@ -115,10 +103,6 @@ namespace AssetTool {
     LevelDescriptor::LevelDescriptor() {
         this->m_Properties = new LevelProperties;
         this->m_Type       = AssetType::Level;
-    }
-
-    IAssetDescriptor* LevelDescriptor::Deserialize(const std::vector<u8>& data) {
-        return nullptr;
     }
 
     LevelProperties* LevelDescriptor::GetProperties() const {
