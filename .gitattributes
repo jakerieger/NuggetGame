@@ -1,4 +1,4 @@
-Lib/* linguist-vendored
+ThirdParty/* linguist-vendored
 CMakeLists.txt linguist-vendored
 Assets/* linguist-vendored
 Docs/* linguist-vendored
