@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <STL.h>
 
 namespace AssetTool {
     enum class AssetType {
@@ -17,36 +18,25 @@ namespace AssetTool {
 
     class IProperties {
     public:
-        virtual size_t GetSize()                       = 0;
-        virtual std::vector<unsigned char> Serialize() = 0;
-        virtual IProperties* Deserialize()             = 0;
-        virtual ~IProperties()                         = default;
+        virtual size_t GetSize()            = 0;
+        virtual std::vector<u8> Serialize() = 0;
+        virtual IProperties* Deserialize()  = 0;
+        virtual ~IProperties()              = default;
     };
 
     class SpriteProperties final : public IProperties {
     public:
-        unsigned int m_Width  = 0;
-        unsigned int m_Height = 0;
-        bool m_IsAlpha        = false;
+        u32 m_Width    = 0;
+        u32 m_Height   = 0;
+        bool m_IsAlpha = false;
 
         size_t GetSize() override {
-            return (sizeof(unsigned int) * 2) + sizeof(bool);
+            return (sizeof(u32) * 2) + sizeof(bool);
         }
 
-        std::vector<unsigned char> Serialize() override {
-            std::vector<unsigned char> bytes = {};
-            bytes.resize(GetSize());
+        std::vector<u8> Serialize() override;
 
-            memcpy(bytes.data(), &m_Width, sizeof(unsigned int));
-            memcpy(bytes.data() + sizeof(unsigned int), &m_Height, sizeof(unsigned int));
-            memcpy(bytes.data() + sizeof(unsigned int) * 2, &m_IsAlpha, sizeof(bool));
-
-            return bytes;
-        }
-
-        IProperties* Deserialize() override {
-            return this;
-        }
+        IProperties* Deserialize() override;
     };
 
     class AudioProperties final : public IProperties {};
@@ -57,12 +47,17 @@ namespace AssetTool {
     public:
         AssetType m_Type;
         std::string m_Name;
-        unsigned int m_Version;
-        std::vector<unsigned char> m_SrcData;
+        u32 m_Version = 0;
+        std::vector<u8> m_SrcData;
         IProperties* m_Properties;
 
-        virtual std::vector<unsigned char> Serialize()                                = 0;
-        virtual IAssetDescriptor* Deserialize(const std::vector<unsigned char>& data) = 0;
+        std::vector<u8> Serialize();
+        virtual IAssetDescriptor* Deserialize(const std::vector<u8>& data) = 0;
+
+        [[nodiscard]] size_t GetSize() const {
+            return sizeof(m_Type) + m_Name.size() + sizeof(m_Version) + m_SrcData.size() +
+                   m_Properties->GetSize();
+        }
 
         virtual ~IAssetDescriptor() {
             delete m_Properties;
@@ -73,15 +68,10 @@ namespace AssetTool {
     public:
         SpriteDescriptor() {
             this->m_Properties = new SpriteProperties;
+            this->m_Type       = AssetType::Sprite;
         }
 
-        std::vector<unsigned char> Serialize() override {
-            return {};
-        }
-
-        IAssetDescriptor* Deserialize(const std::vector<unsigned char>& data) override {
-            return this;
-        }
+        IAssetDescriptor* Deserialize(const std::vector<u8>& data) override;
 
         [[nodiscard]] SpriteProperties* GetProperties() const {
             return dynamic_cast<SpriteProperties*>(m_Properties);

@@ -3,23 +3,22 @@
 //
 
 #include "AssetDescriptor.h"
+#include "AssetManifest.h"
+
+using namespace AssetTool;
 
 int main() {
-    AssetTool::SpriteDescriptor spriteDesc;
-    spriteDesc.m_Name    = "Nugget";
-    spriteDesc.m_Type    = AssetTool::AssetType::Sprite;
-    spriteDesc.m_Version = 1;
-    spriteDesc.m_SrcData = {0x69, 0x69, 0x69, 0x69, 0x69, 0x69, 0x69};
+    const AssetManifest spriteManifest("Sprites.manifest");
 
-    const auto properties = spriteDesc.GetProperties();
-    properties->m_Width   = 32;
-    properties->m_Height  = 32;
-    properties->m_IsAlpha = true;
-
-    const auto bytes = spriteDesc.Serialize();
-    for (const auto& byte : bytes) {
-        printf("0x%02x ", byte);
+    size_t totalBytes = 0;
+    for (const auto& descriptor : spriteManifest.m_Descriptors) {
+        const auto size = descriptor->GetSize();
+        totalBytes += size;
+        printf("Size: %llu bytes\n", size);
     }
+    printf("\nTotal Size: %llu bytes\n\n", totalBytes);
+
+    spriteManifest.Serialize();
 
     return 0;
 }
