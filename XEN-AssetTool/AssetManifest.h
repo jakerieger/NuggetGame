@@ -14,8 +14,9 @@ namespace AssetTool {
     public:
         explicit AssetManifest(const std::filesystem::path& manifest);
         ~AssetManifest();
-        void Serialize() const;
+        std::optional<std::vector<u8>> Serialize();
         std::optional<AssetManifest> Deserialize();
+        size_t GetSize();
 
         u32 m_Version = 0;
         std::string m_Filename;

@@ -13,10 +13,12 @@ include_directories(
 
 add_library(XEN-AssetCore STATIC AssetDescriptor.cpp AssetDescriptor.h
         AssetManifest.cpp
-        AssetManifest.h)
-target_link_libraries(XEN-AssetCore PRIVATE XEN-PlatformCore rapidjson)
+        AssetManifest.h
+        AssetPak.cpp
+        AssetPak.h)
+target_link_libraries(XEN-AssetCore PRIVATE XEN-PlatformCore rapidjson lz4::lz4)
 add_executable(AssetTool main.cpp)
-target_link_libraries(AssetTool PRIVATE XEN-AssetCore rapidjson)
+target_link_libraries(AssetTool PRIVATE XEN-AssetCore rapidjson lz4::lz4)
 
 add_custom_command(TARGET AssetTool PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy

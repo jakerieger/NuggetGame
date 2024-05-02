@@ -3,9 +3,9 @@
 //
 
 #include "AssetManifest.h"
+#include "AssetPak.h"
 
 #include <PlatformTools.h>
-#include <rapidjson/rapidjson.h>
 
 using namespace AssetTool;
 using namespace PlatformTools;
@@ -33,10 +33,17 @@ int main() {
 
     printf("Processing provided manifest files...\n\n");
 
+    std::vector<AssetManifest*> manifestsToPack;
     const auto manifestFiles = manifestsJson["manifests"].GetArray();
     for (int i = 0; i < manifestFiles.Size(); i++) {
-        AssetManifest _manifest(manifestFiles[i].GetString());
-        _manifest.Serialize();
+        auto _manifest = new AssetManifest(manifestFiles[i].GetString());
+        manifestsToPack.push_back(_manifest);
+    }
+
+    Packer::Pack(manifestsToPack);
+
+    for (const auto _manifest : manifestsToPack) {
+        delete _manifest;
     }
 
     return 0;

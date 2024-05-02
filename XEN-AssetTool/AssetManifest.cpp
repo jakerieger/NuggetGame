@@ -143,7 +143,7 @@ namespace AssetTool {
         m_Descriptors.clear();
     }
 
-    void AssetManifest::Serialize() const {
+    std::optional<std::vector<u8>> AssetManifest::Serialize() {
         std::vector<u8> bytes;
 
         int reserveSize      = std::accumulate(m_Descriptors.begin(),
@@ -166,14 +166,20 @@ namespace AssetTool {
             offset += offsetDelta;
         }
 
-        if (!IO::WriteAllBytes(m_Filename, bytes)) {
-            throw std::runtime_error("Failed to serialize asset manifest");
-        }
-
-        printf("Manifest serialized to Asset Descriptor File => '%s'\n\n", m_Filename.c_str());
+        return bytes;
     }
 
     std::optional<AssetManifest> AssetManifest::Deserialize() {
         return std::nullopt;
+    }
+
+    size_t AssetManifest::GetSize() {
+        const int size = std::accumulate(m_Descriptors.begin(),
+                                         m_Descriptors.end(),
+                                         0,
+                                         [](int acc, const IAssetDescriptor* descriptor) {
+                                             return acc + (int)descriptor->GetSize();
+                                         });
+        return (size_t)size;
     }
 }  // namespace AssetTool
