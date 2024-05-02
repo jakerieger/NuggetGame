@@ -11,13 +11,21 @@ using namespace AssetTool;
 using namespace PlatformTools;
 using namespace rapidjson;
 
-int main() {
+int main(int argc, char* argv[]) {
+    IO::FileSystem::path manifestsPath = "manifests.json";
+
+    if (argc == 2) {
+        manifestsPath = IO::FileSystem::path(argv[1]);
+    }
+
+    printf("%s\n", manifestsPath.string().c_str());
+
     if (!IO::FileSystem::exists("manifests.json")) {
         printf("Could not find manifests.json file.\n");
         return -1;
     }
 
-    const auto manifests = IO::Read("manifests.json");
+    const auto manifests = IO::Read(manifestsPath);
     if (!manifests.has_value()) {
         printf("Could not read manifests.json.\n");
         return -1;

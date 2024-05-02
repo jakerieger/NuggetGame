@@ -101,7 +101,3 @@ target_link_libraries(XEN-Core PRIVATE
         XEN-PlatformCore
         XEN-AssetCore
 )
-
-add_custom_command(TARGET XEN-Core PRE_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/Assets ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/NuggetGame/Assets)
