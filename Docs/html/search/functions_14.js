@@ -4,5 +4,8 @@ var searchData=
   ['withblue_1',['WithBlue',['../class_a_color.html#ab780c9ccb134dc6f7a14be76f921af53',1,'AColor::WithBlue(u32 b) const'],['../class_a_color.html#a8bfd8f4de8221d715c2a12c9b64020a3',1,'AColor::WithBlue(f32 b) const']]],
   ['withgreen_2',['WithGreen',['../class_a_color.html#a5a1c1485782c20228799f5d8cbc0099b',1,'AColor::WithGreen(u32 g) const'],['../class_a_color.html#af57c4c2c05cbc109f8a46739629edbf8',1,'AColor::WithGreen(f32 g) const']]],
   ['withred_3',['WithRed',['../class_a_color.html#a014346ce2a612dd74eb564ba1cede912',1,'AColor::WithRed(u32 r) const'],['../class_a_color.html#a0fb87a318da4ba8e5b69f29dbf505b95',1,'AColor::WithRed(f32 r) const']]],
-  ['worldtoscreen_4',['WorldToScreen',['../namespace_camera.html#a264ffb2e9e5a4615012b84cb59b1ff97',1,'Camera']]]
+  ['worldtoscreen_4',['WorldToScreen',['../namespace_camera.html#a264ffb2e9e5a4615012b84cb59b1ff97',1,'Camera']]],
+  ['write_5',['Write',['../namespace_platform_tools_1_1_i_o.html#ab79dd01041f3b55e69b58c5da86c21eb',1,'PlatformTools::IO']]],
+  ['writeallbytes_6',['WriteAllBytes',['../namespace_platform_tools_1_1_i_o.html#a04720ef1f13448d206996e52661059f8',1,'PlatformTools::IO']]],
+  ['writealllines_7',['WriteAllLines',['../namespace_platform_tools_1_1_i_o.html#a47bfa693b70b1c4b2a190cc1b6e4dbbe',1,'PlatformTools::IO']]]
 ];

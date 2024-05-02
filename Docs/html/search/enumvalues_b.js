@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['warning_0',['Warning',['../namespace_logger.html#a7f49c4e199ab68db3e5278cdee352b7aa0eaadb4fcb48a0a0ed7bc9868be9fbaa',1,'Logger']]]
+  ['ui_0',['UI',['../namespace_audio.html#ad7177faf7ad285119016f619bfda983ca71ff71526d15db86eb50fcac245d183b',1,'Audio']]]
 ];

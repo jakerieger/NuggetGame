@@ -10,6 +10,7 @@ var namespaces_dup =
       [ "Update", "namespace_application.html#a31d8b6d8bd9436418d8a3881937fec83", null ],
       [ "g_ClearColor", "namespace_application.html#a1ad2566398cc831581eeb0de39851668", null ]
     ] ],
+    [ "AssetTool", "namespace_asset_tool.html", "namespace_asset_tool" ],
     [ "Audio", "namespace_audio.html", "namespace_audio" ],
     [ "BuiltinShaders", "namespace_builtin_shaders.html", [
       [ "Sprite", "namespace_builtin_shaders.html#a97a3430136379ed74a2b80264ed1dcf4", null ],
@@ -53,6 +54,7 @@ var namespaces_dup =
       [ "Shutdown", "namespace_physics.html#ab8150e5772d39e0c9705a73eed921d35", null ],
       [ "Tick", "namespace_physics.html#a9b91e148d3ee13979baab28ad7961454", null ]
     ] ],
+    [ "PlatformTools", "namespace_platform_tools.html", "namespace_platform_tools" ],
     [ "Primitives", "namespace_primitives.html", null ],
     [ "Profiler", "namespace_profiler.html", [
       [ "GetDeviceRenderer", "namespace_profiler.html#ad44c604bd7046fdd7b7958602f09eb88", null ],
@@ -80,12 +82,9 @@ var namespaces_dup =
         [ "ParticleEffect", "namespace_resources.html#a64d44ad801bd726657983714496796c8a2f26c1d581b3d996da11d4d07046348d", null ]
       ] ],
       [ "GetConfigFile", "namespace_resources.html#a470414db9b37da73771e3627f204d0e2", null ],
-      [ "GetResource", "namespace_resources.html#a6f219f183077bb7343bad97c2798b9c3", null ],
       [ "GetRoot", "namespace_resources.html#a5033b43ea5e589da9f8fffb10d60830e", null ],
-      [ "GetSprites", "namespace_resources.html#a6433b5f2cacdc7d49aa610d3de6f5abc", null ],
       [ "SetCwd", "namespace_resources.html#a26057021dffabb2e727107e16d189a86", null ],
-      [ "g_Cwd", "namespace_resources.html#a72ac7288ee88775d2fe6a0cfe1d104d0", null ],
-      [ "g_Sprites", "namespace_resources.html#a7b1e27f4bab47167eab93fb262b30e27", null ]
+      [ "g_Cwd", "namespace_resources.html#a72ac7288ee88775d2fe6a0cfe1d104d0", null ]
     ] ],
     [ "Scene", "namespace_scene.html", null ],
     [ "Settings", "namespace_settings.html", [

@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "Nugget Engine", "index.html", [
+  [ "XEN Engine", "index.html", [
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -41,7 +41,7 @@ var NAVTREE =
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
-        [ "Functions", "functions_func.html", null ],
+        [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ]
       ] ]
     ] ],
@@ -49,6 +49,7 @@ var NAVTREE =
       [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
+        [ "Functions", "globals_func.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
         [ "Macros", "globals_defs.html", null ]
@@ -59,10 +60,11 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_audio_context_8cpp.html",
-"_logger_8cpp.html#a83046f8e036d5775d5e7c557e2bb59f8",
-"class_a_shader.html#a5c80223815ccbc04de6565220b02e8fe",
-"namespace_camera.html#afd88c2780203f02c9fe236a7239e414c"
+"_asset_descriptor_8cpp.html",
+"_logger_8cpp.html#a0e6acb3fd319bfbcd40ac90a442cb541",
+"class_a_scene.html#ad4ff9c4afaddb6b7b8d788b11b8a51f1",
+"class_i_game_app.html",
+"namespace_logger.html#a8f42d2ec9f51ebed29fa9e0080dc7294"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

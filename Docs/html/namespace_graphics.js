@@ -13,7 +13,6 @@ var namespace_graphics =
     [ "GetWindowAspect", "namespace_graphics.html#af1e66bc7c68ce24d6cd23122cad86522", null ],
     [ "GetWindowSize", "namespace_graphics.html#affe63f03f839f455542df8001d7ddc5b", null ],
     [ "GetWindowSizeGLM", "namespace_graphics.html#a1af86ed82eac92b8e1712f00be8bd2cf", null ],
-    [ "GetWindowSizeImGui", "namespace_graphics.html#a8d803ccf71db4db4802371586af13f0c", null ],
     [ "Initialize", "namespace_graphics.html#a664bc316e58a45f8bfcaaddc8dc75932", null ],
     [ "MarkWindowForClose", "namespace_graphics.html#ac62ece42050539c4763cea06c4760b78", null ],
     [ "ResetDrawCalls", "namespace_graphics.html#ab811a614bed8e9cabd946f2d06beb87c", null ],

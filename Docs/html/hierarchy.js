@@ -4,6 +4,7 @@ var hierarchy =
     [ "AShader", "class_a_shader.html", null ],
     [ "ASprite", "class_a_sprite.html", null ],
     [ "ASpriteBatch", "class_a_sprite_batch.html", null ],
+    [ "AssetTool::AssetManifest", "class_asset_tool_1_1_asset_manifest.html", null ],
     [ "FEngineSettings::Audio", "struct_f_engine_settings_1_1_audio.html", null ],
     [ "b2Draw", null, [
       [ "Debug::Physics::ADebugDraw", "class_debug_1_1_physics_1_1_a_debug_draw.html", null ]
@@ -19,10 +20,17 @@ var hierarchy =
     [ "Logger::FLogEntry", "struct_logger_1_1_f_log_entry.html", null ],
     [ "FMouseEvent", "struct_f_mouse_event.html", null ],
     [ "FMouseMoveEvent", "struct_f_mouse_move_event.html", null ],
+    [ "AssetTool::FPakMetadata", "struct_asset_tool_1_1_f_pak_metadata.html", null ],
     [ "FSceneContext", "struct_f_scene_context.html", null ],
     [ "FScrollEvent", "struct_f_scroll_event.html", null ],
     [ "FShaderSource", "struct_f_shader_source.html", null ],
     [ "FEngineSettings::Graphics", "struct_f_engine_settings_1_1_graphics.html", null ],
+    [ "AssetTool::IAssetDescriptor", "class_asset_tool_1_1_i_asset_descriptor.html", [
+      [ "AssetTool::AudioDescriptor", "class_asset_tool_1_1_audio_descriptor.html", null ],
+      [ "AssetTool::FontDescriptor", "class_asset_tool_1_1_font_descriptor.html", null ],
+      [ "AssetTool::LevelDescriptor", "class_asset_tool_1_1_level_descriptor.html", null ],
+      [ "AssetTool::SpriteDescriptor", "class_asset_tool_1_1_sprite_descriptor.html", null ]
+    ] ],
     [ "IDrawable", "class_i_drawable.html", null ],
     [ "IInputListener", "class_i_input_listener.html", [
       [ "IGameApp", "class_i_game_app.html", null ],
@@ -37,6 +45,12 @@ var hierarchy =
         [ "ATransform", "class_a_transform.html", null ]
       ] ],
       [ "IGameObject", "class_i_game_object.html", null ]
+    ] ],
+    [ "AssetTool::IProperties", "class_asset_tool_1_1_i_properties.html", [
+      [ "AssetTool::AudioProperties", "class_asset_tool_1_1_audio_properties.html", null ],
+      [ "AssetTool::FontProperties", "class_asset_tool_1_1_font_properties.html", null ],
+      [ "AssetTool::LevelProperties", "class_asset_tool_1_1_level_properties.html", null ],
+      [ "AssetTool::SpriteProperties", "class_asset_tool_1_1_sprite_properties.html", null ]
     ] ],
     [ "IRenderPass", "class_i_render_pass.html", null ],
     [ "ISerializable", "class_i_serializable.html", [

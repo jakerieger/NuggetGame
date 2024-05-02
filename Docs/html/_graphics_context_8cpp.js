@@ -8,7 +8,6 @@ var _graphics_context_8cpp =
     [ "GetWindowAspect", "_graphics_context_8cpp.html#af1e66bc7c68ce24d6cd23122cad86522", null ],
     [ "GetWindowSize", "_graphics_context_8cpp.html#affe63f03f839f455542df8001d7ddc5b", null ],
     [ "GetWindowSizeGLM", "_graphics_context_8cpp.html#a1af86ed82eac92b8e1712f00be8bd2cf", null ],
-    [ "GetWindowSizeImGui", "_graphics_context_8cpp.html#a8d803ccf71db4db4802371586af13f0c", null ],
     [ "Initialize", "_graphics_context_8cpp.html#a664bc316e58a45f8bfcaaddc8dc75932", null ],
     [ "MarkWindowForClose", "_graphics_context_8cpp.html#ac62ece42050539c4763cea06c4760b78", null ],
     [ "ResetDrawCalls", "_graphics_context_8cpp.html#ab811a614bed8e9cabd946f2d06beb87c", null ],

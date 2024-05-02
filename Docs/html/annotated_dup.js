@@ -1,5 +1,19 @@
 var annotated_dup =
 [
+    [ "AssetTool", "namespace_asset_tool.html", [
+      [ "AssetManifest", "class_asset_tool_1_1_asset_manifest.html", "class_asset_tool_1_1_asset_manifest" ],
+      [ "AudioDescriptor", "class_asset_tool_1_1_audio_descriptor.html", "class_asset_tool_1_1_audio_descriptor" ],
+      [ "AudioProperties", "class_asset_tool_1_1_audio_properties.html", "class_asset_tool_1_1_audio_properties" ],
+      [ "FontDescriptor", "class_asset_tool_1_1_font_descriptor.html", "class_asset_tool_1_1_font_descriptor" ],
+      [ "FontProperties", "class_asset_tool_1_1_font_properties.html", "class_asset_tool_1_1_font_properties" ],
+      [ "FPakMetadata", "struct_asset_tool_1_1_f_pak_metadata.html", "struct_asset_tool_1_1_f_pak_metadata" ],
+      [ "IAssetDescriptor", "class_asset_tool_1_1_i_asset_descriptor.html", "class_asset_tool_1_1_i_asset_descriptor" ],
+      [ "IProperties", "class_asset_tool_1_1_i_properties.html", "class_asset_tool_1_1_i_properties" ],
+      [ "LevelDescriptor", "class_asset_tool_1_1_level_descriptor.html", "class_asset_tool_1_1_level_descriptor" ],
+      [ "LevelProperties", "class_asset_tool_1_1_level_properties.html", "class_asset_tool_1_1_level_properties" ],
+      [ "SpriteDescriptor", "class_asset_tool_1_1_sprite_descriptor.html", "class_asset_tool_1_1_sprite_descriptor" ],
+      [ "SpriteProperties", "class_asset_tool_1_1_sprite_properties.html", "class_asset_tool_1_1_sprite_properties" ]
+    ] ],
     [ "Audio", "namespace_audio.html", [
       [ "FAudioChannel", "struct_audio_1_1_f_audio_channel.html", "struct_audio_1_1_f_audio_channel" ]
     ] ],
