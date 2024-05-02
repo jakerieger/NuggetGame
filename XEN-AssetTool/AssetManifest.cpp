@@ -6,6 +6,7 @@
 #include "PlatformTools.h"
 
 #include <numeric>
+#include <fmt/core.h>
 
 namespace AssetTool {
     using namespace PlatformTools;
@@ -15,8 +16,6 @@ namespace AssetTool {
         if (!manifest.IsObject())
             return false;
         if (!manifest.HasMember("version") || !manifest["version"].IsNumber())
-            return false;
-        if (!manifest.HasMember("filename") || !manifest["filename"].IsString())
             return false;
         if (!manifest.HasMember("assets") || !manifest["assets"].IsArray())
             return false;
@@ -32,10 +31,11 @@ namespace AssetTool {
             for (const auto& asset : assets) {
                 const auto name       = asset["name"].GetString();
                 const auto type       = asset["type"].GetString();
-                const auto filename   = asset["filename"].GetString();
                 const auto properties = asset["properties"].GetObject();
 
                 if (strcmp(type, "sprite") == 0) {
+                    assert(manifest.HasMember("filename"));
+                    const auto filename   = asset["filename"].GetString();
                     const auto descriptor = new SpriteDescriptor;
                     descriptor->m_Name    = name;
                     descriptor->m_Version = m_Version;
@@ -50,11 +50,68 @@ namespace AssetTool {
                     m_Descriptors.push_back(descriptor);
                 }
 
-                if (strcmp(type, "font") == 0) {}
+                if (strcmp(type, "font") == 0) {
+                    assert(manifest.HasMember("filename"));
+                    const auto filename   = asset["filename"].GetString();
+                    const auto descriptor = new FontDescriptor;
+                    descriptor->m_Name    = name;
+                    descriptor->m_Version = m_Version;
+                    auto srcBytes         = IO::ReadAllBytes(filename);
+                    if (!srcBytes.has_value())
+                        break;
+                    descriptor->m_SrcData                      = srcBytes.value();
+                    descriptor->GetProperties()->m_DefaultSize = properties["defaultSize"].GetInt();
 
-                if (strcmp(type, "audio") == 0) {}
+                    m_Descriptors.push_back(descriptor);
+                }
 
-                if (strcmp(type, "level") == 0) {}
+                if (strcmp(type, "audio") == 0) {
+                    assert(manifest.HasMember("filename"));
+                    const auto filename   = asset["filename"].GetString();
+                    const auto descriptor = new AudioDescriptor;
+                    descriptor->m_Name    = name;
+                    descriptor->m_Version = m_Version;
+                    auto srcBytes         = IO::ReadAllBytes(filename);
+                    if (!srcBytes.has_value())
+                        break;
+                    descriptor->m_SrcData                      = srcBytes.value();
+                    descriptor->GetProperties()->m_SampleCount = properties["sampleCount"].GetInt();
+                    descriptor->GetProperties()->m_SampleRate  = properties["sampleRate"].GetInt();
+                    descriptor->GetProperties()->m_Channels    = properties["channels"].GetInt();
+
+                    m_Descriptors.push_back(descriptor);
+                }
+
+                if (strcmp(type, "level") == 0) {
+                    const auto descriptor = new LevelDescriptor;
+                    descriptor->m_Name    = name;
+                    descriptor->m_Version = m_Version;
+                    auto srcBytes         = asset["data"].GetArray();
+                    std::vector<u8> data;
+                    std::vector<i32> srcData;
+                    for (int i = 0; i < srcBytes.Size(); i++) {
+                        auto value = srcBytes[i].GetInt();
+                        srcData.push_back(value);
+                    }
+                    data.resize(sizeof(i32) * srcData.size());
+                    std::copy(reinterpret_cast<u8*>(srcData.data()),
+                              reinterpret_cast<u8*>(srcData.data() + srcData.size()),
+                              data.begin());
+                    descriptor->m_SrcData = data;
+
+                    descriptor->GetProperties()->m_Rows        = properties["rows"].GetInt();
+                    descriptor->GetProperties()->m_Columns     = properties["columns"].GetInt();
+                    descriptor->GetProperties()->m_PlayerStart = {
+                      properties["playerStart"]["x"].GetFloat(),
+                      properties["playerStart"]["y"].GetFloat(),
+                    };
+                    descriptor->GetProperties()->m_ObjectivePosition = {
+                      properties["objectivePosition"]["x"].GetFloat(),
+                      properties["objectivePosition"]["y"].GetFloat(),
+                    };
+
+                    m_Descriptors.push_back(descriptor);
+                }
             }
         }
     }
@@ -88,26 +145,32 @@ namespace AssetTool {
 
     void AssetManifest::Serialize() const {
         std::vector<u8> bytes;
-        const size_t reserveSize =
-          std::accumulate(m_Descriptors.begin(),
-                          m_Descriptors.end(),
-                          0,
-                          [](const size_t acc, const IAssetDescriptor* descriptor) {
-                              return acc + descriptor->GetSize();
-                          });
-        bytes.resize(reserveSize);
 
-        size_t offset = 0;
+        int reserveSize      = std::accumulate(m_Descriptors.begin(),
+                                          m_Descriptors.end(),
+                                          0,
+                                          [](int acc, const IAssetDescriptor* descriptor) {
+                                              return acc + (int)descriptor->GetSize();
+                                          });
+        const u32 assetCount = m_Descriptors.size();
+        reserveSize += sizeof(u32);
+        bytes.resize((size_t)reserveSize);
+
+        memcpy(bytes.data(), &assetCount, sizeof(u32));
+        size_t offset = sizeof(u32);
+
         for (const auto& descriptor : m_Descriptors) {
             auto descriptorBytes   = descriptor->Serialize();
             const auto offsetDelta = descriptor->GetSize();
-            memcpy(bytes.data() + offset, descriptorBytes.data(), descriptorBytes.size());
+            memcpy(bytes.data() + offset, descriptorBytes.data(), offsetDelta);
             offset += offsetDelta;
         }
 
         if (!IO::WriteAllBytes(m_Filename, bytes)) {
             throw std::runtime_error("Failed to serialize asset manifest");
         }
+
+        printf("Manifest serialized to Asset Descriptor File => '%s'\n\n", m_Filename.c_str());
     }
 
     std::optional<AssetManifest> AssetManifest::Deserialize() {

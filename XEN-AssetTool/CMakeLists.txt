@@ -21,3 +21,15 @@ target_link_libraries(AssetTool PRIVATE XEN-AssetCore rapidjson)
 add_custom_command(TARGET AssetTool PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
         ${CMAKE_SOURCE_DIR}/XEN-AssetTool/Sprites.manifest ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Sprites.manifest)
+add_custom_command(TARGET AssetTool PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/XEN-AssetTool/Fonts.manifest ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Fonts.manifest)
+add_custom_command(TARGET AssetTool PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/XEN-AssetTool/Audio.manifest ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Audio.manifest)
+add_custom_command(TARGET AssetTool PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/XEN-AssetTool/Levels.manifest ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Levels.manifest)
+add_custom_command(TARGET AssetTool PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_SOURCE_DIR}/XEN-AssetTool/manifests.json ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/manifests.json)

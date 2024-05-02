@@ -5,22 +5,9 @@
 #include "AssetDescriptor.h"
 
 namespace AssetTool {
-    std::vector<u8> SpriteProperties::Serialize() {
-        std::vector<u8> bytes = {};
-        bytes.resize(GetSize());
-
-        memcpy(bytes.data(), &m_Width, sizeof(unsigned int));
-        memcpy(bytes.data() + sizeof(u32), &m_Height, sizeof(u32));
-        memcpy(bytes.data() + sizeof(u32) * 2, &m_IsAlpha, sizeof(bool));
-
-        return bytes;
-    }
-
-    IProperties* SpriteProperties::Deserialize() {
-        return nullptr;
-    }
-
     std::vector<u8> IAssetDescriptor::Serialize() {
+        printf("Processing Asset Descriptor '%s'. ", m_Name.c_str());
+
         std::vector<u8> bytes = {};
 
         const auto type            = (u8)m_Type;
@@ -31,8 +18,9 @@ namespace AssetTool {
         const auto dataLen         = (u32)m_SrcData.size();
         const auto data            = m_SrcData.data();
 
-        const auto reserveSize =
-          sizeof(nameLen) + sizeof(propertiesLen) + sizeof(dataLen) + GetSize();
+        printf("Size: %llu bytes.\n", m_SrcData.size());
+
+        const auto reserveSize = GetSize();
         bytes.resize(reserveSize);
 
         memcpy(bytes.data(), &type, sizeof(u8));
@@ -57,10 +45,9 @@ namespace AssetTool {
                data,
                m_SrcData.size());
 
+        printf("Descriptor serialized.\n");
+
         return bytes;
     }
 
-    IAssetDescriptor* SpriteDescriptor::Deserialize(const std::vector<u8>& data) {
-        return nullptr;
-    }
 }  // namespace AssetTool

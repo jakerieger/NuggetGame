@@ -1,0 +1,8 @@
+{
+  "manifests": [
+    "Sprites.manifest",
+    "Levels.manifest",
+    "Audio.manifest",
+    "Fonts.manifest"
+  ]
+}

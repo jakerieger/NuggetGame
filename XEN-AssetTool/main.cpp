@@ -2,23 +2,42 @@
 // Created: 4/30/2024.
 //
 
-#include "AssetDescriptor.h"
 #include "AssetManifest.h"
 
+#include <PlatformTools.h>
+#include <rapidjson/rapidjson.h>
+
 using namespace AssetTool;
+using namespace PlatformTools;
+using namespace rapidjson;
 
 int main() {
-    const AssetManifest spriteManifest("Sprites.manifest");
-
-    size_t totalBytes = 0;
-    for (const auto& descriptor : spriteManifest.m_Descriptors) {
-        const auto size = descriptor->GetSize();
-        totalBytes += size;
-        printf("Size: %llu bytes\n", size);
+    if (!IO::FileSystem::exists("manifests.json")) {
+        printf("Could not find manifests.json file.\n");
+        return -1;
     }
-    printf("\nTotal Size: %llu bytes\n\n", totalBytes);
 
-    spriteManifest.Serialize();
+    const auto manifests = IO::Read("manifests.json");
+    if (!manifests.has_value()) {
+        printf("Could not read manifests.json.\n");
+        return -1;
+    }
+    const auto& manifestsSrc = manifests.value();
+    Document manifestsJson;
+    manifestsJson.Parse(manifestsSrc.c_str());
+    if (!manifestsJson.IsObject() || !manifestsJson.HasMember("manifests") ||
+        !manifestsJson["manifests"].IsArray()) {
+        printf("Invalid manifests.json.\n");
+        return -1;
+    }
+
+    printf("Processing provided manifest files...\n\n");
+
+    const auto manifestFiles = manifestsJson["manifests"].GetArray();
+    for (int i = 0; i < manifestFiles.Size(); i++) {
+        AssetManifest _manifest(manifestFiles[i].GetString());
+        _manifest.Serialize();
+    }
 
     return 0;
 }
