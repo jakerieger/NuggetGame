@@ -71,7 +71,14 @@ namespace AssetTool {
         lzma_end(&strm);
         PlatformTools::IO::WriteAllBytes("data0.nugpak", compressed);
 
-        printf("\nDone. Created pak file => '%s'\n", "data0.nugpak");
+        pakMetadata.CompressedSize = compressed.size();
+        std::vector<u8> metaBytes;
+        metaBytes.resize(sizeof(size_t) * 2);
+        memcpy(metaBytes.data(), &pakMetadata.OriginalSize, sizeof(size_t));
+        memcpy(metaBytes.data() + sizeof(size_t), &pakMetadata.CompressedSize, sizeof(size_t));
+        PlatformTools::IO::WriteAllBytes("data0.nugmeta", metaBytes);
+
+        printf("\nDone. \nPak file => '%s'\nMeta file => '%s'\n", "data0.nugpak", "data0.nugmeta");
         printf("Compression ratio: %.02f%%\n",
                ((float)compressed.size() / (float)sourceSize) * 100.f);
         printf("Compression size: %d bytes => %d bytes\n", (int)sourceSize, (int)compressed.size());
