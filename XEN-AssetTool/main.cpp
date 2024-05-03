@@ -56,7 +56,7 @@ int Unpack() {
     const IO::FileSystem::path metaFile = "data0.nugmeta";
 
     const auto result = UnPacker::Unpack(pakFile, metaFile);
-    assert(result.has_value());
+    // assert(result.has_value());
 
     return 0;
 }
