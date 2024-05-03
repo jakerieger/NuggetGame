@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "AssetTool.h"
+
 #include <string>
 #include <vector>
 #include <STL.h>
@@ -109,39 +111,48 @@ namespace AssetTool {
     namespace AssetDescriptor {
         template<typename T>
         T* Deserialize(std::vector<u8> data) {
+            using namespace Utilities;
             static_assert(std::is_base_of_v<IAssetDescriptor, T>,
                           "T must be subclass of IAssetDescriptor");
 
             T* out          = new T;
             auto descriptor = dynamic_cast<IAssetDescriptor*>(out);
 
-            memcpy(&descriptor->m_Type, data.data(), sizeof(u8));
-            memcpy(&descriptor->m_Version, data.data() + sizeof(u8), sizeof(u32));
+            memcpy(&descriptor->m_Type, data.data() + SizeOfAll<size_t>(), sizeof(u8));
+            memcpy(&descriptor->m_Version, data.data() + SizeOfAll<size_t, u8>(), sizeof(u32));
 
             u32 nameLen = 0;
-            memcpy(&nameLen, data.data() + sizeof(u8) + sizeof(u32), sizeof(u32));
+            memcpy(&nameLen, data.data() + SizeOfAll<size_t, u8, u32>(), sizeof(u32));
 
             const auto name = new char[nameLen];
-            strncpy(name, reinterpret_cast<char*>(data.data() + sizeof(u8) + sizeof(u64)), nameLen);
+            strncpy(name,
+                    reinterpret_cast<char*>(data.data() + SizeOfAll<size_t, u8, u64>()),
+                    nameLen);
             name[nameLen]      = {'\0'};
             descriptor->m_Name = std::string(name);
 
             u32 propertiesLen = 0;
-            memcpy(&propertiesLen, data.data() + 9 + nameLen, sizeof(u32));
+            memcpy(&propertiesLen,
+                   data.data() + SizeOfAll<size_t, u8, u64>() + nameLen,
+                   sizeof(u32));
 
             std::vector<u8> propertiesBytes;
             propertiesBytes.resize(propertiesLen);
-            memcpy(propertiesBytes.data(), data.data() + 9 + nameLen + sizeof(u32), propertiesLen);
+            memcpy(propertiesBytes.data(),
+                   data.data() + SizeOfAll<size_t, u8, u64, u32>() + nameLen,
+                   propertiesLen);
 
             descriptor->m_Properties->Deserialize(propertiesBytes);
 
             u32 dataLen = 0;
-            memcpy(&dataLen, data.data() + 9 + nameLen + sizeof(u32) + propertiesLen, sizeof(u32));
+            memcpy(&dataLen,
+                   data.data() + SizeOfAll<size_t, u8, u64, u32>() + nameLen + propertiesLen,
+                   sizeof(u32));
 
             std::vector<u8> dataBytes;
             dataBytes.resize(dataLen);
             memcpy(dataBytes.data(),
-                   data.data() + 9 + nameLen + sizeof(u32) + propertiesLen + sizeof(u32),
+                   data.data() + SizeOfAll<size_t, u8, u64, u64>() + nameLen + propertiesLen,
                    dataLen);
             descriptor->m_SrcData = dataBytes;
 

@@ -11,14 +11,8 @@ using namespace AssetTool;
 using namespace PlatformTools;
 using namespace rapidjson;
 
-int main(int argc, char* argv[]) {
+int Pack() {
     IO::FileSystem::path manifestsPath = "manifests.json";
-
-    if (argc == 2) {
-        manifestsPath = IO::FileSystem::path(argv[1]);
-    }
-
-    printf("%s\n", manifestsPath.string().c_str());
 
     if (!IO::FileSystem::exists("manifests.json")) {
         printf("Could not find manifests.json file.\n");
@@ -48,14 +42,41 @@ int main(int argc, char* argv[]) {
         manifestsToPack.push_back(_manifest);
     }
 
-    // Packer::Pack(manifestsToPack);
-
-    auto testDesc = AssetDescriptor::Deserialize<SpriteDescriptor>(
-      manifestsToPack.at(0)->m_Descriptors.at(0)->Serialize());
+    Packer::Pack(manifestsToPack);
 
     for (const auto _manifest : manifestsToPack) {
         delete _manifest;
     }
 
     return 0;
+}
+
+int Unpack() {
+    const IO::FileSystem::path pakFile  = "data0.nugpak";
+    const IO::FileSystem::path metaFile = "data0.nugmeta";
+
+    const auto result = UnPacker::Unpack(pakFile, metaFile);
+    assert(result.has_value());
+
+    return 0;
+}
+
+int main(int argc, char* argv[]) {
+    if (argc < 2) {
+        printf("[AssetTool]: Incorrect usage.\n\nArguments:\n  --pack\n  --unpack\n");
+        return -1;
+    }
+
+    if (argc == 2) {
+        if (strcmp(argv[1], "--pack") == 0) {
+            return Pack();
+        }
+        if (strcmp(argv[1], "--unpack") == 0) {
+            return Unpack();
+        }
+        printf("[AssetTool]: Unknown argument '%s'.\n\nArguments:\n  --pack\n  --unpack\n",
+               argv[1]);
+    }
+
+    return -1;
 }

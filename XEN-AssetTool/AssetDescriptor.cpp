@@ -70,7 +70,7 @@ namespace AssetTool {
     }
 
     size_t IAssetDescriptor::GetSize() const {
-        return SizeOfAll<u8, u64, u64>() + m_Name.size() + m_Properties->GetSize() +
+        return SizeOfAll<u8, u64, u64, size_t>() + m_Name.size() + m_Properties->GetSize() +
                m_SrcData.size();
     }
 
@@ -141,11 +141,11 @@ namespace AssetTool {
     }
 
     void FontProperties::Deserialize(std::vector<u8>& bytes) {
-        return;
+        memcpy(&m_DefaultSize, bytes.data(), sizeof(u32));
     }
 
     size_t AudioProperties::GetSize() {
-        return sizeof(u32) * 3;
+        return SizeOfAll<u32, u32, u32>();
     }
 
     std::vector<u8> IAssetDescriptor::Serialize() {
@@ -153,6 +153,7 @@ namespace AssetTool {
 
         std::vector<u8> bytes = {};
 
+        const auto size            = GetSize();
         const auto type            = (u8)m_Type;
         const auto version         = m_Version;
         const auto nameLen         = (u32)m_Name.size();
@@ -166,24 +167,23 @@ namespace AssetTool {
         const auto reserveSize = GetSize();
         bytes.resize(reserveSize);
 
-        memcpy(bytes.data(), &type, sizeof(u8));
-        memcpy(bytes.data() + SizeOfAll<u8>(), &version, sizeof(u32));
-        memcpy(bytes.data() + SizeOfAll<u8, u32>(), &nameLen, sizeof(u32));
-        memcpy(bytes.data() + SizeOfAll<u8, u64>(), m_Name.c_str(), nameLen);
-        memcpy(bytes.data() + SizeOfAll<u8, u64>() + nameLen, &propertiesLen, sizeof(u32));
-        memcpy(bytes.data() + SizeOfAll<u8, u64, u32>() + nameLen,
+        memcpy(bytes.data(), &size, sizeof(size_t));
+        memcpy(bytes.data() + SizeOfAll<size_t>(), &type, sizeof(u8));
+        memcpy(bytes.data() + SizeOfAll<size_t, u8>(), &version, sizeof(u32));
+        memcpy(bytes.data() + SizeOfAll<size_t, u8, u32>(), &nameLen, sizeof(u32));
+        memcpy(bytes.data() + SizeOfAll<size_t, u8, u64>(), m_Name.c_str(), nameLen);
+        memcpy(bytes.data() + SizeOfAll<size_t, u8, u64>() + nameLen, &propertiesLen, sizeof(u32));
+        memcpy(bytes.data() + SizeOfAll<size_t, u8, u64, u32>() + nameLen,
                propertiesBytes.data(),
                propertiesBytes.size());
-        memcpy(bytes.data() + SizeOfAll<u8, u64, u32>() + nameLen + propertiesLen,
+        memcpy(bytes.data() + SizeOfAll<size_t, u8, u64, u32>() + nameLen + propertiesLen,
                &dataLen,
                sizeof(u32));
-        memcpy(bytes.data() + SizeOfAll<u8, u64, u64>() + nameLen + propertiesLen,
+        memcpy(bytes.data() + SizeOfAll<size_t, u8, u64, u64>() + nameLen + propertiesLen,
                data,
                m_SrcData.size());
 
         printf("Descriptor serialized.\n");
-
-        PlatformTools::IO::WriteAllBytes("test.bin", bytes);
 
         return bytes;
     }
