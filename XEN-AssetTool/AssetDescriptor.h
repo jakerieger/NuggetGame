@@ -19,9 +19,9 @@ namespace AssetTool {
 
     class IProperties {
     public:
-        virtual size_t GetSize()            = 0;
+        virtual size_t GetSize() = 0;
         virtual std::vector<u8> Serialize() = 0;
-        virtual IProperties* Deserialize()  = 0;
+        virtual IProperties* Deserialize() = 0;
         virtual ~IProperties();
     };
 
@@ -74,16 +74,9 @@ namespace AssetTool {
         std::string m_Name;
         u32 m_Version = 0;
         std::vector<u8> m_SrcData;
-        IProperties* m_Properties {};
+        IProperties* m_Properties{};
 
         std::vector<u8> Serialize();
-
-        template <typename T>
-        static T* Deserialize(const std::vector<u8>& data) {
-            static_assert(std::is_base_of_v<IAssetDescriptor, T>, "T must be subclass of IAssetDescriptor");
-
-            return nullptr;
-        }
 
         [[nodiscard]] size_t GetSize() const;
         virtual ~IAssetDescriptor();
@@ -112,4 +105,55 @@ namespace AssetTool {
         LevelDescriptor();
         [[nodiscard]] LevelProperties* GetProperties() const;
     };
-}  // namespace AssetTool
+
+    namespace AssetDescriptor {
+        template<typename T>
+        T* Deserialize(std::vector<u8> data) {
+            static_assert(std::is_base_of_v<IAssetDescriptor, T>,
+                          "T must be subclass of IAssetDescriptor");
+
+            T* out                = new T;
+            const auto descriptor = dynamic_cast<IAssetDescriptor*>(out);
+            memcpy(&descriptor->m_Type, data.data(), sizeof(u8));
+
+            switch (descriptor->m_Type) {
+                case AssetType::Sprite: {
+                    static_assert(std::is_same_v<SpriteDescriptor*, T*>,
+                                  "Asset type is specified as Sprite but T is not SpriteDescriptor")
+                        ;
+                    auto castedDescriptor = dynamic_cast<SpriteDescriptor*>(descriptor);
+
+                    memcpy(&castedDescriptor->m_Version, data.data() + sizeof(u8), sizeof(u32));
+                    u32 nameLen = 0;
+                    memcpy(&nameLen, data.data() + sizeof(u8) + sizeof(u32), sizeof(u32));
+                    const auto name = new char[nameLen];
+                    strncpy(name,
+                            reinterpret_cast<char*>(data.data() + sizeof(u8) + sizeof(u64)),
+                            nameLen);
+                    name[nameLen]            = {'\0'};
+                    castedDescriptor->m_Name = name;
+                    u32 propertiesLen        = 0;
+                    memcpy(&propertiesLen, data.data() + 9 + nameLen, sizeof(u32));
+                    std::vector<u8> propertiesBytes;
+                    propertiesBytes.resize(propertiesLen);
+                    memcpy(propertiesBytes.data(),
+                           data.data() + 9 + nameLen + propertiesLen,
+                           propertiesLen);
+
+                    castedDescriptor->m_Properties->Deserialize(propertiesBytes);
+
+                    return castedDescriptor;
+                }
+                break;
+                case AssetType::Font:
+                    break;
+                case AssetType::Audio:
+                    break;
+                case AssetType::Level:
+                    break;
+            }
+
+            return out;
+        }
+    }
+} // namespace AssetTool

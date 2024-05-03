@@ -12,14 +12,9 @@ using namespace PlatformTools;
 using namespace rapidjson;
 
 int main(int argc, char* argv[]) {
-    IAssetDescriptor::Deserialize<SpriteDescriptor>({});
-
-
     IO::FileSystem::path manifestsPath = "manifests.json";
 
-    if (argc == 2) {
-        manifestsPath = IO::FileSystem::path(argv[1]);
-    }
+    if (argc == 2) { manifestsPath = IO::FileSystem::path(argv[1]); }
 
     printf("%s\n", manifestsPath.string().c_str());
 
@@ -51,11 +46,16 @@ int main(int argc, char* argv[]) {
         manifestsToPack.push_back(_manifest);
     }
 
-    Packer::Pack(manifestsToPack);
+    // Packer::Pack(manifestsToPack);
 
-    for (const auto _manifest : manifestsToPack) {
-        delete _manifest;
-    }
+    auto nuggetDescriptor = AssetDescriptor::Deserialize<SpriteDescriptor>(
+        manifestsToPack.at(0)->m_Descriptors.at(0)->Serialize());
+
+    printf("Descriptor Name: %s\n", nuggetDescriptor->m_Name.c_str());
+    printf("Descriptor Version: %u\n", nuggetDescriptor->m_Version);
+    printf("Descriptor Type: %d\n", nuggetDescriptor->m_Type);
+
+    for (const auto _manifest : manifestsToPack) { delete _manifest; }
 
     return 0;
 }
