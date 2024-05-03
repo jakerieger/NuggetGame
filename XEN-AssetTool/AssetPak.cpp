@@ -12,6 +12,26 @@ namespace AssetTool {
     struct FPakMetadata {
         size_t OriginalSize;
         size_t CompressedSize;
+        u32 ManifestCount;
+
+        [[nodiscard]] std::vector<u8> Serialize() const {
+            std::vector<u8> metaBytes;
+            metaBytes.resize(Utilities::SizeOfAll<size_t, size_t, u32>());
+            memcpy(metaBytes.data(), &OriginalSize, sizeof(size_t));
+            memcpy(metaBytes.data() + sizeof(size_t), &CompressedSize, sizeof(size_t));
+            memcpy(metaBytes.data() + Utilities::SizeOfAll<size_t, size_t>(),
+                   &ManifestCount,
+                   sizeof(u32));
+            return metaBytes;
+        }
+
+        void Deserialize(const std::vector<u8>& bytes) {
+            memcpy(&OriginalSize, bytes.data(), sizeof(size_t));
+            memcpy(&CompressedSize, bytes.data() + sizeof(size_t), sizeof(size_t));
+            memcpy(&ManifestCount,
+                   bytes.data() + Utilities::SizeOfAll<size_t, size_t>(),
+                   sizeof(u32));
+        }
     };
 
     void Packer::Pack(const std::vector<AssetManifest*>& manifests) {
@@ -23,8 +43,9 @@ namespace AssetTool {
           [](int acc, AssetManifest* manifest) { return acc + (int)manifest->GetSize(); });
         pakBytes.resize(reserveSize);
 
-        FPakMetadata pakMetadata = {};
-        pakMetadata.OriginalSize = reserveSize;
+        FPakMetadata pakMetadata  = {};
+        pakMetadata.OriginalSize  = reserveSize;
+        pakMetadata.ManifestCount = manifests.size();
 
         size_t offset = 0;
         for (auto& manifest : manifests) {
@@ -39,7 +60,7 @@ namespace AssetTool {
             offset += manifest->GetSize();
         }
 
-        auto result = PlatformTools::IO::WriteAllBytes("data0.adf", pakBytes);
+        PlatformTools::IO::WriteAllBytes("data0.adf", pakBytes);
 
         printf("\nCreating asset pak. This might take a minute...\n");
 
@@ -74,10 +95,7 @@ namespace AssetTool {
         PlatformTools::IO::WriteAllBytes("data0.nugpak", compressed);
 
         pakMetadata.CompressedSize = compressed.size();
-        std::vector<u8> metaBytes;
-        metaBytes.resize(sizeof(size_t) * 2);
-        memcpy(metaBytes.data(), &pakMetadata.OriginalSize, sizeof(size_t));
-        memcpy(metaBytes.data() + sizeof(size_t), &pakMetadata.CompressedSize, sizeof(size_t));
+        const auto metaBytes       = pakMetadata.Serialize();
         PlatformTools::IO::WriteAllBytes("data0.nugmeta", metaBytes);
 
         printf("\nDone. \nPak file => '%s'\nMeta file => '%s'\n", "data0.nugpak", "data0.nugmeta");
@@ -87,12 +105,11 @@ namespace AssetTool {
     }
 
     static std::optional<std::vector<u8>> DecompressPakFile(const std::vector<u8>& data,
-                                                            const size_t originalSize,
-                                                            const size_t compressedSize) {
+                                                            const FPakMetadata& metadata) {
         std::vector<u8> uncompressedBytes;
-        uncompressedBytes.reserve(originalSize);
+        uncompressedBytes.reserve(metadata.OriginalSize);
 
-        assert(compressedSize == data.size());
+        assert(metadata.CompressedSize == data.size());
 
         lzma_stream strm = LZMA_STREAM_INIT;
         lzma_ret ret     = lzma_stream_decoder(&strm, UINT64_MAX, 0);
@@ -115,16 +132,16 @@ namespace AssetTool {
             uncompressedBytes.insert(uncompressedBytes.end(),
                                      buffer,
                                      buffer + BUFSIZ - strm.avail_out);
-            uncompressedBytes.resize(originalSize);
         } while (ret != LZMA_STREAM_END);
 
+        uncompressedBytes.resize(metadata.OriginalSize);
         lzma_end(&strm);
 
         return uncompressedBytes;
     }
 
-    std::optional<AssetManifest> UnPacker::Unpack(const std::filesystem::path& pakFile,
-                                                  const std::filesystem::path& metaFile) {
+    std::optional<std::unordered_map<std::string, AssetManifest>>
+    UnPacker::Unpack(const std::filesystem::path& pakFile, const std::filesystem::path& metaFile) {
         const auto readPakResult = PlatformTools::IO::ReadAllBytes(pakFile);
         if (!readPakResult.has_value()) {
             return std::nullopt;
@@ -134,15 +151,39 @@ namespace AssetTool {
             return std::nullopt;
         }
 
-        const auto& pakBytes  = readPakResult.value();
         const auto& metaBytes = readMetaResult.value();
+        FPakMetadata metadata {};
+        metadata.Deserialize(metaBytes);
 
-        size_t originalSize;
-        size_t compressedSize;
-        memcpy(&originalSize, metaBytes.data(), sizeof(size_t));
-        memcpy(&compressedSize, metaBytes.data() + sizeof(size_t), sizeof(size_t));
+        const auto& pakBytes  = readPakResult.value();
+        auto decompressResult = DecompressPakFile(pakBytes, metadata);
+        if (!decompressResult.has_value()) {
+            return std::nullopt;
+        }
+        auto decompressedBytes = decompressResult.value();
 
-        auto decompressedBytes = DecompressPakFile(pakBytes, originalSize, compressedSize);
+        PlatformTools::IO::WriteAllBytes("uncompressed_data0.adf", decompressedBytes);
+
+        std::vector<AssetManifest*> manifestMap = {};
+
+        size_t offset = 0;
+        for (int i = 0; i < metadata.ManifestCount; i++) {
+            size_t manifestSize;
+            memcpy(&manifestSize, decompressedBytes.data() + offset, sizeof(size_t));
+            std::vector<u8> manifestBytes;
+            manifestBytes.resize(manifestSize);
+            memcpy(manifestBytes.data(), decompressedBytes.data() + offset, manifestSize);
+            offset += manifestSize;
+
+            // TODO: Implement manifest deserialization
+            auto result = AssetManifest::Deserialize(manifestBytes);
+            if (!result.has_value()) {
+                return std::nullopt;
+            }
+
+            manifestMap.push_back(result.value());
+            assert(true);
+        }
 
         return std::nullopt;
     }

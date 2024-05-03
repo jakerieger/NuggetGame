@@ -118,7 +118,9 @@ namespace AssetTool {
             T* out          = new T;
             auto descriptor = dynamic_cast<IAssetDescriptor*>(out);
 
-            memcpy(&descriptor->m_Type, data.data() + SizeOfAll<size_t>(), sizeof(u8));
+            u8 typeUint;
+            memcpy(&typeUint, data.data() + SizeOfAll<size_t>(), sizeof(u8));
+            descriptor->m_Type = (AssetType)typeUint;
             memcpy(&descriptor->m_Version, data.data() + SizeOfAll<size_t, u8>(), sizeof(u32));
 
             u32 nameLen = 0;

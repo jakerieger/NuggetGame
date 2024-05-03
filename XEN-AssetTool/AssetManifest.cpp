@@ -146,18 +146,19 @@ namespace AssetTool {
     std::optional<std::vector<u8>> AssetManifest::Serialize() {
         std::vector<u8> bytes;
 
-        int reserveSize      = std::accumulate(m_Descriptors.begin(),
-                                          m_Descriptors.end(),
-                                          0,
-                                          [](int acc, const IAssetDescriptor* descriptor) {
-                                              return acc + (int)descriptor->GetSize();
-                                          });
+        size_t reserveSize   = std::accumulate(m_Descriptors.begin(),
+                                             m_Descriptors.end(),
+                                             0,
+                                             [](int acc, const IAssetDescriptor* descriptor) {
+                                                 return (size_t)acc + descriptor->GetSize();
+                                             });
         const u32 assetCount = m_Descriptors.size();
-        reserveSize += sizeof(u32);
-        bytes.resize((size_t)reserveSize);
+        reserveSize += sizeof(u32) + sizeof(size_t);
+        bytes.resize(reserveSize);
 
-        memcpy(bytes.data(), &assetCount, sizeof(u32));
-        size_t offset = sizeof(u32);
+        memcpy(bytes.data(), &reserveSize, sizeof(size_t));
+        memcpy(bytes.data() + sizeof(size_t), &assetCount, sizeof(u32));
+        size_t offset = sizeof(u32) + sizeof(size_t);
 
         for (const auto& descriptor : m_Descriptors) {
             auto descriptorBytes   = descriptor->Serialize();
@@ -169,8 +170,49 @@ namespace AssetTool {
         return bytes;
     }
 
-    std::optional<AssetManifest> AssetManifest::Deserialize() {
-        return std::nullopt;
+    std::optional<AssetManifest*> AssetManifest::Deserialize(const std::vector<u8>& bytes) {
+        size_t size;
+        u32 descriptorCount;
+        memcpy(&size, bytes.data(), sizeof(size_t));
+        memcpy(&descriptorCount, bytes.data() + sizeof(size_t), sizeof(u32));
+        std::vector<IAssetDescriptor*> descriptors = {};
+        size_t padding                             = Utilities::SizeOfAll<size_t, u32>();
+        size_t offset                              = padding;
+        for (int i = 0; i < descriptorCount; i++) {
+            size_t descriptorSize;
+            memcpy(&descriptorSize, bytes.data() + offset, sizeof(size_t));
+
+            std::vector<u8> descriptorBytes = {};
+            descriptorBytes.resize(descriptorSize);
+            memcpy(descriptorBytes.data(), bytes.data() + offset, descriptorSize);
+            offset += descriptorSize;
+
+            u8 descriptorType;
+            memcpy(&descriptorType, bytes.data() + offset + sizeof(size_t), sizeof(u8));
+            switch ((AssetType)descriptorType) {
+                case AssetType::Sprite: {
+                    auto descriptor =
+                      AssetDescriptor::Deserialize<SpriteDescriptor>(descriptorBytes);
+                    descriptors.push_back(descriptor);
+                } break;
+                case AssetType::Font: {
+                    auto descriptor = AssetDescriptor::Deserialize<FontDescriptor>(descriptorBytes);
+                    descriptors.push_back(descriptor);
+                } break;
+                case AssetType::Audio: {
+                    auto descriptor =
+                      AssetDescriptor::Deserialize<AudioDescriptor>(descriptorBytes);
+                    descriptors.push_back(descriptor);
+                } break;
+                case AssetType::Level: {
+                    auto descriptor =
+                      AssetDescriptor::Deserialize<LevelDescriptor>(descriptorBytes);
+                    descriptors.push_back(descriptor);
+                } break;
+            }
+        }
+
+        return new AssetManifest(0, "todo", descriptors);
     }
 
     size_t AssetManifest::GetSize() {
@@ -180,6 +222,6 @@ namespace AssetTool {
                                          [](int acc, const IAssetDescriptor* descriptor) {
                                              return acc + (int)descriptor->GetSize();
                                          });
-        return (size_t)size;
+        return (size_t)size + sizeof(u32) + sizeof(size_t);
     }
 }  // namespace AssetTool
