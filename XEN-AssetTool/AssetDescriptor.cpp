@@ -7,8 +7,10 @@
 namespace AssetTool {
     IProperties::~IProperties() = default;
 
-    IProperties* SpriteProperties::Deserialize() {
-        return nullptr;
+    void SpriteProperties::Deserialize(std::vector<u8>& bytes) {
+        memcpy(&m_Width, bytes.data(), sizeof(u32));
+        memcpy(&m_Height, bytes.data() + sizeof(u32), sizeof(u32));
+        memcpy(&m_IsAlpha, bytes.data() + sizeof(u64), sizeof(u32));
     }
 
     std::vector<u8> AudioProperties::Serialize() {
@@ -22,8 +24,8 @@ namespace AssetTool {
         return bytes;
     }
 
-    IProperties* AudioProperties::Deserialize() {
-        return nullptr;
+    void AudioProperties::Deserialize(std::vector<u8>& bytes) {
+        return;
     }
 
     size_t LevelProperties::GetSize() {
@@ -51,15 +53,15 @@ namespace AssetTool {
                &objX,
                sizeof(f32));
         memcpy(bytes.data() + sizeof(m_Rows) + sizeof(m_Columns) + sizeof(f32) + sizeof(f32) +
-               sizeof(f32),
+                 sizeof(f32),
                &objY,
                sizeof(f32));
 
         return bytes;
     }
 
-    IProperties* LevelProperties::Deserialize() {
-        return nullptr;
+    void LevelProperties::Deserialize(std::vector<u8>& bytes) {
+        return;
     }
 
     size_t IAssetDescriptor::GetSize() const {
@@ -135,8 +137,8 @@ namespace AssetTool {
         return bytes;
     }
 
-    IProperties* FontProperties::Deserialize() {
-        return nullptr;
+    void FontProperties::Deserialize(std::vector<u8>& bytes) {
+        return;
     }
 
     size_t AudioProperties::GetSize() {
