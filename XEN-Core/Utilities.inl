@@ -215,7 +215,6 @@ namespace Utilities {
             result.push_back(vec2[i]);
         }
 
-        // Add any remaining elements from the longer vector
         for (size_t i = size; i < vec1.size(); ++i) {
             result.push_back(vec1[i]);
         }

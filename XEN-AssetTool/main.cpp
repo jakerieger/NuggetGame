@@ -50,8 +50,8 @@ int main(int argc, char* argv[]) {
 
     // Packer::Pack(manifestsToPack);
 
-    auto testDesc = AssetDescriptor::Deserialize<AudioDescriptor>(
-      manifestsToPack.at(2)->m_Descriptors.at(0)->Serialize());
+    auto testDesc = AssetDescriptor::Deserialize<SpriteDescriptor>(
+      manifestsToPack.at(0)->m_Descriptors.at(0)->Serialize());
 
     for (const auto _manifest : manifestsToPack) {
         delete _manifest;

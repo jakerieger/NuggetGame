@@ -125,7 +125,6 @@ namespace AssetTool {
             strncpy(name, reinterpret_cast<char*>(data.data() + sizeof(u8) + sizeof(u64)), nameLen);
             name[nameLen]      = {'\0'};
             descriptor->m_Name = std::string(name);
-            delete name;
 
             u32 propertiesLen = 0;
             memcpy(&propertiesLen, data.data() + 9 + nameLen, sizeof(u32));

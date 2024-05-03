@@ -8,7 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/AssetTool)
 
 include_directories(
-        ../XEN-Core
         ../XEN-AssetTool
         ../XEN-PlatformTools
         ../ThirdParty
@@ -18,7 +17,8 @@ add_library(XEN-AssetCore STATIC AssetDescriptor.cpp AssetDescriptor.h
         AssetManifest.cpp
         AssetManifest.h
         AssetPak.cpp
-        AssetPak.h)
+        AssetPak.h
+        AssetTool.h)
 target_link_libraries(XEN-AssetCore PRIVATE XEN-PlatformCore rapidjson liblzma::liblzma)
 add_executable(AssetTool main.cpp)
 target_link_libraries(AssetTool PRIVATE XEN-AssetCore rapidjson liblzma::liblzma)

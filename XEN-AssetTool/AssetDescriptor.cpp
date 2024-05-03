@@ -3,14 +3,21 @@
 //
 
 #include "AssetDescriptor.h"
+#include "PlatformTools.h"
+#include "AssetTool.h"
+
+#include <iostream>
+#include <numeric>
 
 namespace AssetTool {
+    using namespace Utilities;
+
     IProperties::~IProperties() = default;
 
     void SpriteProperties::Deserialize(std::vector<u8>& bytes) {
         memcpy(&m_Width, bytes.data(), sizeof(u32));
-        memcpy(&m_Height, bytes.data() + sizeof(u32), sizeof(u32));
-        memcpy(&m_IsAlpha, bytes.data() + sizeof(u64), sizeof(u32));
+        memcpy(&m_Height, bytes.data() + SizeOfAll<u32>(), sizeof(u32));
+        memcpy(&m_IsAlpha, bytes.data() + SizeOfAll<u64>(), sizeof(bool));
     }
 
     std::vector<u8> AudioProperties::Serialize() {
@@ -18,14 +25,16 @@ namespace AssetTool {
         bytes.resize(GetSize());
 
         memcpy(bytes.data(), &m_SampleCount, sizeof(u32));
-        memcpy(bytes.data() + sizeof(u32), &m_SampleRate, sizeof(u32));
-        memcpy(bytes.data() + (sizeof(u32) * 2), &m_Channels, sizeof(u32));
+        memcpy(bytes.data() + SizeOfAll<u32>(), &m_SampleRate, sizeof(u32));
+        memcpy(bytes.data() + SizeOfAll<u32, u32>(), &m_Channels, sizeof(u32));
 
         return bytes;
     }
 
     void AudioProperties::Deserialize(std::vector<u8>& bytes) {
-        return;
+        memcpy(&m_SampleCount, bytes.data(), sizeof(u32));
+        memcpy(&m_SampleRate, bytes.data() + SizeOfAll<u32>(), sizeof(u32));
+        memcpy(&m_Channels, bytes.data() + SizeOfAll<u32, u32>(), sizeof(u32));
     }
 
     size_t LevelProperties::GetSize() {
@@ -36,39 +45,33 @@ namespace AssetTool {
         std::vector<u8> bytes = {};
         bytes.resize(GetSize());
 
-        memcpy(bytes.data(), &m_Rows, sizeof(m_Rows));
-        memcpy(bytes.data() + sizeof(m_Rows), &m_Columns, sizeof(m_Columns));
-
         const auto playerX = m_PlayerStart.x;
         const auto playerY = m_PlayerStart.y;
         const auto objX    = m_ObjectivePosition.x;
         const auto objY    = m_ObjectivePosition.y;
 
-        memcpy(bytes.data() + sizeof(m_Rows) + sizeof(m_Columns), &playerX, sizeof(f32));
-        memcpy(bytes.data() + sizeof(m_Rows) + sizeof(m_Columns) + sizeof(f32),
-               &playerY,
-               sizeof(f32));
-
-        memcpy(bytes.data() + sizeof(m_Rows) + sizeof(m_Columns) + sizeof(f32) + sizeof(f32),
-               &objX,
-               sizeof(f32));
-        memcpy(bytes.data() + sizeof(m_Rows) + sizeof(m_Columns) + sizeof(f32) + sizeof(f32) +
-                 sizeof(f32),
-               &objY,
-               sizeof(f32));
+        memcpy(bytes.data(), &m_Rows, sizeof(m_Rows));
+        memcpy(bytes.data() + SizeOfAll<u32>(), &m_Columns, sizeof(m_Columns));
+        memcpy(bytes.data() + SizeOfAll<u32, u32>(), &playerX, sizeof(f32));
+        memcpy(bytes.data() + SizeOfAll<u64, f32>(), &playerY, sizeof(f32));
+        memcpy(bytes.data() + SizeOfAll<u64, f64>(), &objX, sizeof(f32));
+        memcpy(bytes.data() + SizeOfAll<u64, f64, f32>(), &objY, sizeof(f32));
 
         return bytes;
     }
 
     void LevelProperties::Deserialize(std::vector<u8>& bytes) {
-        return;
+        memcpy(&m_Rows, bytes.data(), sizeof(u32));
+        memcpy(&m_Columns, bytes.data() + SizeOfAll<u32>(), sizeof(u32));
+        memcpy(&m_PlayerStart.x, bytes.data() + SizeOfAll<u64>(), sizeof(f32));
+        memcpy(&m_PlayerStart.y, bytes.data() + SizeOfAll<u64, f32>(), sizeof(f32));
+        memcpy(&m_ObjectivePosition.x, bytes.data() + SizeOfAll<u64, f64>(), sizeof(f32));
+        memcpy(&m_ObjectivePosition.y, bytes.data() + SizeOfAll<u64, f64, f32>(), sizeof(f32));
     }
 
     size_t IAssetDescriptor::GetSize() const {
-        return sizeof(m_Type) + m_Name.size() + sizeof(m_Version) + m_SrcData.size() +
-               m_Properties->GetSize() + (sizeof(u32) * 3) -
-               3;  // Why subtract 3? I have no fucking idea, something to do with byte
-        // alignment or some shit
+        return SizeOfAll<u8, u64, u64>() + m_Name.size() + m_Properties->GetSize() +
+               m_SrcData.size();
     }
 
     IAssetDescriptor::~IAssetDescriptor() {
@@ -112,7 +115,7 @@ namespace AssetTool {
     }
 
     size_t SpriteProperties::GetSize() {
-        return (sizeof(u32) * 2) + sizeof(bool);
+        return SizeOfAll<u64, bool>();
     }
 
     std::vector<u8> SpriteProperties::Serialize() {
@@ -120,8 +123,8 @@ namespace AssetTool {
         bytes.resize(GetSize());
 
         memcpy(bytes.data(), &m_Width, sizeof(u32));
-        memcpy(bytes.data() + sizeof(u32), &m_Height, sizeof(u32));
-        memcpy(bytes.data() + (sizeof(u32) * 2), &m_IsAlpha, sizeof(bool));
+        memcpy(bytes.data() + SizeOfAll<u32>(), &m_Height, sizeof(u32));
+        memcpy(bytes.data() + SizeOfAll<u64>(), &m_IsAlpha, sizeof(bool));
 
         return bytes;
     }
@@ -164,28 +167,23 @@ namespace AssetTool {
         bytes.resize(reserveSize);
 
         memcpy(bytes.data(), &type, sizeof(u8));
-        memcpy(bytes.data() + sizeof(type), &version, sizeof(u32));
-        memcpy(bytes.data() + sizeof(type) + sizeof(version), &nameLen, sizeof(u32));
-        memcpy(bytes.data() + sizeof(type) + sizeof(version) + sizeof(nameLen),
-               m_Name.c_str(),
-               nameLen);
-        memcpy(bytes.data() + sizeof(type) + sizeof(version) + sizeof(nameLen) + nameLen,
-               &propertiesLen,
-               sizeof(u32));
-        memcpy(bytes.data() + sizeof(type) + sizeof(version) + sizeof(nameLen) + nameLen +
-                 sizeof(propertiesLen),
+        memcpy(bytes.data() + SizeOfAll<u8>(), &version, sizeof(u32));
+        memcpy(bytes.data() + SizeOfAll<u8, u32>(), &nameLen, sizeof(u32));
+        memcpy(bytes.data() + SizeOfAll<u8, u64>(), m_Name.c_str(), nameLen);
+        memcpy(bytes.data() + SizeOfAll<u8, u64>() + nameLen, &propertiesLen, sizeof(u32));
+        memcpy(bytes.data() + SizeOfAll<u8, u64, u32>() + nameLen,
                propertiesBytes.data(),
                propertiesBytes.size());
-        memcpy(bytes.data() + sizeof(type) + sizeof(version) + sizeof(nameLen) + nameLen +
-                 sizeof(propertiesLen) + propertiesLen,
+        memcpy(bytes.data() + SizeOfAll<u8, u64, u32>() + nameLen + propertiesLen,
                &dataLen,
                sizeof(u32));
-        memcpy(bytes.data() + sizeof(type) + sizeof(version) + sizeof(nameLen) + nameLen +
-                 sizeof(propertiesLen) + propertiesLen + sizeof(dataLen),
+        memcpy(bytes.data() + SizeOfAll<u8, u64, u64>() + nameLen + propertiesLen,
                data,
                m_SrcData.size());
 
         printf("Descriptor serialized.\n");
+
+        PlatformTools::IO::WriteAllBytes("test.bin", bytes);
 
         return bytes;
     }
