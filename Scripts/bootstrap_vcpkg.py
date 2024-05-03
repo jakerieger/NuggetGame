@@ -26,7 +26,7 @@ subprocess.check_call(["git", "checkout", "master"])
 subprocess.check_call(["git", "pull"])
 
 if os.name == "nt":
-    subprocess.check_call(["./bootstrap-vcpkg.bat"])
+    subprocess.check_call([".\\bootstrap-vcpkg.bat"])
 else:
     subprocess.check_call(["./bootstrap-vcpkg.sh"])
 

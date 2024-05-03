@@ -1,9 +1,11 @@
 {
-  "vcpkg_root": "/home/jr/.vcpkg-clion/vcpkg/scripts/buildsystems/vcpkg.cmake",
+  "vcpkg_root": "vcpkg/scripts/buildsystems/vcpkg.cmake",
   "generator": "Ninja",
   "packages": [
     "glfw3",
+    "glm",
     "box2d",
+    "audiofile",
     "openal-soft",
     "rmlui",
     "fmt",
