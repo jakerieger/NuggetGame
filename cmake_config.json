@@ -10,6 +10,7 @@
     "rmlui",
     "fmt",
     "rapidjson",
-    "liblzma"
+    "liblzma",
+    "openssl"
   ]
 }
