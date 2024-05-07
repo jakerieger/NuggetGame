@@ -4,6 +4,10 @@
 
 #pragma once
 
+#include "STL.h"
+
+#include <openssl/sha.h>
+
 namespace AssetTool::Helpers {
     template<typename... Types>
     size_t SizeOfAll() {
@@ -24,5 +28,28 @@ namespace AssetTool::Helpers {
         }
 
         return src + size + offset;
+    }
+
+    inline bool ValidateChecksum(const std::vector<u8>& bytesA, const std::vector<u8>& bytesB) {
+        u8 hashA[SHA512_DIGEST_LENGTH];
+        u8 hashB[SHA512_DIGEST_LENGTH];
+        SHA512_CTX ctx;
+
+        SHA512_Init(&ctx);
+        SHA512_Update(&ctx, bytesA.data(), bytesA.size());
+        SHA512_Final(hashA, &ctx);
+
+        SHA512_Init(&ctx);
+        SHA512_Update(&ctx, bytesB.data(), bytesB.size());
+        SHA512_Final(hashB, &ctx);
+
+        std::stringstream ssA;
+        std::stringstream ssB;
+        for (int i = 0; i < SHA512_DIGEST_LENGTH; ++i) {
+            ssA << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(hashA[i]);
+            ssB << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(hashB[i]);
+        }
+
+        return (ssA.str() == ssB.str());
     }
 }  // namespace AssetTool::Helpers
