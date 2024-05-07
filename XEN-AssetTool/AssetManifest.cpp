@@ -146,15 +146,15 @@ namespace AssetTool {
     std::optional<std::vector<u8>> AssetManifest::Serialize() {
         std::vector<u8> bytes;
 
-        size_t reserveSize   = std::accumulate(m_Descriptors.begin(),
-                                             m_Descriptors.end(),
-                                             0,
-                                             [](int acc, const IAssetDescriptor* descriptor) {
-                                                 return (size_t)acc + descriptor->GetSize();
-                                             });
+        int reserveSize      = std::accumulate(m_Descriptors.begin(),
+                                          m_Descriptors.end(),
+                                          0,
+                                          [](int acc, const IAssetDescriptor* descriptor) {
+                                              return acc + static_cast<int>(descriptor->GetSize());
+                                          });
         const u32 assetCount = m_Descriptors.size();
         reserveSize += sizeof(u32) + sizeof(size_t);
-        bytes.resize(reserveSize);
+        bytes.resize(static_cast<size_t>(reserveSize));
 
         memcpy(bytes.data(), &reserveSize, sizeof(size_t));
         memcpy(bytes.data() + sizeof(size_t), &assetCount, sizeof(u32));
@@ -170,13 +170,13 @@ namespace AssetTool {
         return bytes;
     }
 
-    std::optional<AssetManifest*> AssetManifest::Deserialize(const std::vector<u8>& bytes) {
+    std::unique_ptr<AssetManifest> AssetManifest::Deserialize(const std::vector<u8>& bytes) {
         size_t size;
         u32 descriptorCount;
         memcpy(&size, bytes.data(), sizeof(size_t));
         memcpy(&descriptorCount, bytes.data() + sizeof(size_t), sizeof(u32));
         std::vector<IAssetDescriptor*> descriptors = {};
-        size_t padding                             = Utilities::SizeOfAll<size_t, u32>();
+        size_t padding                             = Helpers::SizeOfAll<size_t, u32>();
         size_t offset                              = padding;
         for (int i = 0; i < descriptorCount; i++) {
             size_t descriptorSize;
@@ -212,7 +212,7 @@ namespace AssetTool {
             }
         }
 
-        return new AssetManifest(0, "todo", descriptors);
+        return std::make_unique<AssetManifest>(0, "todo", descriptors);
     }
 
     size_t AssetManifest::GetSize() {

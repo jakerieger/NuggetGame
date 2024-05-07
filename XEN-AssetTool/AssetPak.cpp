@@ -16,10 +16,10 @@ namespace AssetTool {
 
         [[nodiscard]] std::vector<u8> Serialize() const {
             std::vector<u8> metaBytes;
-            metaBytes.resize(Utilities::SizeOfAll<size_t, size_t, u32>());
+            metaBytes.resize(Helpers::SizeOfAll<size_t, size_t, u32>());
             memcpy(metaBytes.data(), &OriginalSize, sizeof(size_t));
             memcpy(metaBytes.data() + sizeof(size_t), &CompressedSize, sizeof(size_t));
-            memcpy(metaBytes.data() + Utilities::SizeOfAll<size_t, size_t>(),
+            memcpy(metaBytes.data() + Helpers::SizeOfAll<size_t, size_t>(),
                    &ManifestCount,
                    sizeof(u32));
             return metaBytes;
@@ -29,7 +29,7 @@ namespace AssetTool {
             memcpy(&OriginalSize, bytes.data(), sizeof(size_t));
             memcpy(&CompressedSize, bytes.data() + sizeof(size_t), sizeof(size_t));
             memcpy(&ManifestCount,
-                   bytes.data() + Utilities::SizeOfAll<size_t, size_t>(),
+                   bytes.data() + Helpers::SizeOfAll<size_t, size_t>(),
                    sizeof(u32));
         }
     };
@@ -164,7 +164,7 @@ namespace AssetTool {
 
         PlatformTools::IO::WriteAllBytes("uncompressed_data0.adf", decompressedBytes);
 
-        std::vector<AssetManifest*> manifestMap = {};
+        std::vector<std::unique_ptr<AssetManifest>> manifestMap = {};
 
         size_t offset = 0;
         for (int i = 0; i < metadata.ManifestCount; i++) {
@@ -177,11 +177,8 @@ namespace AssetTool {
 
             // TODO: Implement manifest deserialization
             auto result = AssetManifest::Deserialize(manifestBytes);
-            if (!result.has_value()) {
-                return std::nullopt;
-            }
+            manifestMap.push_back(std::move(result));
 
-            manifestMap.push_back(result.value());
             assert(true);
         }
 

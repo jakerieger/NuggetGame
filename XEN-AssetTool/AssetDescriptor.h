@@ -111,7 +111,7 @@ namespace AssetTool {
     namespace AssetDescriptor {
         template<typename T>
         T* Deserialize(std::vector<u8> data) {
-            using namespace Utilities;
+            using namespace Helpers;
             static_assert(std::is_base_of_v<IAssetDescriptor, T>,
                           "T must be subclass of IAssetDescriptor");
 

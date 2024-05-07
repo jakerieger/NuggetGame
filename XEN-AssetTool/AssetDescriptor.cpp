@@ -10,7 +10,7 @@
 #include <numeric>
 
 namespace AssetTool {
-    using namespace Utilities;
+    using namespace Helpers;
 
     IProperties::~IProperties() = default;
 
