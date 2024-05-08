@@ -51,7 +51,7 @@ namespace AssetTool {
         for (auto& manifest : manifests) {
             auto result = manifest->Serialize();
             if (!result.has_value()) {
-                printf("Unable to serialize manifest '%s'\n", manifest->m_Filename.c_str());
+                printf("Unable to serialize manifest '%s'\n", manifest->m_Name.c_str());
                 break;
             }
             auto bytes = result.value();
@@ -140,8 +140,9 @@ namespace AssetTool {
         return uncompressedBytes;
     }
 
-    std::optional<std::unordered_map<std::string, AssetManifest>>
-    UnPacker::Unpack(const std::filesystem::path& pakFile, const std::filesystem::path& metaFile) {
+    auto UnPacker::Unpack(const std::filesystem::path& pakFile,
+                          const std::filesystem::path& metaFile)
+      -> std::optional<std::unordered_map<std::string, std::unique_ptr<AssetManifest>>> {
         const auto readPakResult = PlatformTools::IO::ReadAllBytes(pakFile);
         if (!readPakResult.has_value()) {
             return std::nullopt;
@@ -163,8 +164,10 @@ namespace AssetTool {
         auto decompressedBytes = decompressResult.value();
 
         PlatformTools::IO::WriteAllBytes("uncompressed_data0.adf", decompressedBytes);
+        auto originalBytes = PlatformTools::IO::ReadAllBytes("data0.adf");
+        assert(Helpers::ValidateChecksum(decompressedBytes, originalBytes.value()));
 
-        std::vector<std::unique_ptr<AssetManifest>> manifestMap = {};
+        std::unordered_map<std::string, std::unique_ptr<AssetManifest>> manifestMap = {};
 
         size_t offset = 0;
         for (int i = 0; i < metadata.ManifestCount; i++) {
@@ -177,11 +180,11 @@ namespace AssetTool {
 
             // TODO: Implement manifest deserialization
             auto result = AssetManifest::Deserialize(manifestBytes);
-            manifestMap.push_back(std::move(result));
+            manifestMap.insert_or_assign(std::to_string(i), std::move(result));
 
             assert(true);
         }
 
-        return std::nullopt;
+        return manifestMap;
     }
 }  // namespace AssetTool

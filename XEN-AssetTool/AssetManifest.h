@@ -17,7 +17,7 @@ namespace AssetTool {
         AssetManifest(const u32 version,
                       std::string filename,
                       std::vector<IAssetDescriptor*> descriptors)
-            : m_Version(version), m_Filename(std::move(filename)),
+            : m_Version(version), m_Name(std::move(filename)),
               m_Descriptors(std::move(descriptors)) {}
         explicit AssetManifest(const std::filesystem::path& manifest);
         ~AssetManifest();
@@ -26,7 +26,7 @@ namespace AssetTool {
         size_t GetSize();
 
         u32 m_Version = 0;
-        std::string m_Filename;
+        std::string m_Name;
         std::vector<IAssetDescriptor*> m_Descriptors;
 
     private:

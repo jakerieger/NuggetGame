@@ -1,8 +1,5 @@
 {
   "manifests": [
-    "Assets/Sprites.manifest",
-    "Assets/Levels.manifest",
-    "Assets/Audio.manifest",
-    "Assets/Fonts.manifest"
+    "Assets/Test.manifest"
   ]
 }

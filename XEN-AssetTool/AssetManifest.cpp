@@ -25,7 +25,7 @@ namespace AssetTool {
 
     void AssetManifest::ParseManifest(const Document& manifest) {
         m_Version         = manifest["version"].GetInt();
-        m_Filename        = manifest["filename"].GetString();
+        m_Name        = manifest["filename"].GetString();
         const auto assets = manifest["assets"].GetArray();
         if (assets.Size() > 0) {
             for (const auto& asset : assets) {
