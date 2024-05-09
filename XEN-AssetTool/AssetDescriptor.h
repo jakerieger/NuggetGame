@@ -33,7 +33,10 @@ namespace AssetTool {
         u32 m_Height   = 0;
         bool m_IsAlpha = false;
 
-        size_t GetSize() override;
+        size_t GetSize() override {
+            return 0;
+        }
+
         std::vector<u8> Serialize() override;
         void Deserialize(std::vector<u8>& bytes) override;
     };
@@ -42,7 +45,10 @@ namespace AssetTool {
     public:
         u32 m_DefaultSize = 0;
 
-        size_t GetSize() override;
+        size_t GetSize() override {
+            return 0;
+        }
+
         std::vector<u8> Serialize() override;
         void Deserialize(std::vector<u8>& bytes) override;
     };
@@ -53,7 +59,10 @@ namespace AssetTool {
         u32 m_SampleRate  = 0;
         u32 m_Channels    = 0;
 
-        size_t GetSize() override;
+        size_t GetSize() override {
+            return 0;
+        }
+
         std::vector<u8> Serialize() override;
         void Deserialize(std::vector<u8>& bytes) override;
     };
@@ -65,7 +74,10 @@ namespace AssetTool {
         glm::vec<2, f32> m_PlayerStart       = {};
         glm::vec<2, f32> m_ObjectivePosition = {};
 
-        size_t GetSize() override;
+        size_t GetSize() override {
+            return 0;
+        }
+
         std::vector<u8> Serialize() override;
         void Deserialize(std::vector<u8>& bytes) override;
     };
@@ -80,8 +92,10 @@ namespace AssetTool {
 
         std::vector<u8> Serialize();
 
-        [[nodiscard]] size_t GetSize() const;
-        virtual ~IAssetDescriptor();
+        [[nodiscard]] static size_t GetSize() {
+            return 0;
+        }
+        v 90 = virtual ~IAssetDescriptor();
     };
 
     class SpriteDescriptor final : public IAssetDescriptor {
@@ -110,55 +124,8 @@ namespace AssetTool {
 
     namespace AssetDescriptor {
         template<typename T>
-        T* Deserialize(std::vector<u8> data) {
-            using namespace Helpers;
-            static_assert(std::is_base_of_v<IAssetDescriptor, T>,
-                          "T must be subclass of IAssetDescriptor");
-
-            T* out          = new T;
-            auto descriptor = dynamic_cast<IAssetDescriptor*>(out);
-
-            u8 typeUint;
-            memcpy(&typeUint, data.data() + SizeOfAll<size_t>(), sizeof(u8));
-            descriptor->m_Type = (AssetType)typeUint;
-            memcpy(&descriptor->m_Version, data.data() + SizeOfAll<size_t, u8>(), sizeof(u32));
-
-            u32 nameLen = 0;
-            memcpy(&nameLen, data.data() + SizeOfAll<size_t, u8, u32>(), sizeof(u32));
-
-            const auto name = new char[nameLen];
-            strncpy(name,
-                    reinterpret_cast<char*>(data.data() + SizeOfAll<size_t, u8, u64>()),
-                    nameLen);
-            name[nameLen]      = {'\0'};
-            descriptor->m_Name = std::string(name);
-
-            u32 propertiesLen = 0;
-            memcpy(&propertiesLen,
-                   data.data() + SizeOfAll<size_t, u8, u64>() + nameLen,
-                   sizeof(u32));
-
-            std::vector<u8> propertiesBytes;
-            propertiesBytes.resize(propertiesLen);
-            memcpy(propertiesBytes.data(),
-                   data.data() + SizeOfAll<size_t, u8, u64, u32>() + nameLen,
-                   propertiesLen);
-
-            descriptor->m_Properties->Deserialize(propertiesBytes);
-
-            u32 dataLen = 0;
-            memcpy(&dataLen,
-                   data.data() + SizeOfAll<size_t, u8, u64, u32>() + nameLen + propertiesLen,
-                   sizeof(u32));
-
-            std::vector<u8> dataBytes;
-            dataBytes.resize(dataLen);
-            memcpy(dataBytes.data(),
-                   data.data() + SizeOfAll<size_t, u8, u64, u64>() + nameLen + propertiesLen,
-                   dataLen);
-            descriptor->m_SrcData = dataBytes;
-
-            return dynamic_cast<T*>(descriptor);
+        T* Deserialize(const std::vector<u8>& data) {
+            return nullptr;
         }
     }  // namespace AssetDescriptor
 }  // namespace AssetTool

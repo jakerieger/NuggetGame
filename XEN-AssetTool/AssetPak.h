@@ -9,7 +9,7 @@
 
 namespace AssetTool {
     namespace Packer {
-        void Pack(const std::vector<AssetManifest*>& manifests);
+        void Pack(const std::vector<std::unique_ptr<AssetManifest>>& manifests);
     }
 
     namespace UnPacker {

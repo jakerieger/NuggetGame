@@ -35,18 +35,14 @@ int Pack() {
 
     printf("Processing provided manifest files...\n\n");
 
-    std::vector<AssetManifest*> manifestsToPack;
+    std::vector<std::unique_ptr<AssetManifest>> manifestsToPack;
     const auto manifestFiles = manifestsJson["manifests"].GetArray();
     for (int i = 0; i < manifestFiles.Size(); i++) {
-        auto _manifest = new AssetManifest(manifestFiles[i].GetString());
-        manifestsToPack.push_back(_manifest);
+        auto _manifest = std::make_unique<AssetManifest>(manifestFiles[i].GetString());
+        manifestsToPack.push_back(std::move(_manifest));
     }
 
     Packer::Pack(manifestsToPack);
-
-    for (const auto _manifest : manifestsToPack) {
-        delete _manifest;
-    }
 
     return 0;
 }
