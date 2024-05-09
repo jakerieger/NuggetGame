@@ -24,24 +24,26 @@ namespace AssetTool {
         ByteArray bytes = {0x0};
         bytes.resize(META_SIZE);
 
-        auto insertPoint = Helpers::MemCopy(m_Checksum.c_str(), bytes.data(), m_Checksum.length());
-        insertPoint      = Helpers::MemCopy(&m_OriginalSize, insertPoint, sizeof(size_t));
-        insertPoint      = Helpers::MemCopy(&m_CompressedSize, insertPoint, sizeof(size_t));
-        insertPoint      = Helpers::MemCopy(&m_ManifestCount, insertPoint, sizeof(u32));
+        auto insertPoint =
+          Helpers::MemCopyDest(m_Checksum.c_str(), bytes.data(), m_Checksum.length());
+        insertPoint = Helpers::MemCopyDest(&m_OriginalSize, insertPoint, sizeof(size_t));
+        insertPoint = Helpers::MemCopyDest(&m_CompressedSize, insertPoint, sizeof(size_t));
+        insertPoint = Helpers::MemCopyDest(&m_ManifestCount, insertPoint, sizeof(u32));
 
         return bytes;
     }
 
-    AssetMetadata AssetMetadata::Deserialize(const ByteArray& bytes) {
+    AssetMetadata AssetMetadata::Deserialize(ByteArray& bytes) {
         char checksum[128];
         size_t originalSize   = 0;
         size_t compressedSize = 0;
         u32 manifestCount     = 0;
 
-        Helpers::MemCopy(bytes.data(), &checksum, 128);
-        Helpers::MemCopy(bytes.data() + 128, &originalSize, sizeof(size_t));
-        Helpers::MemCopy(bytes.data() + 136, &compressedSize, sizeof(size_t));
-        Helpers::MemCopy(bytes.data() + 144, &manifestCount, sizeof(u32));
+        auto offset = Helpers::MemCopySrc(bytes.data(), &checksum, 128);
+        offset      = Helpers::MemCopySrc(offset, &originalSize, sizeof(size_t));
+        offset      = Helpers::MemCopySrc(offset, &compressedSize, sizeof(size_t));
+        offset      = Helpers::MemCopySrc(offset, &manifestCount, sizeof(u32));
+        offset      = nullptr;
 
         auto checksumStr = std::string(checksum);
         checksumStr.resize(128);

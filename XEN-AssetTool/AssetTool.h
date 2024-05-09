@@ -19,7 +19,7 @@ namespace AssetTool::Helpers {
     ///
     /// @return Next offset in source memory to copy to
     inline char*
-    MemCopy(const void* source, void* destination, const size_t size, const size_t offset = 0) {
+    MemCopyDest(const void* source, void* destination, const size_t size, const size_t offset = 0) {
         const auto src = static_cast<const char*>(source);
         const auto dst = static_cast<char*>(destination);
 
@@ -28,6 +28,18 @@ namespace AssetTool::Helpers {
         }
 
         return dst + size + offset;
+    }
+
+    inline char*
+    MemCopySrc(void* source, void* destination, const size_t size, const size_t offset = 0) {
+        const auto src = static_cast<char*>(source);
+        const auto dst = static_cast<char*>(destination);
+
+        for (size_t i = 0; i < size; i++) {
+            dst[i] = src[i + offset];
+        }
+
+        return src + size + offset;
     }
 
     inline bool ValidateChecksum(const std::vector<u8>& bytesA, const std::vector<u8>& bytesB) {
