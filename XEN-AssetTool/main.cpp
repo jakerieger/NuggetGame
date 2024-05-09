@@ -65,7 +65,6 @@ int main(int argc, char* argv[]) {
                            567233,
                            4);
     auto bytes = metadata.Serialize();
-    IO::WriteAllBytes("metadata.bin", bytes);
 
     auto readMetadata = AssetMetadata::Deserialize(bytes);
 

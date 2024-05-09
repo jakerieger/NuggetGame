@@ -9,6 +9,7 @@
 #include <utility>
 
 namespace AssetTool {
+    // 128-byte checksum + 8-byte size + 8-byte size + 4-byte uint
     static constexpr size_t META_SIZE = 148;
 
     AssetMetadata::AssetMetadata(std::string checksum,
