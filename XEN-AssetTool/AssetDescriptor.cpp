@@ -92,8 +92,27 @@ namespace AssetTool {
         this->m_Type       = AssetType::Level;
     }
 
-    ByteArray IAssetDescriptor::Serialize() {
-        return {};
+    ByteArray IAssetDescriptor::Serialize() const {
+        ByteArray bytes   = {0x0};
+        const size_t size = GetSize();
+        bytes.resize(size);
+
+        const size_t nameLen  = m_Name.length();
+        const size_t propsLen = m_Properties->GetSize();
+        const size_t dataLen  = m_SrcData.size();
+
+        auto insertPtr = MemCopyDest(&size, bytes.data(), sizeof(size_t));
+        insertPtr      = MemCopyDest(&m_Type, insertPtr, sizeof(u8));
+        insertPtr      = MemCopyDest(&m_Version, insertPtr, sizeof(u32));
+        insertPtr      = MemCopyDest(&nameLen, insertPtr, sizeof(size_t));
+        insertPtr      = MemCopyDest(m_Name.c_str(), insertPtr, nameLen);
+        insertPtr      = MemCopyDest(&propsLen, insertPtr, sizeof(size_t));
+        insertPtr      = MemCopyDest(m_Properties->Serialize().data(), insertPtr, propsLen);
+        insertPtr      = MemCopyDest(&dataLen, insertPtr, sizeof(size_t));
+        insertPtr      = MemCopyDest(m_SrcData.data(), insertPtr, dataLen);
+        insertPtr      = nullptr;
+
+        return bytes;
     }
 
 }  // namespace AssetTool

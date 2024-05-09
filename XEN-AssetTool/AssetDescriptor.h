@@ -90,7 +90,7 @@ namespace AssetTool {
         ByteArray m_SrcData;
         IProperties* m_Properties {};
 
-        ByteArray Serialize();
+        [[nodiscard]] ByteArray Serialize() const;
 
         [[nodiscard]] size_t GetSize() const {
             const size_t baseSize              = Helpers::SizeOfAll<u32, u8>();
@@ -98,8 +98,8 @@ namespace AssetTool {
             const size_t dataSize              = m_SrcData.size();
             const size_t nameSize              = m_Name.size();
             constexpr size_t nameLenSize       = sizeof(u32);
-            constexpr size_t dataLenSize       = sizeof(u32);
             constexpr size_t propertiesLenSize = sizeof(u32);
+            constexpr size_t dataLenSize       = sizeof(u32);
 
             return baseSize + propertiesSize + dataSize + nameSize + nameLenSize + dataLenSize +
                    propertiesLenSize;
