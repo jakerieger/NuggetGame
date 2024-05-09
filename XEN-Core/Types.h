@@ -17,4 +17,6 @@ using i32  = int32_t;
 using i64  = int64_t;
 using f32  = float;
 using f64  = double;
-using byte = std::byte;
+using byte = u8;
+
+using ByteArray = std::vector<u8>;

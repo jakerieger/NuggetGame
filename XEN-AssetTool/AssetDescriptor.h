@@ -95,7 +95,7 @@ namespace AssetTool {
         [[nodiscard]] static size_t GetSize() {
             return 0;
         }
-        v 90 = virtual ~IAssetDescriptor();
+        virtual ~IAssetDescriptor();
     };
 
     class SpriteDescriptor final : public IAssetDescriptor {

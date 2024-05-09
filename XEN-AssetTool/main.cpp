@@ -3,6 +3,7 @@
 //
 
 #include "AssetManifest.h"
+#include "AssetMetadata.h"
 #include "AssetPak.h"
 
 #include <PlatformTools.h>
@@ -58,21 +59,33 @@ int Unpack() {
 }
 
 int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        printf("[AssetTool]: Incorrect usage.\n\nArguments:\n  --pack\n  --unpack\n");
-        return -1;
-    }
+    AssetMetadata metadata("ba3253876aed6bc22d4a6ff53d8406c6ad864195ed144ab5c87621b6c233b548baeae69"
+                           "56df346ec8c17f5ea10f35ee3cbc514797ed7ddd3145464e2a0bab413",
+                           995342,
+                           567233,
+                           4);
+    auto bytes = metadata.Serialize();
+    IO::WriteAllBytes("metadata.bin", bytes);
 
-    if (argc == 2) {
-        if (strcmp(argv[1], "--pack") == 0) {
-            return Pack();
-        }
-        if (strcmp(argv[1], "--unpack") == 0) {
-            return Unpack();
-        }
-        printf("[AssetTool]: Unknown argument '%s'.\n\nArguments:\n  --pack\n  --unpack\n",
-               argv[1]);
-    }
+    auto readMetadata = AssetMetadata::Deserialize(bytes);
 
-    return -1;
+    return 0;
+
+    // if (argc < 2) {
+    //     printf("[AssetTool]: Incorrect usage.\n\nArguments:\n  --pack\n  --unpack\n");
+    //     return -1;
+    // }
+    //
+    // if (argc == 2) {
+    //     if (strcmp(argv[1], "--pack") == 0) {
+    //         return Pack();
+    //     }
+    //     if (strcmp(argv[1], "--unpack") == 0) {
+    //         return Unpack();
+    //     }
+    //     printf("[AssetTool]: Unknown argument '%s'.\n\nArguments:\n  --pack\n  --unpack\n",
+    //            argv[1]);
+    // }
+    //
+    // return -1;
 }

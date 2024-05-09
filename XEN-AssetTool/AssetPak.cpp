@@ -26,5 +26,7 @@ namespace AssetTool {
 
     auto UnPacker::Unpack(const std::filesystem::path& pakFile,
                           const std::filesystem::path& metaFile)
-      -> std::optional<std::unordered_map<std::string, std::unique_ptr<AssetManifest>>> {}
+      -> std::optional<std::unordered_map<std::string, std::unique_ptr<AssetManifest>>> {
+        return std::nullopt;
+    }
 }  // namespace AssetTool
