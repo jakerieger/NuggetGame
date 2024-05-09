@@ -15,22 +15,51 @@ namespace AssetTool {
     IProperties::~IProperties()           = default;
     IAssetDescriptor::~IAssetDescriptor() = default;
 
-    void SpriteProperties::Deserialize(std::vector<u8>& bytes) {}
-    void FontProperties::Deserialize(std::vector<u8>& bytes) {}
-    void AudioProperties::Deserialize(std::vector<u8>& bytes) {}
-    void LevelProperties::Deserialize(std::vector<u8>& bytes) {}
+    void SpriteProperties::Deserialize(ByteArray& bytes) {}
+    void FontProperties::Deserialize(ByteArray& bytes) {}
+    void AudioProperties::Deserialize(ByteArray& bytes) {}
+    void LevelProperties::Deserialize(ByteArray& bytes) {}
 
-    std::vector<u8> SpriteProperties::Serialize() {
-        return {};
+    ByteArray SpriteProperties::Serialize() {
+        ByteArray bytes = {0x0};
+        bytes.resize(GetSize());
+
+        auto insertPtr = MemCopyDest(&m_Width, bytes.data(), sizeof(u32));
+        insertPtr      = MemCopyDest(&m_Height, insertPtr, sizeof(u32));
+        insertPtr      = MemCopyDest(&m_IsAlpha, insertPtr, sizeof(bool));
+
+        return bytes;
     }
-    std::vector<u8> FontProperties::Serialize() {
-        return {};
+    ByteArray FontProperties::Serialize() {
+        ByteArray bytes = {0x0};
+        bytes.resize(GetSize());
+
+        auto insertPtr = MemCopyDest(&m_DefaultSize, bytes.data(), sizeof(u32));
+
+        return bytes;
     }
-    std::vector<u8> AudioProperties::Serialize() {
-        return {};
+    ByteArray AudioProperties::Serialize() {
+        ByteArray bytes = {0x0};
+        bytes.resize(GetSize());
+
+        auto insertPtr = MemCopyDest(&m_SampleCount, bytes.data(), sizeof(u32));
+        insertPtr      = MemCopyDest(&m_SampleRate, insertPtr, sizeof(u32));
+        insertPtr      = MemCopyDest(&m_Channels, insertPtr, sizeof(u32));
+
+        return bytes;
     }
-    std::vector<u8> LevelProperties::Serialize() {
-        return {};
+    ByteArray LevelProperties::Serialize() {
+        ByteArray bytes = {0x0};
+        bytes.resize(GetSize());
+
+        auto insertPtr = MemCopyDest(&m_Rows, bytes.data(), sizeof(u32));
+        insertPtr      = MemCopyDest(&m_Columns, insertPtr, sizeof(u32));
+        insertPtr      = MemCopyDest(&m_PlayerStart.x, insertPtr, sizeof(f32));
+        insertPtr      = MemCopyDest(&m_PlayerStart.y, insertPtr, sizeof(f32));
+        insertPtr      = MemCopyDest(&m_ObjectivePosition.x, insertPtr, sizeof(f32));
+        insertPtr      = MemCopyDest(&m_ObjectivePosition.y, insertPtr, sizeof(f32));
+
+        return bytes;
     }
 
     SpriteProperties* SpriteDescriptor::GetProperties() const {
@@ -63,7 +92,7 @@ namespace AssetTool {
         this->m_Type       = AssetType::Level;
     }
 
-    std::vector<u8> IAssetDescriptor::Serialize() {
+    ByteArray IAssetDescriptor::Serialize() {
         return {};
     }
 

@@ -21,9 +21,9 @@ namespace AssetTool {
 
     class IProperties {
     public:
-        virtual size_t GetSize()                         = 0;
-        virtual std::vector<u8> Serialize()              = 0;
-        virtual void Deserialize(std::vector<u8>& bytes) = 0;
+        virtual size_t GetSize()                   = 0;
+        virtual ByteArray Serialize()              = 0;
+        virtual void Deserialize(ByteArray& bytes) = 0;
         virtual ~IProperties();
     };
 
@@ -34,11 +34,11 @@ namespace AssetTool {
         bool m_IsAlpha = false;
 
         size_t GetSize() override {
-            return 0;
+            return Helpers::SizeOfAll<u32, u32, bool>();
         }
 
-        std::vector<u8> Serialize() override;
-        void Deserialize(std::vector<u8>& bytes) override;
+        ByteArray Serialize() override;
+        void Deserialize(ByteArray& bytes) override;
     };
 
     class FontProperties final : public IProperties {
@@ -46,11 +46,11 @@ namespace AssetTool {
         u32 m_DefaultSize = 0;
 
         size_t GetSize() override {
-            return 0;
+            return sizeof(u32);
         }
 
-        std::vector<u8> Serialize() override;
-        void Deserialize(std::vector<u8>& bytes) override;
+        ByteArray Serialize() override;
+        void Deserialize(ByteArray& bytes) override;
     };
 
     class AudioProperties final : public IProperties {
@@ -60,11 +60,11 @@ namespace AssetTool {
         u32 m_Channels    = 0;
 
         size_t GetSize() override {
-            return 0;
+            return Helpers::SizeOfAll<u32, u32, u32>();
         }
 
-        std::vector<u8> Serialize() override;
-        void Deserialize(std::vector<u8>& bytes) override;
+        ByteArray Serialize() override;
+        void Deserialize(ByteArray& bytes) override;
     };
 
     class LevelProperties final : public IProperties {
@@ -75,11 +75,11 @@ namespace AssetTool {
         glm::vec<2, f32> m_ObjectivePosition = {};
 
         size_t GetSize() override {
-            return 0;
+            return Helpers::SizeOfAll<u32, u32, f32, f32, f32, f32>();
         }
 
-        std::vector<u8> Serialize() override;
-        void Deserialize(std::vector<u8>& bytes) override;
+        ByteArray Serialize() override;
+        void Deserialize(ByteArray& bytes) override;
     };
 
     class IAssetDescriptor {
@@ -87,14 +87,24 @@ namespace AssetTool {
         AssetType m_Type = AssetType::Sprite;
         std::string m_Name;
         u32 m_Version = 0;
-        std::vector<u8> m_SrcData;
+        ByteArray m_SrcData;
         IProperties* m_Properties {};
 
-        std::vector<u8> Serialize();
+        ByteArray Serialize();
 
-        [[nodiscard]] static size_t GetSize() {
-            return 0;
+        [[nodiscard]] size_t GetSize() const {
+            const size_t baseSize              = Helpers::SizeOfAll<u32, u8>();
+            const size_t propertiesSize        = m_Properties->GetSize();
+            const size_t dataSize              = m_SrcData.size();
+            const size_t nameSize              = m_Name.size();
+            constexpr size_t nameLenSize       = sizeof(u32);
+            constexpr size_t dataLenSize       = sizeof(u32);
+            constexpr size_t propertiesLenSize = sizeof(u32);
+
+            return baseSize + propertiesSize + dataSize + nameSize + nameLenSize + dataLenSize +
+                   propertiesLenSize;
         }
+
         virtual ~IAssetDescriptor();
     };
 
@@ -124,7 +134,7 @@ namespace AssetTool {
 
     namespace AssetDescriptor {
         template<typename T>
-        T* Deserialize(const std::vector<u8>& data) {
+        T* Deserialize(const ByteArray& data) {
             return nullptr;
         }
     }  // namespace AssetDescriptor
