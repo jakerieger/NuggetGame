@@ -59,6 +59,18 @@ int Unpack() {
 }
 
 int main(int argc, char* argv[]) {
+    SpriteDescriptor spriteDesc;
+    spriteDesc.m_Name                     = "Nugget";
+    spriteDesc.m_Type                     = AssetType::Sprite;
+    spriteDesc.m_Version                  = 1;
+    spriteDesc.m_SrcData                  = {'A', 'B', 'C', 'D', 'E'};
+    spriteDesc.GetProperties()->m_Width   = 32;
+    spriteDesc.GetProperties()->m_Height  = 32;
+    spriteDesc.GetProperties()->m_IsAlpha = true;
+
+    auto spriteBytes = spriteDesc.Serialize();
+    auto result      = IO::WriteAllBytes("sprite.bin", spriteBytes);
+
     return 0;
 
     // if (argc < 2) {

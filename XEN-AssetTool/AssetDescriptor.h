@@ -93,7 +93,7 @@ namespace AssetTool {
         [[nodiscard]] ByteArray Serialize() const;
 
         [[nodiscard]] size_t GetSize() const {
-            const size_t baseSize              = Helpers::SizeOfAll<u32, u8>();
+            const size_t baseSize              = Helpers::SizeOfAll<u32, u8, size_t>();
             const size_t propertiesSize        = m_Properties->GetSize();
             const size_t dataSize              = m_SrcData.size();
             const size_t nameSize              = m_Name.size();
