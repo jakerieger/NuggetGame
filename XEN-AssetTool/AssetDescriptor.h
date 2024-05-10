@@ -88,7 +88,7 @@ namespace AssetTool {
         std::string m_Name;
         u32 m_Version = 0;
         ByteArray m_SrcData;
-        IProperties* m_Properties {};
+        std::unique_ptr<IProperties> m_Properties;
 
         [[nodiscard]] ByteArray Serialize() const;
 
@@ -110,31 +110,32 @@ namespace AssetTool {
             return dynamic_cast<T*>(this);
         }
 
+        template<typename T>
+        T* GetProperties() {
+            return dynamic_cast<T*>(m_Properties.get());
+        }
+
         virtual ~IAssetDescriptor();
     };
 
     class SpriteDescriptor final : public IAssetDescriptor {
     public:
         SpriteDescriptor();
-        [[nodiscard]] SpriteProperties* GetProperties() const;
     };
 
     class FontDescriptor final : public IAssetDescriptor {
     public:
         FontDescriptor();
-        [[nodiscard]] FontProperties* GetProperties() const;
     };
 
     class AudioDescriptor final : public IAssetDescriptor {
     public:
         AudioDescriptor();
-        [[nodiscard]] AudioProperties* GetProperties() const;
     };
 
     class LevelDescriptor final : public IAssetDescriptor {
     public:
         LevelDescriptor();
-        [[nodiscard]] LevelProperties* GetProperties() const;
     };
 
     namespace AssetDescriptor {

@@ -78,33 +78,20 @@ namespace AssetTool {
         return bytes;
     }
 
-    SpriteProperties* SpriteDescriptor::GetProperties() const {
-        return dynamic_cast<SpriteProperties*>(m_Properties);
-    }
-    FontProperties* FontDescriptor::GetProperties() const {
-        return dynamic_cast<FontProperties*>(m_Properties);
-    }
-    AudioProperties* AudioDescriptor::GetProperties() const {
-        return dynamic_cast<AudioProperties*>(m_Properties);
-    }
-    LevelProperties* LevelDescriptor::GetProperties() const {
-        return dynamic_cast<LevelProperties*>(m_Properties);
-    }
-
     SpriteDescriptor::SpriteDescriptor() {
-        this->m_Properties = new SpriteProperties;
+        this->m_Properties = std::make_unique<SpriteProperties>();
         this->m_Type       = AssetType::Sprite;
     }
     FontDescriptor::FontDescriptor() {
-        this->m_Properties = new FontProperties;
+        this->m_Properties = std::make_unique<FontProperties>();
         this->m_Type       = AssetType::Font;
     }
     AudioDescriptor::AudioDescriptor() {
-        this->m_Properties = new AudioProperties;
+        this->m_Properties = std::make_unique<AudioProperties>();
         this->m_Type       = AssetType::Audio;
     }
     LevelDescriptor::LevelDescriptor() {
-        this->m_Properties = new LevelProperties;
+        this->m_Properties = std::make_unique<LevelProperties>();
         this->m_Type       = AssetType::Level;
     }
 
@@ -181,6 +168,7 @@ namespace AssetTool {
                 return nullptr;
         }
 
+        descriptor->m_Properties->Deserialize(propertiesBytes);
         descriptor->m_Name    = nameStr;
         descriptor->m_Version = version;
         descriptor->m_Type    = assetType;

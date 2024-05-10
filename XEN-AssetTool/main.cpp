@@ -7,6 +7,7 @@
 #include "AssetPak.h"
 
 #include <PlatformTools.h>
+#include <iostream>
 
 using namespace AssetTool;
 using namespace PlatformTools;
@@ -60,17 +61,18 @@ int Unpack() {
 
 int main(int argc, char* argv[]) {
     SpriteDescriptor spriteDesc;
-    spriteDesc.m_Name                     = "Nugget";
-    spriteDesc.m_Type                     = AssetType::Sprite;
-    spriteDesc.m_Version                  = 1;
-    spriteDesc.m_SrcData                  = {'A', 'B', 'C', 'D', 'E'};
-    spriteDesc.GetProperties()->m_Width   = 32;
-    spriteDesc.GetProperties()->m_Height  = 32;
-    spriteDesc.GetProperties()->m_IsAlpha = true;
+    spriteDesc.m_Name                                       = "Nugget";
+    spriteDesc.m_Type                                       = AssetType::Sprite;
+    spriteDesc.m_Version                                    = 1;
+    spriteDesc.m_SrcData                                    = {'A', 'B', 'C', 'D', 'E'};
+    spriteDesc.GetProperties<SpriteProperties>()->m_Width   = 32;
+    spriteDesc.GetProperties<SpriteProperties>()->m_Height  = 32;
+    spriteDesc.GetProperties<SpriteProperties>()->m_IsAlpha = true;
 
     auto spriteBytes = spriteDesc.Serialize();
     auto result      = IO::WriteAllBytes("sprite.bin", spriteBytes);
     auto sprite      = AssetDescriptor::Deserialize(spriteBytes);
+    auto props       = sprite->GetProperties<SpriteProperties>();
 
     return 0;
 
