@@ -105,6 +105,11 @@ namespace AssetTool {
                    propertiesLenSize;
         }
 
+        template<typename T>
+        T* As() {
+            return dynamic_cast<T*>(this);
+        }
+
         virtual ~IAssetDescriptor();
     };
 
@@ -133,9 +138,6 @@ namespace AssetTool {
     };
 
     namespace AssetDescriptor {
-        template<typename T>
-        T* Deserialize(const ByteArray& data) {
-            return nullptr;
-        }
+        IAssetDescriptor* Deserialize(const ByteArray& data);
     }  // namespace AssetDescriptor
 }  // namespace AssetTool

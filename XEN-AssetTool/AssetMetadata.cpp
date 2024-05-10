@@ -30,6 +30,7 @@ namespace AssetTool {
         insertPoint = Helpers::MemCopyDest(&m_OriginalSize, insertPoint, sizeof(size_t));
         insertPoint = Helpers::MemCopyDest(&m_CompressedSize, insertPoint, sizeof(size_t));
         insertPoint = Helpers::MemCopyDest(&m_ManifestCount, insertPoint, sizeof(u32));
+        insertPoint = nullptr;
 
         return bytes;
     }

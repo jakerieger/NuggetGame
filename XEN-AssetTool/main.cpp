@@ -70,6 +70,7 @@ int main(int argc, char* argv[]) {
 
     auto spriteBytes = spriteDesc.Serialize();
     auto result      = IO::WriteAllBytes("sprite.bin", spriteBytes);
+    auto sprite      = AssetDescriptor::Deserialize(spriteBytes)->As<SpriteDescriptor>();
 
     return 0;
 

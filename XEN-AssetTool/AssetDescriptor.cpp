@@ -3,7 +3,6 @@
 //
 
 #include "AssetDescriptor.h"
-#include "PlatformTools.h"
 #include "AssetTool.h"
 
 #include <iostream>
@@ -15,10 +14,27 @@ namespace AssetTool {
     IProperties::~IProperties()           = default;
     IAssetDescriptor::~IAssetDescriptor() = default;
 
-    void SpriteProperties::Deserialize(ByteArray& bytes) {}
-    void FontProperties::Deserialize(ByteArray& bytes) {}
-    void AudioProperties::Deserialize(ByteArray& bytes) {}
-    void LevelProperties::Deserialize(ByteArray& bytes) {}
+    void SpriteProperties::Deserialize(ByteArray& bytes) {
+        auto offset = MemCopySrc(bytes.data(), &m_Width, sizeof(u32));
+        offset      = MemCopySrc(offset, &m_Height, sizeof(u32));
+        offset      = MemCopySrc(offset, &m_IsAlpha, sizeof(bool));
+    }
+    void FontProperties::Deserialize(ByteArray& bytes) {
+        auto offset = MemCopySrc(bytes.data(), &m_DefaultSize, sizeof(u32));
+    }
+    void AudioProperties::Deserialize(ByteArray& bytes) {
+        auto offset = MemCopySrc(bytes.data(), &m_SampleCount, sizeof(u32));
+        offset      = MemCopySrc(offset, &m_SampleRate, sizeof(u32));
+        offset      = MemCopySrc(offset, &m_Channels, sizeof(u32));
+    }
+    void LevelProperties::Deserialize(ByteArray& bytes) {
+        auto offset = MemCopySrc(bytes.data(), &m_Rows, sizeof(u32));
+        offset      = MemCopySrc(offset, &m_Columns, sizeof(u32));
+        offset      = MemCopySrc(offset, &m_PlayerStart.x, sizeof(f32));
+        offset      = MemCopySrc(offset, &m_PlayerStart.y, sizeof(f32));
+        offset      = MemCopySrc(offset, &m_ObjectivePosition.x, sizeof(f32));
+        offset      = MemCopySrc(offset, &m_ObjectivePosition.y, sizeof(f32));
+    }
 
     ByteArray SpriteProperties::Serialize() {
         ByteArray bytes = {0x0};
@@ -114,6 +130,10 @@ namespace AssetTool {
         insertPtr      = nullptr;
 
         return bytes;
+    }
+
+    IAssetDescriptor* AssetDescriptor::Deserialize(const ByteArray& data) {
+        return nullptr;
     }
 
 }  // namespace AssetTool
