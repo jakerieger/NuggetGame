@@ -15,34 +15,39 @@ namespace AssetTool {
     IAssetDescriptor::~IAssetDescriptor() = default;
 
     void SpriteProperties::Deserialize(ByteArray& bytes) {
-        auto offset = MemCopySrc(bytes.data(), &m_Width, sizeof(u32));
-        offset      = MemCopySrc(offset, &m_Height, sizeof(u32));
-        offset      = MemCopySrc(offset, &m_IsAlpha, sizeof(bool));
+        auto offsetPtrs = MemCopy(bytes.data(), &m_Width, sizeof(u32));
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, &m_Height, sizeof(u32));
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, &m_IsAlpha, sizeof(bool));
+        offsetPtrs.Nullify();
     }
     void FontProperties::Deserialize(ByteArray& bytes) {
-        auto offset = MemCopySrc(bytes.data(), &m_DefaultSize, sizeof(u32));
+        auto offsetPtrs = MemCopy(bytes.data(), &m_DefaultSize, sizeof(u32));
+        offsetPtrs.Nullify();
     }
     void AudioProperties::Deserialize(ByteArray& bytes) {
-        auto offset = MemCopySrc(bytes.data(), &m_SampleCount, sizeof(u32));
-        offset      = MemCopySrc(offset, &m_SampleRate, sizeof(u32));
-        offset      = MemCopySrc(offset, &m_Channels, sizeof(u32));
+        auto offsetPtrs = MemCopy(bytes.data(), &m_SampleCount, sizeof(u32));
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, &m_SampleRate, sizeof(u32));
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, &m_Channels, sizeof(u32));
+        offsetPtrs.Nullify();
     }
     void LevelProperties::Deserialize(ByteArray& bytes) {
-        auto offset = MemCopySrc(bytes.data(), &m_Rows, sizeof(u32));
-        offset      = MemCopySrc(offset, &m_Columns, sizeof(u32));
-        offset      = MemCopySrc(offset, &m_PlayerStart.x, sizeof(f32));
-        offset      = MemCopySrc(offset, &m_PlayerStart.y, sizeof(f32));
-        offset      = MemCopySrc(offset, &m_ObjectivePosition.x, sizeof(f32));
-        offset      = MemCopySrc(offset, &m_ObjectivePosition.y, sizeof(f32));
+        auto offsetPtrs = MemCopy(bytes.data(), &m_Rows, sizeof(u32));
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, &m_Columns, sizeof(u32));
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, &m_PlayerStart.x, sizeof(f32));
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, &m_PlayerStart.y, sizeof(f32));
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, &m_ObjectivePosition.x, sizeof(f32));
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, &m_ObjectivePosition.y, sizeof(f32));
+        offsetPtrs.Nullify();
     }
 
     ByteArray SpriteProperties::Serialize() {
         ByteArray bytes = {0x0};
         bytes.resize(GetSize());
 
-        auto insertPtr = MemCopyDest(&m_Width, bytes.data(), sizeof(u32));
-        insertPtr      = MemCopyDest(&m_Height, insertPtr, sizeof(u32));
-        insertPtr      = MemCopyDest(&m_IsAlpha, insertPtr, sizeof(bool));
+        auto offsetPtrs = MemCopy(&m_Width, bytes.data(), sizeof(u32));
+        offsetPtrs      = MemCopy(&m_Height, offsetPtrs.DestPtr, sizeof(u32));
+        offsetPtrs      = MemCopy(&m_IsAlpha, offsetPtrs.DestPtr, sizeof(bool));
+        offsetPtrs.Nullify();
 
         return bytes;
     }
@@ -50,7 +55,8 @@ namespace AssetTool {
         ByteArray bytes = {0x0};
         bytes.resize(GetSize());
 
-        auto insertPtr = MemCopyDest(&m_DefaultSize, bytes.data(), sizeof(u32));
+        auto offsetPtrs = MemCopy(&m_DefaultSize, bytes.data(), sizeof(u32));
+        offsetPtrs.Nullify();
 
         return bytes;
     }
@@ -58,9 +64,10 @@ namespace AssetTool {
         ByteArray bytes = {0x0};
         bytes.resize(GetSize());
 
-        auto insertPtr = MemCopyDest(&m_SampleCount, bytes.data(), sizeof(u32));
-        insertPtr      = MemCopyDest(&m_SampleRate, insertPtr, sizeof(u32));
-        insertPtr      = MemCopyDest(&m_Channels, insertPtr, sizeof(u32));
+        auto offsetPtrs = MemCopy(&m_SampleCount, bytes.data(), sizeof(u32));
+        offsetPtrs      = MemCopy(&m_SampleRate, offsetPtrs.DestPtr, sizeof(u32));
+        offsetPtrs      = MemCopy(&m_Channels, offsetPtrs.DestPtr, sizeof(u32));
+        offsetPtrs.Nullify();
 
         return bytes;
     }
@@ -68,12 +75,13 @@ namespace AssetTool {
         ByteArray bytes = {0x0};
         bytes.resize(GetSize());
 
-        auto insertPtr = MemCopyDest(&m_Rows, bytes.data(), sizeof(u32));
-        insertPtr      = MemCopyDest(&m_Columns, insertPtr, sizeof(u32));
-        insertPtr      = MemCopyDest(&m_PlayerStart.x, insertPtr, sizeof(f32));
-        insertPtr      = MemCopyDest(&m_PlayerStart.y, insertPtr, sizeof(f32));
-        insertPtr      = MemCopyDest(&m_ObjectivePosition.x, insertPtr, sizeof(f32));
-        insertPtr      = MemCopyDest(&m_ObjectivePosition.y, insertPtr, sizeof(f32));
+        auto offsetPtrs = MemCopy(&m_Rows, bytes.data(), sizeof(u32));
+        offsetPtrs      = MemCopy(&m_Columns, offsetPtrs.DestPtr, sizeof(u32));
+        offsetPtrs      = MemCopy(&m_PlayerStart.x, offsetPtrs.DestPtr, sizeof(f32));
+        offsetPtrs      = MemCopy(&m_PlayerStart.y, offsetPtrs.DestPtr, sizeof(f32));
+        offsetPtrs      = MemCopy(&m_ObjectivePosition.x, offsetPtrs.DestPtr, sizeof(f32));
+        offsetPtrs      = MemCopy(&m_ObjectivePosition.y, offsetPtrs.DestPtr, sizeof(f32));
+        offsetPtrs.Nullify();
 
         return bytes;
     }
@@ -95,26 +103,27 @@ namespace AssetTool {
         this->m_Type       = AssetType::Level;
     }
 
-    ByteArray IAssetDescriptor::Serialize() const {
-        ByteArray bytes   = {0x0};
-        const size_t size = GetSize();
+    ByteArray IAssetDescriptor::Serialize() {
+        ByteArray bytes = {0x0};
+        size_t size     = GetSize();
         bytes.resize(size);
 
-        const size_t nameLen       = m_Name.length();
-        const size_t propsLen      = m_Properties->GetSize();
-        const size_t dataLen       = m_SrcData.size();
-        const ByteArray propsBytes = m_Properties->Serialize();
+        size_t nameLen       = m_Name.length();
+        size_t propsLen      = m_Properties->GetSize();
+        size_t dataLen       = m_SrcData.size();
+        ByteArray propsBytes = m_Properties->Serialize();
 
-        auto insertPtr = MemCopyDest(&size, bytes.data(), sizeof(size_t));
-        insertPtr      = MemCopyDest(&m_Type, insertPtr, sizeof(u8));
-        insertPtr      = MemCopyDest(&m_Version, insertPtr, sizeof(u32));
-        insertPtr      = MemCopyDest(&nameLen, insertPtr, sizeof(u32));
-        insertPtr      = MemCopyDest(m_Name.c_str(), insertPtr, nameLen);
-        insertPtr      = MemCopyDest(&propsLen, insertPtr, sizeof(u32));
-        insertPtr      = MemCopyDest(propsBytes.data(), insertPtr, propsLen);
-        insertPtr      = MemCopyDest(&dataLen, insertPtr, sizeof(u32));
-        insertPtr      = MemCopyDest(m_SrcData.data(), insertPtr, dataLen);
-        insertPtr      = nullptr;
+        auto offsetPtrs = MemCopy(&size, bytes.data(), sizeof(size_t));
+        offsetPtrs      = MemCopy(&m_Type, offsetPtrs.DestPtr, sizeof(u8));
+        offsetPtrs      = MemCopy(&m_Version, offsetPtrs.DestPtr, sizeof(u32));
+        offsetPtrs      = MemCopy(&nameLen, offsetPtrs.DestPtr, sizeof(u32));
+        // `const_cast` should be safe here as MemCopy does not modify it
+        offsetPtrs = MemCopy(const_cast<char*>(m_Name.c_str()), offsetPtrs.DestPtr, nameLen);
+        offsetPtrs = MemCopy(&propsLen, offsetPtrs.DestPtr, sizeof(u32));
+        offsetPtrs = MemCopy(propsBytes.data(), offsetPtrs.DestPtr, propsLen);
+        offsetPtrs = MemCopy(&dataLen, offsetPtrs.DestPtr, sizeof(u32));
+        offsetPtrs = MemCopy(m_SrcData.data(), offsetPtrs.DestPtr, dataLen);
+        offsetPtrs.Nullify();
 
         return bytes;
     }
@@ -129,23 +138,24 @@ namespace AssetTool {
         u32 dataLen               = 0;
         ByteArray dataBytes       = {0x0};
 
-        auto offsetPtr = MemCopySrc(data.data(), &size, sizeof(size_t));
-        offsetPtr      = MemCopySrc(offsetPtr, &type, sizeof(u8));
-        offsetPtr      = MemCopySrc(offsetPtr, &version, sizeof(u32));
-        offsetPtr      = MemCopySrc(offsetPtr, &nameLen, sizeof(u32));
+        auto offsetPtrs = MemCopy(data.data(), &size, sizeof(size_t));
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, &type, sizeof(u8));
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, &version, sizeof(u32));
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, &nameLen, sizeof(u32));
 
         const auto name = new char[nameLen];
-        offsetPtr       = MemCopySrc(offsetPtr, name, nameLen);
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, name, nameLen);
         name[nameLen]   = '\0';
 
-        offsetPtr = MemCopySrc(offsetPtr, &propsLen, sizeof(u32));
+        offsetPtrs = MemCopy(offsetPtrs.SourcePtr, &propsLen, sizeof(u32));
         propertiesBytes.resize(propsLen);
 
-        offsetPtr = MemCopySrc(offsetPtr, propertiesBytes.data(), propsLen);
-        offsetPtr = MemCopySrc(offsetPtr, &dataLen, sizeof(u32));
+        offsetPtrs = MemCopy(offsetPtrs.SourcePtr, propertiesBytes.data(), propsLen);
+        offsetPtrs = MemCopy(offsetPtrs.SourcePtr, &dataLen, sizeof(u32));
         dataBytes.resize(dataLen);
 
-        offsetPtr = MemCopySrc(offsetPtr, dataBytes.data(), dataLen);
+        offsetPtrs = MemCopy(offsetPtrs.SourcePtr, dataBytes.data(), dataLen);
+        offsetPtrs.Nullify();
 
         const std::string nameStr = STRDUP(name);
         std::unique_ptr<IAssetDescriptor> descriptor;

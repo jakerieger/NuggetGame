@@ -9,6 +9,8 @@
 #include <utility>
 
 namespace AssetTool {
+    using namespace Helpers;
+
     // 128-byte checksum + 8-byte size + 8-byte size + 4-byte uint
     static constexpr size_t META_SIZE = 148;
 
@@ -21,16 +23,16 @@ namespace AssetTool {
         assert(m_Checksum.length() == 128);
     }
 
-    ByteArray AssetMetadata::Serialize() const {
+    ByteArray AssetMetadata::Serialize() {
         ByteArray bytes = {0x0};
         bytes.resize(META_SIZE);
 
-        auto insertPoint =
-          Helpers::MemCopyDest(m_Checksum.c_str(), bytes.data(), m_Checksum.length());
-        insertPoint = Helpers::MemCopyDest(&m_OriginalSize, insertPoint, sizeof(size_t));
-        insertPoint = Helpers::MemCopyDest(&m_CompressedSize, insertPoint, sizeof(size_t));
-        insertPoint = Helpers::MemCopyDest(&m_ManifestCount, insertPoint, sizeof(u32));
-        insertPoint = nullptr;
+        auto offsetPtrs =
+          MemCopy(const_cast<char*>(m_Checksum.c_str()), bytes.data(), m_Checksum.length());
+        offsetPtrs = MemCopy(&m_OriginalSize, offsetPtrs.DestPtr, sizeof(size_t));
+        offsetPtrs = MemCopy(&m_CompressedSize, offsetPtrs.DestPtr, sizeof(size_t));
+        offsetPtrs = MemCopy(&m_ManifestCount, offsetPtrs.DestPtr, sizeof(u32));
+        offsetPtrs.Nullify();
 
         return bytes;
     }
@@ -41,11 +43,11 @@ namespace AssetTool {
         size_t compressedSize = 0;
         u32 manifestCount     = 0;
 
-        auto offset = Helpers::MemCopySrc(bytes.data(), &checksum, 128);
-        offset      = Helpers::MemCopySrc(offset, &originalSize, sizeof(size_t));
-        offset      = Helpers::MemCopySrc(offset, &compressedSize, sizeof(size_t));
-        offset      = Helpers::MemCopySrc(offset, &manifestCount, sizeof(u32));
-        offset      = nullptr;
+        auto offsetPtrs = MemCopy(bytes.data(), &checksum, 128);
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, &originalSize, sizeof(size_t));
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, &compressedSize, sizeof(size_t));
+        offsetPtrs      = MemCopy(offsetPtrs.SourcePtr, &manifestCount, sizeof(u32));
+        offsetPtrs.Nullify();
 
         auto checksumStr = std::string(checksum);
         checksumStr.resize(128);

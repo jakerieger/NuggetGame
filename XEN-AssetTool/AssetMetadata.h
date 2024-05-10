@@ -20,7 +20,7 @@ namespace AssetTool {
         size_t m_CompressedSize = 0;
         u32 m_ManifestCount     = 0;
 
-        [[nodiscard]] ByteArray Serialize() const;
+        [[nodiscard]] ByteArray Serialize();
         static AssetMetadata Deserialize(ByteArray& bytes);
     };
 }  // namespace AssetTool

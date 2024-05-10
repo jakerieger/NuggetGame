@@ -15,28 +15,18 @@ namespace AssetTool::Helpers {
         return (sizeof(Types) + ...);
     }
 
-    /// @brief This is basically just a re-implementation of `memcpy` that returns the next
-    /// point in memory to insert
-    ///
-    /// @return Next offset in destination memory to copy to
-    inline char*
-    MemCopyDest(const void* source, void* destination, const size_t size, const size_t offset = 0) {
-        const auto src = static_cast<const char*>(source);
-        const auto dst = static_cast<char*>(destination);
+    struct FMemoryOffsets {
+        char* SourcePtr;
+        char* DestPtr;
 
-        for (size_t i = 0; i < size; i++) {
-            dst[i] = src[i + offset];
+        void Nullify() {
+            SourcePtr = nullptr;
+            DestPtr   = nullptr;
         }
+    };
 
-        return dst + size + offset;
-    }
-
-    /// @brief This is basically just a re-implementation of `memcpy` that returns the next
-    /// point in memory to insert
-    ///
-    /// @return Next offset in source memory to copy from
-    inline char*
-    MemCopySrc(void* source, void* destination, const size_t size, const size_t offset = 0) {
+    inline FMemoryOffsets
+    MemCopy(void* source, void* destination, const size_t size, const size_t offset = 0) {
         const auto src = static_cast<char*>(source);
         const auto dst = static_cast<char*>(destination);
 
@@ -44,7 +34,7 @@ namespace AssetTool::Helpers {
             dst[i] = src[i + offset];
         }
 
-        return src + size + offset;
+        return {src + size + offset, dst + size + offset};
     }
 
     /// @brief Compares checksums of two byte arrays

@@ -90,7 +90,7 @@ namespace AssetTool {
         ByteArray m_SrcData;
         std::unique_ptr<IProperties> m_Properties;
 
-        [[nodiscard]] ByteArray Serialize() const;
+        [[nodiscard]] ByteArray Serialize();
 
         [[nodiscard]] size_t GetSize() const {
             const size_t baseSize              = Helpers::SizeOfAll<u32, u8, size_t>();
