@@ -16,7 +16,7 @@ namespace AssetTool {
     public:
         AssetManifest(const u32 version,
                       std::string filename,
-                      std::vector<IAssetDescriptor*> descriptors)
+                      std::vector<std::unique_ptr<IAssetDescriptor>> descriptors)
             : m_Version(version), m_Name(std::move(filename)),
               m_Descriptors(std::move(descriptors)) {}
         explicit AssetManifest(const std::filesystem::path& manifest);
@@ -27,7 +27,7 @@ namespace AssetTool {
 
         u32 m_Version = 0;
         std::string m_Name;
-        std::vector<IAssetDescriptor*> m_Descriptors;
+        std::vector<std::unique_ptr<IAssetDescriptor>> m_Descriptors;
 
     private:
         void ParseManifest(const rapidjson::Document& manifest);

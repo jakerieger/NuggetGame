@@ -11,6 +11,7 @@
 namespace AssetTool {
     using namespace PlatformTools;
     using namespace rapidjson;
+    using namespace Helpers;
 
     static bool ValidateManifest(const Document& manifest) {
         if (!manifest.IsObject())
@@ -38,6 +39,18 @@ namespace AssetTool {
     }
 
     size_t AssetManifest::GetSize() {
-        return 0;
+        // Size, Name Length, Descriptor Count
+        const size_t baseSize = SizeOfAll<size_t, u32, u32>();
+        // Number of bytes in Name
+        const size_t nameLen = m_Name.length();
+        // Combined size of all descriptors
+        const int descriptorSize =
+          std::accumulate(m_Descriptors.begin(),
+                          m_Descriptors.end(),
+                          0,
+                          [](int acc, const std::unique_ptr<IAssetDescriptor>& descriptor) {
+                              return acc + static_cast<int>(descriptor->GetSize());
+                          });
+        return static_cast<size_t>(descriptorSize) + nameLen + baseSize;
     }
 }  // namespace AssetTool
