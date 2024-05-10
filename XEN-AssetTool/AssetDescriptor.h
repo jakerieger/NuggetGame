@@ -138,6 +138,6 @@ namespace AssetTool {
     };
 
     namespace AssetDescriptor {
-        IAssetDescriptor* Deserialize(const ByteArray& data);
+        std::unique_ptr<IAssetDescriptor> Deserialize(ByteArray& data);
     }  // namespace AssetDescriptor
 }  // namespace AssetTool

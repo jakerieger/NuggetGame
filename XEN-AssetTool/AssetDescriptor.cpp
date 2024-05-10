@@ -132,8 +132,61 @@ namespace AssetTool {
         return bytes;
     }
 
-    IAssetDescriptor* AssetDescriptor::Deserialize(const ByteArray& data) {
-        return nullptr;
+    std::unique_ptr<IAssetDescriptor> AssetDescriptor::Deserialize(ByteArray& data) {
+        size_t size               = 0;
+        u8 type                   = 0;
+        u32 version               = 0;
+        u32 nameLen               = 0;
+        u32 propsLen              = 0;
+        ByteArray propertiesBytes = {0x0};
+        u32 dataLen               = 0;
+        ByteArray dataBytes       = {0x0};
+
+        auto offsetPtr = MemCopySrc(data.data(), &size, sizeof(size_t));
+        offsetPtr      = MemCopySrc(offsetPtr, &type, sizeof(u8));
+        offsetPtr      = MemCopySrc(offsetPtr, &version, sizeof(u32));
+        offsetPtr      = MemCopySrc(offsetPtr, &nameLen, sizeof(u32));
+
+        const auto name = new char[nameLen];
+        offsetPtr       = MemCopySrc(offsetPtr, name, nameLen);
+        name[nameLen]   = '\0';
+
+        offsetPtr = MemCopySrc(offsetPtr, &propsLen, sizeof(u32));
+        propertiesBytes.resize(propsLen);
+
+        offsetPtr = MemCopySrc(offsetPtr, propertiesBytes.data(), propsLen);
+        offsetPtr = MemCopySrc(offsetPtr, &dataLen, sizeof(u32));
+        dataBytes.resize(dataLen);
+
+        offsetPtr = MemCopySrc(offsetPtr, dataBytes.data(), dataLen);
+
+        const std::string nameStr = STRDUP(name);
+        std::unique_ptr<IAssetDescriptor> descriptor;
+
+        const auto assetType = static_cast<AssetType>(type);
+        switch (assetType) {
+            case AssetType::Sprite: {
+                descriptor = std::make_unique<SpriteDescriptor>();
+            } break;
+            case AssetType::Font: {
+                descriptor = std::make_unique<FontDescriptor>();
+            } break;
+            case AssetType::Audio: {
+                descriptor = std::make_unique<AudioDescriptor>();
+            } break;
+            case AssetType::Level: {
+                descriptor = std::make_unique<LevelDescriptor>();
+            } break;
+            default:
+                return nullptr;
+        }
+
+        descriptor->m_Name    = nameStr;
+        descriptor->m_Version = version;
+        descriptor->m_Type    = assetType;
+        descriptor->m_SrcData = dataBytes;
+
+        return descriptor;
     }
 
 }  // namespace AssetTool
