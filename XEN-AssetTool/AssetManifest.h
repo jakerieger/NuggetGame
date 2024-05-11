@@ -21,7 +21,7 @@ namespace AssetTool {
               m_Descriptors(std::move(descriptors)) {}
         explicit AssetManifest(const std::filesystem::path& manifest);
         ~AssetManifest();
-        std::optional<std::vector<u8>> Serialize();
+        ByteArray Serialize();
         static std::unique_ptr<AssetManifest> Deserialize(const std::vector<u8>& bytes);
         size_t GetSize();
 
