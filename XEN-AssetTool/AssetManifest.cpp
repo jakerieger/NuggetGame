@@ -6,6 +6,7 @@
 #include "PlatformTools.h"
 
 #include <numeric>
+#include <stb_image.h>
 #include <fmt/core.h>
 
 namespace AssetTool {
@@ -33,7 +34,7 @@ namespace AssetTool {
                 const auto name       = asset["name"].GetString();
                 const auto type       = asset["type"].GetString();
                 const auto properties = asset["properties"].GetObject();
-                std::unique_ptr<IAssetDescriptor> descriptor;
+                Unique<IAssetDescriptor> descriptor;
 
                 if (strcmp(type, "sprite") == 0) {
                     assert(manifest.HasMember("filename"));
@@ -41,10 +42,16 @@ namespace AssetTool {
                     descriptor            = std::make_unique<SpriteDescriptor>();
                     descriptor->m_Name    = name;
                     descriptor->m_Version = m_Version;
-                    auto srcBytes         = IO::ReadAllBytes(filename);
-                    if (!srcBytes.has_value())
-                        break;
-                    descriptor->m_SrcData = srcBytes.value();
+
+                    // Read image with stb_image
+                    int width, height, channels;
+                    const u8* imgData = stbi_load(filename, &width, &height, &channels, 0);
+                    ByteArray srcBytes;
+                    const size_t dataSize = width * height * channels;
+                    srcBytes.resize(dataSize);
+                    memcpy(srcBytes.data(), imgData, dataSize);
+
+                    descriptor->m_SrcData = srcBytes;
                     descriptor->GetProperties<SpriteProperties>()->m_Height =
                       properties["height"].GetInt();
                     descriptor->GetProperties<SpriteProperties>()->m_Width =
@@ -116,7 +123,7 @@ namespace AssetTool {
                     };
                 }
 
-                m_Descriptors.push_back(descriptor);
+                m_Descriptors.push_back(std::move(descriptor));
             }
         }
     }
@@ -143,7 +150,7 @@ namespace AssetTool {
           std::accumulate(m_Descriptors.begin(),
                           m_Descriptors.end(),
                           0,
-                          [](int acc, const std::unique_ptr<IAssetDescriptor>& descriptor) {
+                          [](int acc, const Unique<IAssetDescriptor>& descriptor) {
                               return acc + static_cast<int>(descriptor->GetSize());
                           });
         return static_cast<size_t>(descriptorSize) + nameLen + baseSize;

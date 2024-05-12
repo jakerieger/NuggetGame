@@ -15,7 +15,11 @@ include_directories(
 
 find_package(OpenSSL REQUIRED)
 
-add_library(XEN-AssetCore STATIC AssetDescriptor.cpp AssetDescriptor.h
+add_library(XEN-AssetCore STATIC
+        ../ThirdParty/stb_image.h
+        ../ThirdParty/stb_image.cpp
+        AssetDescriptor.cpp
+        AssetDescriptor.h
         AssetManifest.cpp
         AssetManifest.h
         AssetPak.cpp

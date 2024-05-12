@@ -20,3 +20,9 @@ using f64  = double;
 using byte = u8;
 
 using ByteArray = std::vector<u8>;
+
+template<typename T>
+using Unique = std::unique_ptr<T>;
+
+template<typename T>
+using Shared = std::shared_ptr<T>;
