@@ -6,3 +6,5 @@ Docs/* linguist-vendored
 *.rc linguist-vendored
 *.inl linguist-language=C++
 *.h linguist-language=C++
+*.html linguist-vendored
+*.css linguist-vendored
