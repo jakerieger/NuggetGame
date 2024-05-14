@@ -2,9 +2,10 @@ ThirdParty/* linguist-vendored
 CMakeLists.txt linguist-vendored
 Assets/* linguist-vendored
 Docs/* linguist-vendored
+Docs/html/* linguist-vendored
 .doxyfile linguist-vendored
 *.rc linguist-vendored
 *.inl linguist-language=C++
 *.h linguist-language=C++
-*.html linguist-vendored
-*.css linguist-vendored
+NuggetGame/UI/*.html linguist-vendored
+NuggetGame/UI/*.css linguist-vendored
