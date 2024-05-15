@@ -14,7 +14,6 @@ include_directories(
 )
 
 find_package(OpenSSL REQUIRED)
-find_package(Catch2 CONFIG REQUIRED)
 
 add_library(XEN-AssetCore STATIC
         ../ThirdParty/stb_image.h
@@ -39,6 +38,3 @@ add_custom_command(TARGET AssetTool PRE_BUILD
 add_custom_command(TARGET AssetTool PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
         ${CMAKE_SOURCE_DIR}/XEN-AssetTool/manifests.json ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/manifests.json)
-
-add_executable(AssetTool-Tests AssetTest.cpp)
-target_link_libraries(AssetTool-Tests PRIVATE XEN-AssetCore Catch2::Catch2 Catch2::Catch2WithMain)

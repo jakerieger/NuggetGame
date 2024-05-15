@@ -11,9 +11,6 @@
 namespace AssetTool {
     using namespace Helpers;
 
-    // 128-byte checksum + 8-byte size + 8-byte size + 4-byte uint
-    static constexpr size_t META_SIZE = 148;
-
     AssetMetadata::AssetMetadata(std::string checksum,
                                  const size_t originalSize,
                                  const size_t compressedSize,
@@ -28,7 +25,7 @@ namespace AssetTool {
         bytes.resize(META_SIZE);
 
         auto offsetPtrs =
-          MemCopy(const_cast<char*>(m_Checksum.c_str()), bytes.data(), m_Checksum.length());
+            MemCopy(const_cast<char*>(m_Checksum.c_str()), bytes.data(), m_Checksum.length());
         offsetPtrs = MemCopy(&m_OriginalSize, offsetPtrs.DestPtr, sizeof(size_t));
         offsetPtrs = MemCopy(&m_CompressedSize, offsetPtrs.DestPtr, sizeof(size_t));
         offsetPtrs = MemCopy(&m_ManifestCount, offsetPtrs.DestPtr, sizeof(u32));
@@ -53,4 +50,4 @@ namespace AssetTool {
         checksumStr.resize(128);
         return {checksumStr, originalSize, compressedSize, manifestCount};
     }
-}  // namespace AssetTool
+} // namespace AssetTool
