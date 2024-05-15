@@ -33,8 +33,12 @@ namespace AssetTool {
         u32 m_Height   = 0;
         bool m_IsAlpha = false;
 
-        size_t GetSize() override {
+        static size_t Size() {
             return Helpers::SizeOfAll<u32, u32, bool>();
+        }
+
+        size_t GetSize() override {
+            return Size();
         }
 
         ByteArray Serialize() override;
@@ -45,8 +49,12 @@ namespace AssetTool {
     public:
         u32 m_DefaultSize = 0;
 
-        size_t GetSize() override {
+        static size_t Size() {
             return sizeof(u32);
+        }
+
+        size_t GetSize() override {
+            return Size();
         }
 
         ByteArray Serialize() override;
@@ -59,8 +67,12 @@ namespace AssetTool {
         u32 m_SampleRate  = 0;
         u32 m_Channels    = 0;
 
-        size_t GetSize() override {
+        static size_t Size() {
             return Helpers::SizeOfAll<u32, u32, u32>();
+        }
+
+        size_t GetSize() override {
+            return Size();
         }
 
         ByteArray Serialize() override;
@@ -74,8 +86,12 @@ namespace AssetTool {
         glm::vec<2, f32> m_PlayerStart       = {};
         glm::vec<2, f32> m_ObjectivePosition = {};
 
-        size_t GetSize() override {
+        static size_t Size() {
             return Helpers::SizeOfAll<u32, u32, f32, f32, f32, f32>();
+        }
+
+        size_t GetSize() override {
+            return Size();
         }
 
         ByteArray Serialize() override;

@@ -42,7 +42,7 @@ namespace AssetTool {
 
     ByteArray SpriteProperties::Serialize() {
         ByteArray bytes = {0x0};
-        bytes.resize(GetSize());
+        bytes.resize(Size());
 
         auto offsetPtrs = MemCopy(&m_Width, bytes.data(), sizeof(u32));
         offsetPtrs      = MemCopy(&m_Height, offsetPtrs.DestPtr, sizeof(u32));
@@ -54,7 +54,7 @@ namespace AssetTool {
 
     ByteArray FontProperties::Serialize() {
         ByteArray bytes = {0x0};
-        bytes.resize(GetSize());
+        bytes.resize(Size());
 
         auto offsetPtrs = MemCopy(&m_DefaultSize, bytes.data(), sizeof(u32));
         offsetPtrs.Nullify();
@@ -64,7 +64,7 @@ namespace AssetTool {
 
     ByteArray AudioProperties::Serialize() {
         ByteArray bytes = {0x0};
-        bytes.resize(GetSize());
+        bytes.resize(Size());
 
         auto offsetPtrs = MemCopy(&m_SampleCount, bytes.data(), sizeof(u32));
         offsetPtrs      = MemCopy(&m_SampleRate, offsetPtrs.DestPtr, sizeof(u32));
@@ -76,7 +76,7 @@ namespace AssetTool {
 
     ByteArray LevelProperties::Serialize() {
         ByteArray bytes = {0x0};
-        bytes.resize(GetSize());
+        bytes.resize(Size());
 
         auto offsetPtrs = MemCopy(&m_Rows, bytes.data(), sizeof(u32));
         offsetPtrs      = MemCopy(&m_Columns, offsetPtrs.DestPtr, sizeof(u32));
@@ -168,14 +168,18 @@ namespace AssetTool {
 
         const auto assetType = static_cast<AssetType>(type);
         switch (assetType) {
-            case AssetType::Sprite: { descriptor = std::make_unique<SpriteDescriptor>(); }
-            break;
-            case AssetType::Font: { descriptor = std::make_unique<FontDescriptor>(); }
-            break;
-            case AssetType::Audio: { descriptor = std::make_unique<AudioDescriptor>(); }
-            break;
-            case AssetType::Level: { descriptor = std::make_unique<LevelDescriptor>(); }
-            break;
+            case AssetType::Sprite: {
+                descriptor = std::make_unique<SpriteDescriptor>();
+            } break;
+            case AssetType::Font: {
+                descriptor = std::make_unique<FontDescriptor>();
+            } break;
+            case AssetType::Audio: {
+                descriptor = std::make_unique<AudioDescriptor>();
+            } break;
+            case AssetType::Level: {
+                descriptor = std::make_unique<LevelDescriptor>();
+            } break;
             default:
                 return nullptr;
         }
@@ -188,4 +192,4 @@ namespace AssetTool {
 
         return descriptor;
     }
-} // namespace AssetTool
+}  // namespace AssetTool
