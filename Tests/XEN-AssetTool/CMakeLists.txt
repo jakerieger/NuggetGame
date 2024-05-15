@@ -18,3 +18,12 @@ set(TEST_TARGETS
 foreach (target ${TEST_TARGETS})
     target_link_libraries(${target} PRIVATE XEN-AssetCore Catch2::Catch2WithMain)
 endforeach ()
+
+add_custom_target(Test.AssetTool DEPENDS ${TEST_TARGETS})
+add_custom_command(
+        TARGET Test.AssetTool POST_BUILD
+        COMMAND Test.AssetMetadata
+        COMMAND Test.AssetDescriptor
+        COMMAND Test.AssetManifest
+        COMMAND Test.AssetPak
+)
