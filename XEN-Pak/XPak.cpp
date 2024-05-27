@@ -490,7 +490,11 @@ namespace XPak {
         auto headerBytes      = IO::ReadBlock(pakFile, 0, HEADER_SIZE).value();
         const auto header     = FPakHeader::Deserialize(headerBytes);
         const auto numEntries = header->NumEntries;
-        // TODO: Validate checksum
+
+        // Validate checksum
+        const auto headerAndTableSize = HEADER_SIZE + (ENTRY_SIZE * numEntries);
+        const auto blockSize          = fs::file_size(pakFile) - headerAndTableSize;
+        auto blockBytes               = IO::ReadBlock(pakFile, headerAndTableSize, blockSize);
 
         const auto result = IO::ReadBlock(pakFile, HEADER_SIZE, ENTRY_SIZE * numEntries);
         if (!result.has_value()) {

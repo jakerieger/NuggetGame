@@ -23,6 +23,11 @@ struct FPrintOptions {
     std::string PakFile;
 };
 
+struct FImportOptions {
+    std::string AssetPath;
+    std::string AssetType;
+};
+
 int main(int argc, char* argv[]) {
     CLI::App app {"XPak CLI Tool"};
     argv = app.ensure_utf8(argv);
