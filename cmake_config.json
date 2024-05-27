@@ -12,6 +12,9 @@
     "rapidjson",
     "liblzma",
     "openssl",
-    "catch2"
+    "catch2",
+    "yaml-cpp",
+    "cli11",
+    "crossguid"
   ]
 }
