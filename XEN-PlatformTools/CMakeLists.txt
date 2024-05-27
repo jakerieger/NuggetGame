@@ -5,4 +5,4 @@ project(PlatformTools)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_library(XEN-PlatformCore STATIC PlatformTools.h IO.cpp IO.h)
+add_library(XPlatform-Core STATIC PlatformTools.h IO.cpp IO.h)

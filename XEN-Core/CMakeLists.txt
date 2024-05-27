@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(
         ../XEN-Core
-        ../XEN-AssetTool
+        ../XEN-Pak
         ../XEN-PlatformTools
         ../ThirdParty
         ../NuggetGame
@@ -18,7 +18,7 @@ add_definitions(
 
 file(GLOB RMLUI_SRCS ../ThirdParty/RmlUi/*.cpp)
 
-add_library(XEN-Core STATIC
+add_library(XCore STATIC
         ../ThirdParty/glad.c
         ../ThirdParty/stb_image.cpp
         ${RMLUI_SRCS}
@@ -91,13 +91,13 @@ add_library(XEN-Core STATIC
         Movie.h
 )
 
-target_link_libraries(XEN-Core PRIVATE
+target_link_libraries(XCore PRIVATE
         glfw
         box2d::box2d
         RmlCore
         RmlDebugger
         fmt::fmt
         OpenAL::OpenAL
-        XEN-PlatformCore
-        XEN-AssetCore
+        XPlatform-Core
+        XPak-Core
 )

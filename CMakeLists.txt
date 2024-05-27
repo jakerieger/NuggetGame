@@ -26,7 +26,7 @@ find_package(liblzma CONFIG REQUIRED)
 # ============++++++++++++============ #
 
 add_subdirectory(XEN-Core)
-add_subdirectory(XEN-AssetTool)
+add_subdirectory(XEN-Pak)
 add_subdirectory(XEN-PlatformTools)
 add_subdirectory(NuggetGame)
 add_subdirectory(Tests)

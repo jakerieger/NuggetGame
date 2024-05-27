@@ -9,7 +9,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/NuggetGame)
 
 include_directories(
         ../XEN-Core
-        ../XEN-AssetTool
+        ../XEN-Pak
         ../XEN-PlatformTools
         ../ThirdParty
         ../NuggetGame
@@ -38,9 +38,9 @@ add_executable(NuggetGame
         UI/SettingsMenu.cpp
 )
 target_link_libraries(NuggetGame PRIVATE
-        XEN-Core
-        XEN-PlatformCore
-        XEN-AssetCore
+        XCore
+        XPlatform-Core
+        XPak-Core
         glfw
         liblzma::liblzma
         RmlCore

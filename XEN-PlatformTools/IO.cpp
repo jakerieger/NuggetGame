@@ -6,7 +6,7 @@
 
 #include <fstream>
 
-namespace PlatformTools::IO {
+namespace IO {
     std::optional<std::string> Read(const FileSystem::path& filename) {
         if (!exists(filename) || is_directory(filename)) {
             return std::nullopt;
@@ -23,7 +23,7 @@ namespace PlatformTools::IO {
         return content;
     }
 
-    std::optional<std::vector<u8>> ReadAllBytes(const FileSystem::path& filename) {
+    std::optional<std::vector<uint8_t>> ReadAllBytes(const FileSystem::path& filename) {
         if (!exists(filename) || is_directory(filename)) {
             return std::nullopt;
         }
@@ -33,7 +33,7 @@ namespace PlatformTools::IO {
             return std::nullopt;
         }
 
-        std::vector<u8> bytes(std::istreambuf_iterator(file), {});
+        std::vector<uint8_t> bytes(std::istreambuf_iterator(file), {});
         file.close();
 
         return bytes;
@@ -60,25 +60,53 @@ namespace PlatformTools::IO {
         return lines;
     }
 
+    std::optional<std::vector<uint8_t>> ReadBlock(const FileSystem::path& filename,
+                                                  const uint32_t blockOffset,
+                                                  const size_t blockSize) {
+        if (!exists(filename) || is_directory(filename)) {
+            return std::nullopt;
+        }
+
+        std::ifstream file(filename, std::ios::binary);
+        if (!file.is_open()) {
+            return std::nullopt;
+        }
+
+        file.seekg(blockOffset, std::ios::beg);
+        if (!file.good()) {
+            return std::nullopt;
+        }
+
+        std::vector<uint8_t> buffer(blockSize);
+        file.read(reinterpret_cast<char*>(buffer.data()), static_cast<std::streamsize>(blockSize));
+
+        if (file.gcount() != static_cast<std::streamsize>(blockSize)) {
+            return std::nullopt;
+        }
+
+        return buffer;
+    }
+
     bool Write(const FileSystem::path& filename, const std::string& content) {
         std::ofstream outfile(filename);
         if (!outfile.is_open()) {
             return false;
         }
 
-        outfile.write(content.c_str(), (std::streamsize)content.length());
+        outfile.write(content.c_str(), static_cast<std::streamsize>(content.length()));
         outfile.close();
 
         return true;
     }
 
-    bool WriteAllBytes(const FileSystem::path& filename, const std::vector<u8>& bytes) {
+    bool WriteAllBytes(const FileSystem::path& filename, const std::vector<uint8_t>& bytes) {
         std::ofstream outfile(filename, std::ios::binary);
         if (!outfile.is_open()) {
             return false;
         }
 
-        outfile.write(reinterpret_cast<const char*>(bytes.data()), (std::streamsize)bytes.size());
+        outfile.write(reinterpret_cast<const char*>(bytes.data()),
+                      static_cast<std::streamsize>(bytes.size()));
         outfile.close();
 
         return true;
@@ -98,4 +126,4 @@ namespace PlatformTools::IO {
 
         return true;
     }
-}  // namespace PlatformTools::IO
+}  // namespace IO
