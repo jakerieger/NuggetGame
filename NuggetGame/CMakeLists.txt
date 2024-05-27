@@ -50,4 +50,4 @@ target_link_libraries(NuggetGame PRIVATE
 
 add_custom_command(TARGET NuggetGame PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
-        ${CMAKE_SOURCE_DIR}/Assets/sprites/nugget.png ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/icon.png)
+        ${CMAKE_SOURCE_DIR}/Assets/bitmaps/nugget.png ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/icon.png)

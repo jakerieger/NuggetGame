@@ -32,7 +32,7 @@ add_subdirectory(NuggetGame)
 add_subdirectory(Tests)
 
 # ================================================================================================================== #
-set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/Game/UI)
+set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/NuggetGame/UI)
 set(OUTPUT_DIR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/NuggetGame/Interface)
 
 set(FILE_EXTENSIONS "*.html" "*.css" "*.tga")

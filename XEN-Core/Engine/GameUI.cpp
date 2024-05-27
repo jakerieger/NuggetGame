@@ -18,6 +18,7 @@ namespace UI {
     SystemInterface_GLFW* g_SysInterface   = nullptr;
     RenderInterface_GL3* g_RenderInterface = nullptr;
     Rml::Context* g_Context                = nullptr;
+    static std::vector<u8> g_FontBytes;
 
     void Initialize() {
         Rml::String renderMsg;
@@ -49,9 +50,12 @@ namespace UI {
         }
 
         // Load font
-        if (!Rml::LoadFontFace(
-              Utilities::JoinPath(Resources::GetRoot(), "Assets", "fonts", "Square.ttf").string(),
-              false)) {
+        const auto fontFace = Resources::GetAsset("Assets/fonts/Square.ttf");
+        g_FontBytes.insert(g_FontBytes.end(), fontFace.begin(), fontFace.end());
+        if (!Rml::LoadFontFace(g_FontBytes.data(),
+                               static_cast<int>(g_FontBytes.size()),
+                               "squarefont",
+                               Rml::Style::FontStyle::Normal)) {
             throw std::runtime_error("Failed to load font");
         }
 

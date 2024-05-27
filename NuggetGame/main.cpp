@@ -10,7 +10,7 @@
 #include "Engine/EngineSettings.h"
 #include "UI/MainMenu.h"
 #include "Levels.h"
-
+#include "XPak.h"
 #include "PlatformTools.h"
 
 #include <filesystem>
@@ -83,21 +83,27 @@ int main(int argc, char* argv[]) {
         Settings::SaveSettings();
     }
 
-    // Unpack game assets
-    { const auto dataRoot = Resources::GetRoot() / "Data"; }
+    const auto dataRoot = Resources::GetRoot() / "Data";
+    if (!exists(dataRoot)) {
+        Resources::UsingPak = false;
+    }
 
-    // Run game
-    {
-        NuggetGame app;
-        Application::InitializeApp(app, "Nugget Game");
-        Utilities::SetWindowIcon(Resources::GetRoot() / "icon.png");
+    // Unpack game assets
+    if (Resources::UsingPak) {
+        auto assets = XPak::UnpackAll(dataRoot);
+        assert(!assets.empty());
+        Resources::Assets.insert(Resources::Assets.end(), assets.begin(), assets.end());
+    }
+
+    NuggetGame app;
+    Application::InitializeApp(app, "Nugget Game");
+    Utilities::SetWindowIcon(Resources::GetRoot() / "icon.png");
 
 #ifdef _WIN32
-        // ::FreeConsole();
+// ::FreeConsole();
 #endif
 
-        Application::RunApp(app);
-    }
+    Application::RunApp(app);
 
     // Dump logs for debugging
     Logger::DumpToDisk();
