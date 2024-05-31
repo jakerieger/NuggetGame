@@ -31,18 +31,18 @@ namespace Audio {
             switch (error) {
                 case AL_INVALID_NAME:
                     Logger::LogError(
-                      Logger::Subsystems::AUDIO,
-                      "AL_INVALID_NAME: a bad name (ID) was passed to an OpenAL function");
+                        Logger::Subsystems::AUDIO,
+                        "AL_INVALID_NAME: a bad name (ID) was passed to an OpenAL function");
                     break;
                 case AL_INVALID_ENUM:
                     Logger::LogError(
-                      Logger::Subsystems::AUDIO,
-                      "AL_INVALID_ENUM: an invalid enum value was passed to an OpenAL function");
+                        Logger::Subsystems::AUDIO,
+                        "AL_INVALID_ENUM: an invalid enum value was passed to an OpenAL function");
                     break;
                 case AL_INVALID_VALUE:
                     Logger::LogError(
-                      Logger::Subsystems::AUDIO,
-                      "AL_INVALID_VALUE: an invalid value was passed to an OpenAL function");
+                        Logger::Subsystems::AUDIO,
+                        "AL_INVALID_VALUE: an invalid value was passed to an OpenAL function");
                     break;
                 case AL_INVALID_OPERATION:
                     Logger::LogError(Logger::Subsystems::AUDIO,
@@ -66,29 +66,29 @@ namespace Audio {
             switch (error) {
                 case ALC_INVALID_VALUE:
                     Logger::LogError(
-                      Logger::Subsystems::AUDIO,
-                      "ALC_INVALID_VALUE: an invalid value was passed to an OpenAL function");
+                        Logger::Subsystems::AUDIO,
+                        "ALC_INVALID_VALUE: an invalid value was passed to an OpenAL function");
                     break;
                 case ALC_INVALID_DEVICE:
                     Logger::LogError(
-                      Logger::Subsystems::AUDIO,
-                      "ALC_INVALID_DEVICE: a bad device was passed to an OpenAL function");
+                        Logger::Subsystems::AUDIO,
+                        "ALC_INVALID_DEVICE: a bad device was passed to an OpenAL function");
                     break;
                 case ALC_INVALID_CONTEXT:
                     Logger::LogError(
-                      Logger::Subsystems::AUDIO,
-                      "ALC_INVALID_CONTEXT: a bad context was passed to an OpenAL function");
+                        Logger::Subsystems::AUDIO,
+                        "ALC_INVALID_CONTEXT: a bad context was passed to an OpenAL function");
                     break;
                 case ALC_INVALID_ENUM:
                     Logger::LogError(
-                      Logger::Subsystems::AUDIO,
-                      "ALC_INVALID_ENUM: an unknown enum value was passed to an OpenAL function");
+                        Logger::Subsystems::AUDIO,
+                        "ALC_INVALID_ENUM: an unknown enum value was passed to an OpenAL function");
                     break;
                 case ALC_OUT_OF_MEMORY:
                     Logger::LogError(
-                      Logger::Subsystems::AUDIO,
-                      "ALC_OUT_OF_MEMORY: an unknown enum value was passed to an OpenAL "
-                      "function");
+                        Logger::Subsystems::AUDIO,
+                        "ALC_OUT_OF_MEMORY: an unknown enum value was passed to an OpenAL "
+                        "function");
                     break;
                 default:
                     Logger::LogError(Logger::Subsystems::AUDIO, "UNKNOWN ALC ERROR: %s", error);
@@ -132,48 +132,27 @@ namespace Audio {
         }
     }
 
-    static std::tuple<u32, u32> PlaySoundFile(const std::string& filename,
+    static std::tuple<u32, u32> PlaySoundFile(const std::vector<u8>& sampleBytes,
                                               EAudioTag tag,
                                               const bool loop = false,
                                               const f32 gain  = 1.f) {
-        AudioFile<f32> oneShot;
-        oneShot.shouldLogErrorsToConsole(false);
-        if (!oneShot.load(filename)) {
-            Logger::LogError(Logger::Subsystems::AUDIO,
-                             "Failed to load audio file: '%s'",
-                             filename.c_str());
-        }
-
-        ALenum format;
-        if (oneShot.isMono()) {
-            format = AL_FORMAT_MONO_FLOAT32;
-        } else {
-            format = AL_FORMAT_STEREO_FLOAT32;
-        }
+        ALenum format = AL_FORMAT_STEREO_FLOAT32;
 
         u32 alSource;
         u32 alSampleSet;
-        std::vector<f32> samples;
-        samples.reserve(oneShot.getNumSamplesPerChannel() * oneShot.getNumChannels());
-
-        if (oneShot.isMono()) {
-            samples = oneShot.samples.at(0);
-        } else {
-            samples = Utilities::InterleaveVectors(oneShot.samples.at(0), oneShot.samples.at(1));
+        const auto sampleSize = sampleBytes.size() / sizeof(f32);
+        std::vector<f32> samples(sampleSize);
+        for (size_t i = 0; i < samples.size(); i += sizeof(float)) {
+            f32 value;
+            std::memcpy(&value, samples.data() + i, sizeof(float));
+            samples.push_back(value);
         }
-
-        // OpenAL requires that the number of samples be a multiple of the data type size in bytes
-        // (float in this case) * the number of channels. If it's not, this line adds additional
-        // silence at the end of the buffer to make it a multiple.
-        samples.resize(
-          Utilities::MakeMultiple(static_cast<i32>(samples.size()),
-                                  static_cast<i32>(sizeof(f32)) * oneShot.getNumChannels()),
-          0.f);
 
         Normalize(samples);
 
         auto finalVolume = gain * Settings::GetSettings().Audio.VolumeMaster;
-        switch (tag) {
+        switch
+        (tag) {
             case EAudioTag::Music: {
                 finalVolume *= Settings::GetSettings().Audio.VolumeMusic;
                 break;
@@ -188,50 +167,58 @@ namespace Audio {
             }
         }
 
-        alGenSources(1, &alSource);
-        alGenBuffers(1, &alSampleSet);
+        alGenSources(
+            1,
+            &
+            alSource
+            );
+        alGenBuffers(
+            1,
+            &
+            alSampleSet
+            );
         alBufferData(alSampleSet,
                      format,
                      samples.data(),
                      static_cast<ALsizei>(samples.size()),
-                     static_cast<ALsizei>(oneShot.getSampleRate()));
+                     static_cast<ALsizei>(44100));
         alSourcei(alSource, AL_BUFFER, static_cast<ALint>(alSampleSet));
         alSourcei(alSource, AL_LOOPING, loop);
         alSourcef(alSource, AL_GAIN, finalVolume);
 
-        oneShot.samples.clear();
-
         alSourcePlay(alSource);
 
-        return std::make_tuple(alSource, alSampleSet);
+        return
+            std::make_tuple(alSource, alSampleSet);
     }
 
-    void PlayOneShot(const std::string& filename,
+    void PlayOneShot(const std::vector<u8>& samples,
                      const std::string& channelName,
                      const EAudioTag tag,
                      const f32 gain) {
-        const std::tuple<u32, u32> result = PlaySoundFile(filename, tag, false, gain);
+        const std::tuple<u32, u32> result = PlaySoundFile(samples, tag, false, gain);
         const auto source                 = std::get<0>(result);
         const auto buffer                 = std::get<1>(result);
-        const FAudioChannel channel = {source, buffer, channelName};
+        const FAudioChannel channel       = {source, buffer, channelName};
         g_Mixer.push_back(channel);
     }
 
-    void PlayLoop(const std::string& filename,
+    void PlayLoop(const std::vector<u8>& samples,
                   const std::string& channelName,
                   const EAudioTag tag,
                   const f32 gain) {
-        const std::tuple<u32, u32> result = PlaySoundFile(filename, tag, true, gain);
+        const std::tuple<u32, u32> result = PlaySoundFile(samples, tag, true, gain);
         const auto source                 = std::get<0>(result);
         const auto buffer                 = std::get<1>(result);
-        const FAudioChannel channel = {source, buffer, channelName};
+        const FAudioChannel channel       = {source, buffer, channelName};
         g_Mixer.push_back(channel);
     }
 
     void StopLoop(const std::string& channelName) {
-        const auto it = std::ranges::find_if(g_Mixer, [&](const FAudioChannel& channel) {
-            return channel.Name == channelName;
-        });
+        const auto it = std::ranges::find_if(g_Mixer,
+                                             [&](const FAudioChannel& channel) {
+                                                 return channel.Name == channelName;
+                                             });
 
         if (it == g_Mixer.end()) {
             return;
@@ -256,4 +243,4 @@ namespace Audio {
         alcDestroyContext(g_Context);
         alcCloseDevice(g_Device);
     }
-}  // namespace Audio
+} // namespace Audio

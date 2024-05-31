@@ -74,7 +74,7 @@ int main(int argc, char* argv[]) {
         }
 
         for (const auto assets = XPak::Unpack(extractOptions.PakFile);
-             const auto& [Entry, PakFile] : assets) {
+             const auto& [Entry, PakFile, Properties] : assets) {
             auto blockResult = IO::ReadBlock(PakFile, Entry.BlockOffset, Entry.BlockSize);
             if (!blockResult.has_value()) {
                 std::cerr << "Unable to extract asset from pak file\n";

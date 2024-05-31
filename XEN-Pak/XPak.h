@@ -110,6 +110,11 @@ namespace XMeta {
         virtual void ReadProperties(const YAML::Node& node) = 0;
         virtual ~FAssetProps();
         constexpr virtual size_t GetSize() = 0;
+
+        template<typename PropType>
+        PropType* As() {
+            return dynamic_cast<PropType*>(this);
+        }
     };
 
     struct FBitmapProperties final : FAssetProps {
@@ -225,6 +230,7 @@ namespace XPak {
     struct FXAsset {
         FTableEntry Entry;
         std::string PakFile;
+        FAssetProps* Properties;
     };
 
     vector<FXAsset> Unpack(const fs::path& pakFile);

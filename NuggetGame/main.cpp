@@ -51,9 +51,10 @@ void NuggetGame::Startup() {
 
     LoadScene("MainMenu");
 
-    const auto bgMusicPath =
-      Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "gameplay.wav");
-    Audio::PlayLoop(bgMusicPath.string(), "BackgroundMusic", Audio::EAudioTag::Music, 0.6f);
+    // Audio::PlayLoop(bgMusicPath.string(), "BackgroundMusic", Audio::EAudioTag::Music, 0.6f);
+
+    const auto bgMusic = Resources::GetAsset("Assets/audio/gameplay.wav");
+    Audio::PlayLoop(bgMusic, "BackgroundMusic", Audio::EAudioTag::Music, 0.6f);
 }
 
 void NuggetGame::Cleanup() {}
@@ -99,9 +100,9 @@ int main(int argc, char* argv[]) {
     Application::InitializeApp(app, "Nugget Game");
     Utilities::SetWindowIcon(Resources::GetRoot() / "icon.png");
 
-#ifdef _WIN32
-// ::FreeConsole();
-#endif
+    #ifdef _WIN32
+    // ::FreeConsole();
+    #endif
 
     Application::RunApp(app);
 

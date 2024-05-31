@@ -14,14 +14,14 @@ namespace Audio {
     };
 
     void Initialize();
-    void PlayOneShot(const std::string& filename,
+    void PlayOneShot(const std::vector<u8>& samples,
                      const std::string& channelName,
                      EAudioTag tag,
                      f32 gain = 1.f);
-    void PlayLoop(const std::string& filename,
+    void PlayLoop(const std::vector<u8>& samples,
                   const std::string& channelName,
                   EAudioTag tag,
                   f32 gain = 1.f);
     void StopLoop(const std::string& channelName);
     void Shutdown();
-}  // namespace Audio
+} // namespace Audio

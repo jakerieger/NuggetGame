@@ -47,10 +47,10 @@ void Nugget::Update(float deltaTime, FSceneContext& sceneContext) {
     if (m_Rigidbody->IsGrounded() && m_Falling) {
         m_Falling   = false;
         m_JumpCount = 0;
-        Audio::PlayOneShot(
-          (Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "land.wav")).string(),
-          "LandSound",
-          Audio::EAudioTag::FX);
+        // Audio::PlayOneShot(
+        //   (Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "land.wav")).string(),
+        //   "LandSound",
+        //   Audio::EAudioTag::FX);
     }
 }
 
@@ -77,8 +77,8 @@ void Nugget::OnKeyDown(FKeyEvent& event) {
             m_JumpCount++;
             // Play jump sound effect
             const auto sfxPath =
-              Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "jump.wav");
-            Audio::PlayOneShot(sfxPath.string(), "JumpSound", Audio::EAudioTag::FX);
+                Utilities::JoinPath(Resources::GetRoot(), "Assets", "audio", "jump.wav");
+            // Audio::PlayOneShot(sfxPath.string(), "JumpSound", Audio::EAudioTag::FX);
         }
     }
 
