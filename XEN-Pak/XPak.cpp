@@ -34,7 +34,7 @@ namespace CRC32 {
         }
         return crc ^ 0xFFFFFFFF;
     }
-}  // namespace CRC32
+} // namespace CRC32
 
 namespace XPak {
     FPakHeader::FPakHeader() = default;
@@ -81,6 +81,7 @@ namespace XPak {
     }
 
     FTableEntry::FTableEntry() = default;
+
     FTableEntry::FTableEntry(const char* path, const uint32_t blockOffset)
         : BlockOffset(blockOffset) {
         if (strlen(path) > MAX_PATH_LEN) {
@@ -216,7 +217,7 @@ namespace XPak {
                     metaFile.replace_extension(".xmeta");
                     if (!fs::exists(metaFile)) {
                         std::cerr << "Corresponding metadata file for " << pakFile
-                                  << " does not exist.\n";
+                            << " does not exist.\n";
                         break;
                     }
 
@@ -227,6 +228,7 @@ namespace XPak {
 
         return fileMap;
     }
+
     template<typename T>
     std::vector<T> Helpers::InterleaveVectors(const std::vector<T>& vec1,
                                               const std::vector<T>& vec2) {
@@ -247,11 +249,13 @@ namespace XPak {
 
         return result;
     }
+
     int32_t Helpers::MakeMultiple(const int32_t number, const int32_t multiple) {
         const int32_t remainder  = number % multiple;
         const int32_t difference = multiple - remainder;
         return number + difference;
     }
+
     std::vector<std::string> Helpers::CopyNodeToVector(const YAML::Node& manifest,
                                                        const std::string& name) {
         std::vector<std::string> list;
@@ -264,8 +268,13 @@ namespace XPak {
 
         return list;
     }
+
     std::vector<uint8_t> Helpers::LoadBitmapToVector(
-      const std::string& asset, int& x, int& y, int& nrChannels, const int desiredChannels) {
+        const std::string& asset,
+        int& x,
+        int& y,
+        int& nrChannels,
+        const int desiredChannels) {
         uint8_t* bitmapBytes = stbi_load(asset.c_str(), &x, &y, &nrChannels, desiredChannels);
 
         if (!bitmapBytes) {
@@ -279,6 +288,7 @@ namespace XPak {
 
         return bitmapVector;
     }
+
     template<typename T>
     void Helpers::LoadSamples(const std::string& filename, vector<T>& samplesOut) {
         AudioFile<T> audioFile;
@@ -298,9 +308,10 @@ namespace XPak {
         // bytes (ex. float) * the number of channels. If it's not, this line adds additional
         // silence at the end of the buffer to make it a multiple.
         samplesOut.resize(
-          MakeMultiple(static_cast<int32_t>(samplesOut.size()),
-                       static_cast<int32_t>(sizeof(T) * audioFile.getNumChannels())));
+            MakeMultiple(static_cast<int32_t>(samplesOut.size()),
+                         static_cast<int32_t>(sizeof(T) * audioFile.getNumChannels())));
     }
+
     template<typename T>
     std::vector<unsigned char> Helpers::SamplesToBytes(vector<T>& samplesIn) {
         const size_t byteSize = samplesIn.size() * sizeof(T);
@@ -309,6 +320,7 @@ namespace XPak {
 
         return bytesOut;
     }
+
     void ProcessBitmap(const std::string& asset,
                        FAssetMetadata<FBitmapProperties>& meta,
                        vector<uint8_t>& bytesOut) {
@@ -316,19 +328,20 @@ namespace XPak {
         const auto bitmapProps = dynamic_cast<FBitmapProperties*>(base);
         if (!bitmapProps) {
             std::cerr << "Provided template type doesn't match provided enum type "
-                         "(i.e. EAssetType::BITMAP != FBitmapProperties)\n";
+                "(i.e. EAssetType::BITMAP != FBitmapProperties)\n";
             return;
         }
         int x, y, nrChannels;
         const auto bitmapBytes =
-          Helpers::LoadBitmapToVector(asset,
-                                      x,
-                                      y,
-                                      nrChannels,
-                                      bitmapProps->Format == EBitmapFormat::RGB ? 3 : 4);
+            Helpers::LoadBitmapToVector(asset,
+                                        x,
+                                        y,
+                                        nrChannels,
+                                        bitmapProps->Format == EBitmapFormat::RGB ? 3 : 4);
 
         bytesOut = Compress(bitmapBytes);
     }
+
     void ProcessAudio(const std::string& asset,
                       FAssetMetadata<FAudioProperties>& meta,
                       vector<uint8_t>& bytesOut) {
@@ -346,21 +359,24 @@ namespace XPak {
                 const auto sampleBytes = Helpers::SamplesToBytes(samples);
 
                 bytesOut = Compress(sampleBytes);
-            } break;
+            }
+            break;
             case EAudioFormat::INT: {
                 vector<int32_t> samples;
                 Helpers::LoadSamples<int32_t>(asset, samples);
                 const auto sampleBytes = Helpers::SamplesToBytes(samples);
 
                 bytesOut = Compress(sampleBytes);
-            } break;
+            }
+            break;
             case EAudioFormat::UINT: {
                 vector<uint32_t> samples;
                 Helpers::LoadSamples<uint32_t>(asset, samples);
                 const auto sampleBytes = Helpers::SamplesToBytes(samples);
 
                 bytesOut = Compress(sampleBytes);
-            } break;
+            }
+            break;
         }
     }
 
@@ -401,7 +417,7 @@ namespace XPak {
             FTableEntry tableEntry;
             strcpy(tableEntry.Path, asset.c_str());
             tableEntry.BlockOffset =
-              HEADER_SIZE + (ENTRY_SIZE * assets.size()) + pakOut.DataBlocks.size();
+                HEADER_SIZE + (ENTRY_SIZE * assets.size()) + pakOut.DataBlocks.size();
 
             vector<uint8_t> compressedData;
             if constexpr (std::is_same_v<PropType, FBitmapProperties>) {
@@ -496,7 +512,7 @@ namespace XPak {
         const auto result = IO::ReadBlock(pakFile, HEADER_SIZE, ENTRY_SIZE * numEntries);
         if (!result.has_value()) {
             std::cerr << "Error reading ToC block from pak file: " << pakFile << "\n"
-                      << "Block size: " << ENTRY_SIZE * numEntries << " bytes\n";
+                << "Block size: " << ENTRY_SIZE * numEntries << " bytes\n";
             return {};
         }
         const auto& tocBytes = result.value();
@@ -528,7 +544,7 @@ namespace XPak {
 
         // Iterate over each one, reading in the table of contents
         for (auto fileMap = Helpers::GetPakAndMetaFiles(dataDir);
-             const auto& pakFile : fileMap | std::views::keys) {
+             const auto& [pakFile, metaFile] : fileMap) {
             auto headerBytes      = IO::ReadBlock(pakFile, 0, HEADER_SIZE).value();
             const auto header     = FPakHeader::Deserialize(headerBytes);
             const auto numEntries = header->NumEntries;
@@ -537,7 +553,7 @@ namespace XPak {
             auto result = IO::ReadBlock(pakFile, HEADER_SIZE, ENTRY_SIZE * numEntries);
             if (!result.has_value()) {
                 std::cerr << "Error reading ToC block from pak file: " << pakFile << "\n"
-                          << "Block size: " << ENTRY_SIZE * numEntries << " bytes\n";
+                    << "Block size: " << ENTRY_SIZE * numEntries << " bytes\n";
                 break;
             }
             auto tocBytes = result.value();
@@ -582,11 +598,11 @@ namespace XPak {
         }
 
         const auto dataBytes =
-          IO::ReadBlock(pakFile, foundAsset->Entry.BlockOffset, foundAsset->Entry.BlockSize);
+            IO::ReadBlock(pakFile, foundAsset->Entry.BlockOffset, foundAsset->Entry.BlockSize);
 
         if (!dataBytes.has_value()) {
             std::cerr << "Could not read data from pak file. Block offset or block size may be "
-                         "incorrect.\n";
+                "incorrect.\n";
             return {};
         }
 
@@ -614,7 +630,7 @@ namespace XPak {
         // Return byte vector
         return assetBytes.value();
     }
-}  // namespace XPak
+} // namespace XPak
 
 namespace XMeta {
     std::string GenerateGUID() {
@@ -625,6 +641,7 @@ namespace XMeta {
     }
 
     FAssetProps::~FAssetProps() = default;
+
     void FBitmapProperties::ReadProperties(const YAML::Node& node) {
         if (!node["BitmapProperties"].IsDefined()) {
             std::cerr << "BitmapProperties not defined in asset file.\n";
@@ -757,8 +774,8 @@ namespace XMeta {
             }
 
             auto stringBytes =
-              vector<uint8_t>(reinterpret_cast<const uint8_t*>(yamlStr.data()),
-                              reinterpret_cast<const uint8_t*>(yamlStr.data() + yamlStr.size()));
+                vector<uint8_t>(reinterpret_cast<const uint8_t*>(yamlStr.data()),
+                                reinterpret_cast<const uint8_t*>(yamlStr.data() + yamlStr.size()));
 
             std::memcpy(bytes.data() + (i * META_SIZE), stringBytes.data(), stringBytes.size());
             ++i;
@@ -783,7 +800,9 @@ namespace XMeta {
 
             auto lastNonNull = std::find_if(entryBytes.rbegin(),
                                             entryBytes.rend(),
-                                            [](uint8_t byte) { return byte != 0; });
+                                            [](uint8_t byte) {
+                                                return byte != 0;
+                                            });
 
             if (lastNonNull != entryBytes.rend()) {
                 entryBytes.erase(lastNonNull.base(), entryBytes.end());
@@ -818,9 +837,9 @@ namespace XMeta {
         meta.Print();
         std::cout << "Compressed Size   => " << fileBytes.size() << " bytes\n";
         std::cout << "Compression Ratio => "
-                  << 100.f - (static_cast<float>(fileBytes.size()) /
-                              static_cast<float>(decompressedBytes.size())) *
-                               100.f
-                  << "%\n";
+            << 100.f - (static_cast<float>(fileBytes.size()) /
+                        static_cast<float>(decompressedBytes.size())) *
+            100.f
+            << "%\n";
     }
-}  // namespace XMeta
+} // namespace XMeta
